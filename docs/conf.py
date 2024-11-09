@@ -15,7 +15,10 @@ from __future__ import annotations
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#sys.path.insert(0, os.path.abspath('.'))
+
+# TODO remove
+import sys
+sys.path.insert(0, '/home/marc-antoine/Bureau/pyodas2/venv/lib/python3.12/site-packages')
 
 # -- General configuration ------------------------------------------------
 
@@ -29,6 +32,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
     'sphinx.ext.autosummary',
+    "sphinx.ext.viewcode",
     'sphinx.ext.napoleon',
 ]
 
@@ -67,7 +71,7 @@ release = '0.0.1'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
@@ -140,7 +144,7 @@ html_theme = 'alabaster'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+#html_static_path = ['_static']
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
