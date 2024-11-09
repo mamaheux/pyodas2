@@ -1,0 +1,3 @@
+[submodule "src/odas2"]
+	path = src/odas2
+	url = https://github.com/FrancoisGrondin/odas2.git
