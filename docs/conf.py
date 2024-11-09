@@ -1,5 +1,5 @@
 #
-# python_example documentation build configuration file, created by
+# pyodas2 documentation build configuration file, created by
 # sphinx-quickstart on Fri Feb 26 00:29:33 2016.
 #
 # This file is execfile()d with the current directory set to its
@@ -49,9 +49,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'python_example'
-copyright = '2016, Sylvain Corlay'
-author = 'Sylvain Corlay'
+project = 'pyodas2'
+copyright = '2024, Marc-Antoine Maheux'
+author = 'Marc-Antoine Maheux'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -203,7 +203,7 @@ html_static_path = ['_static']
 #html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'python_exampledoc'
+htmlhelp_basename = 'pyodas2doc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -225,8 +225,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'python_example.tex', 'python_example Documentation',
-     'Sylvain Corlay', 'manual'),
+    (master_doc, 'pyodas2.tex', 'pyodas2 Documentation',
+     'Marc-Antoine Maheux', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -255,7 +255,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'python_example', 'python_example Documentation',
+    (master_doc, 'pyodas2', 'pyodas2 Documentation',
      [author], 1)
 ]
 
@@ -269,8 +269,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'python_example', 'python_example Documentation',
-     author, 'python_example', 'One line description of project.',
+    (master_doc, 'pyodas2', 'pyodas2 Documentation',
+     author, 'pyodas2', 'One line description of project.',
      'Miscellaneous'),
 ]
 

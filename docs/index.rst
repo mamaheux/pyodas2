@@ -1,4 +1,4 @@
-python_example Documentation
+pyodas2 Documentation
 ============================
 
 Contents:
@@ -6,4 +6,4 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   python_example
+   pyodas2
