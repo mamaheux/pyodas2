@@ -8,47 +8,39 @@
 
 namespace py = pybind11;
 
-xyz_t operator+(const xyz_t& a, const xyz_t& b)
-{
+xyz_t operator+(const xyz_t& a, const xyz_t& b) {
     return xyz_add(a, b);
 }
 
-xyz_t operator-(const xyz_t& a, const xyz_t& b)
-{
+xyz_t operator-(const xyz_t& a, const xyz_t& b) {
     return xyz_sub(a, b);
 }
 
-xyz_t operator*(const float& scale, const xyz_t& vec)
-{
+xyz_t operator*(const float& scale, const xyz_t& vec) {
     return xyz_scale(vec, scale);
 }
 
-xyz_t operator*(const xyz_t& vec, const float& scale)
-{
+xyz_t operator*(const xyz_t& vec, const float& scale) {
     return xyz_scale(vec, scale);
 }
 
-xyz_t operator-(const xyz_t& a)
-{
+xyz_t operator-(const xyz_t& a) {
     return xyz_scale(a, -1.f);
 }
 
-std::string to_repr(const xyz_t& xyz)
-{
+std::string to_repr(const xyz_t& xyz) {
     std::stringstream ss;
     ss << "<pyodas2.types.Xyz (" << xyz.x << "," << xyz.y << "," << xyz.z << ")>";
     return ss.str();
 }
 
-std::string to_string(const xyz_t& xyz)
-{
+std::string to_string(const xyz_t& xyz) {
     std::stringstream ss;
     ss << "(" << xyz.x << "," << xyz.y << "," << xyz.z << ")";
     return ss.str();
 }
 
-void init_xyz(py::module &m)
-{
+void init_xyz(py::module &m) {
     py::class_<xyz_t>(m, "Xyz")
         .def(py::init(&xyz_cst), R"pbdoc(Create a new xyz vector)pbdoc", py::arg("x"), py::arg("y"), py::arg("z"))
         .def_readwrite("x", &xyz_t::x)

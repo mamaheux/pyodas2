@@ -22,6 +22,7 @@ find_package(pybind11 CONFIG REQUIRED)
 python_add_library(_core MODULE
         src/wrapper/main.cpp
         src/wrapper/types/xyz.cpp
+        src/wrapper/utils/points.cpp
         WITH_SOABI)
 target_include_directories(_core PUBLIC src/odas2/core/include)
 target_link_libraries(_core PUBLIC pybind11::module odas2)

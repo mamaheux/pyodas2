@@ -1,6 +1,7 @@
 #include <pybind11/pybind11.h>
 
 #include "types/xyz.h"
+#include "utils/points.h"
 
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
@@ -32,6 +33,17 @@ PYBIND11_MODULE(_core, m) {
            :toctree: _generate
     )pbdoc");
     init_xyz(types_module);
+
+    auto utils_module = m.def_submodule("utils", R"pbdoc(
+        Pyodas2 types submodule
+        -----------------------
+
+        .. currentmodule:: pyodas2.utils
+
+        .. autosummary::
+           :toctree: _generate
+    )pbdoc");
+    init_points(utils_module);
 
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
