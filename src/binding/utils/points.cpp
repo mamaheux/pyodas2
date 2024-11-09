@@ -72,7 +72,7 @@ void init_points(py::module& m)
         .def("__str__", &to_string);
 
     py::enum_<Geometry>(points, "Geometry")
-        .value("Sphere", Geometry::SPHERE)
-        .value("Halfsphere", Geometry::HALFSPHERE)
-        .value("Arc", Geometry::ARC);
+        .value("SPHERE", Geometry::SPHERE)
+        .value("HALFSPHERE", Geometry::HALFSPHERE)
+        .value("ARC", Geometry::ARC);
 }

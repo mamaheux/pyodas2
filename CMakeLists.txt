@@ -23,6 +23,7 @@ python_add_library(_core MODULE
         src/binding/main.cpp
         src/binding/types/xyz.cpp
         src/binding/utils/mic.cpp
+        src/binding/utils/mics.cpp
         src/binding/utils/points.cpp
         WITH_SOABI)
 target_include_directories(_core PUBLIC src/odas2/core/include)

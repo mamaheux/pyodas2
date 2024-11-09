@@ -2,6 +2,7 @@
 
 #include "types/xyz.h"
 #include "utils/mic.h"
+#include "utils/mics.h"
 #include "utils/points.h"
 
 #define STRINGIFY(x) #x
@@ -45,6 +46,7 @@ PYBIND11_MODULE(_core, m) {
            :toctree: _generate
     )pbdoc");
     init_mic(utils_module);
+    init_mics(utils_module);
     init_points(utils_module);
 
 #ifdef VERSION_INFO

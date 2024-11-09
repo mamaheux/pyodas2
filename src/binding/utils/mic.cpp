@@ -77,6 +77,6 @@ void init_mic(py::module &m) {
         .def("__str__", &to_string);
 
     py::enum_<Pattern>(mic, "Pattern")
-        .value("Omnidirectional", Pattern::OMNIDIRECTIONAL)
-        .value("Cardioid", Pattern::CARDIOID);
+        .value("OMNIDIRECTIONAL", Pattern::OMNIDIRECTIONAL)
+        .value("CARDIOID", Pattern::CARDIOID);
 }
