@@ -1,3 +1,3 @@
-from ._core.utils import Points
+from ._core.utils import Mic, Points
 
-__all__ = ["Points"]
+__all__ = ["Mic", "Points"]

@@ -43,12 +43,33 @@ xyz_t points_get_item(const points_t& self, size_t i) {
     return self.points[i];
 }
 
+std::string to_repr(const points_t& self) {
+    std::stringstream ss;
+    ss << "<pyodas2.utils.Points (len=" << self.num_points << ")>";
+    return ss.str();
+}
+
+std::string to_string(const points_t& self) {
+    std::stringstream ss;
+    ss << "[";
+    for (size_t i = 0; i < self.num_points; i++) {
+        ss << "(" << self.points[i].x << "," << self.points[i].y << "," << self.points[i].z << ")";
+        if (i < self.num_points - 1) {
+            ss << ",";
+        }
+    }
+    ss << "]";
+    return ss.str();
+}
+
 void init_points(py::module& m)
 {
     py::class_<points_t, std::shared_ptr<points_t>> points(m, "Points");
     points.def(py::init(&points_init), R"pbdoc(Create the points for a given geometry)pbdoc", py::arg("geometry"))
         .def("__len__", &points_len)
-        .def("__getitem__", &points_get_item);
+        .def("__getitem__", &points_get_item)
+        .def("__repr__", &to_repr)
+        .def("__str__", &to_string);
 
     py::enum_<Geometry>(points, "Geometry")
         .value("Sphere", Geometry::SPHERE)

@@ -30,3 +30,14 @@ def test_get_item():
     assert p3.x == pytest.approx(0.040640)
     assert p3.y == pytest.approx(-0.055937)
     assert p3.z == pytest.approx(0.997607)
+
+
+def test_repr():
+    testee = Points(Points.Geometry.Arc)
+    assert repr(testee) == '<pyodas2.utils.Points (len=181)>'
+
+
+def test_str():
+    testee = Points(Points.Geometry.Arc)
+    assert str(testee).startswith('[(1,0,0),')
+    assert str(testee).endswith(')]')

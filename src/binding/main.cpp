@@ -1,6 +1,7 @@
 #include <pybind11/pybind11.h>
 
 #include "types/xyz.h"
+#include "utils/mic.h"
 #include "utils/points.h"
 
 #define STRINGIFY(x) #x
@@ -43,6 +44,7 @@ PYBIND11_MODULE(_core, m) {
         .. autosummary::
            :toctree: _generate
     )pbdoc");
+    init_mic(utils_module);
     init_points(utils_module);
 
 #ifdef VERSION_INFO
