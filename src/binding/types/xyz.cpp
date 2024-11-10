@@ -41,11 +41,11 @@ std::string to_string(const xyz_t& xyz) {
 }
 
 void init_xyz(py::module &m) {
-    py::class_<xyz_t>(m, "Xyz")
+    py::class_<xyz_t>(m, "Xyz", R"pbdoc(A class representing a 3D vector)pbdoc")
         .def(py::init(&xyz_cst), R"pbdoc(Create a new xyz vector)pbdoc", py::arg("x"), py::arg("y"), py::arg("z"))
-        .def_readwrite("x", &xyz_t::x)
-        .def_readwrite("y", &xyz_t::y)
-        .def_readwrite("z", &xyz_t::z)
+        .def_readwrite("x", &xyz_t::x, R"pbdoc(X value of the vector)pbdoc")
+        .def_readwrite("y", &xyz_t::y, R"pbdoc(Y value of the vector)pbdoc")
+        .def_readwrite("z", &xyz_t::z, R"pbdoc(Z value of the vector)pbdoc")
         .def("unit", &xyz_unit, R"pbdoc(Return the unit vector with the same direction of self)pbdoc")
         .def("mag", &xyz_mag, R"pbdoc(Return the magnitude of the vector)pbdoc")
         .def("l2", &xyz_l2, R"pbdoc(Return the square of the magnitude of the vector)pbdoc")

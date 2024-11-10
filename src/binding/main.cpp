@@ -8,13 +8,11 @@
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
 
-int add(int i, int j) {
-    return i + j;
-}
-
 namespace py = pybind11;
 
 PYBIND11_MODULE(_core, m) {
+    m.attr("__name__") = "pyodas2"; // Remove ._core from the names
+
     auto types_module = m.def_submodule("types");
     init_xyz(types_module);
 

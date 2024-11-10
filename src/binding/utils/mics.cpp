@@ -79,7 +79,7 @@ std::string to_string(const mics_t& self) {
 }
 
 void init_mics(pybind11::module& m) {
-    py::class_<mics_t, std::shared_ptr<mics_t>> mics(m, "Mics");
+    py::class_<mics_t, std::shared_ptr<mics_t>> mics(m, "Mics", R"pbdoc(A class representing an array of microphones)pbdoc");
     mics.def(py::init(&mics_init), R"pbdoc(Create the mics for a given hardware)pbdoc", py::arg("hardware")) // TODO add a constructor that take a list of Mics
         .def("__len__", &mics_len)
         .def("__getitem__", &mics_get_item, py::return_value_policy::reference)

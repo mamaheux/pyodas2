@@ -65,12 +65,12 @@ std::string to_string(const mic_t& self) {
 }
 
 void init_mic(py::module &m) {
-    py::class_<mic_t> mic(m, "Mic");
+    py::class_<mic_t> mic(m, "Mic", R"pbdoc(A class representing a microphone)pbdoc");
     mic.def(py::init(&mic_init), R"pbdoc(Create a new mic containing a position, a direction and a pattern)pbdoc",
             py::arg("position"), py::arg("direction"), py::arg("pattern"))
-        .def_readwrite("position", &mic_t::position)
-        .def_readwrite("direction", &mic_t::direction)
-        .def_property("pattern", &mic_get_pattern, &mic_set_pattern)
+        .def_readwrite("position", &mic_t::position, R"pbdoc(The position of the microphone in meters)pbdoc")
+        .def_readwrite("direction", &mic_t::direction, R"pbdoc(The direction of the microphone)pbdoc")
+        .def_property("pattern", &mic_get_pattern, &mic_set_pattern, R"pbdoc(The pattern of the microphone (omnidirectional orcardioid))pbdoc")
         .def("gain", &mic_gain, R"pbdoc(Return the microphone gain for the given direction)pbdoc",
             py::arg("direction"))
         .def("__repr__", &to_repr)
