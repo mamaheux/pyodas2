@@ -9,7 +9,7 @@
 namespace py = pybind11;
 
 struct hops_deleter {
-    void operator()(hops_t* p) const     {
+    void operator()(hops_t* p) const {
         hops_destroy(p);
     }
 };
@@ -34,7 +34,7 @@ void hops_load_numpy_int(const hops_t& self, const py::array_t<Int, py::array::c
 
     size_t size = self.num_channels * self.num_shifts;
     for (size_t i = 0; i < size; i++) {
-        self.data[i] = -static_cast<float>(array.data()[i]) / std::numeric_limits<Int>::min();
+        self.samples_buffer[i] = -static_cast<float>(array.data()[i]) / std::numeric_limits<Int>::min();
     }
 }
 
@@ -52,7 +52,7 @@ void hops_load_numpy_uint(const hops_t& self, const py::array_t<UInt, py::array:
         constexpr float SCALE = 2.f / std::numeric_limits<UInt>::max();
         constexpr float OFFSET = 1.f;
 
-        self.data[i] = static_cast<float>(array.data()[i]) * SCALE - OFFSET;
+        self.samples_buffer[i] = static_cast<float>(array.data()[i]) * SCALE - OFFSET;
     }
 }
 
@@ -66,13 +66,13 @@ void hops_load_numpy_float(const hops_t& self, const py::array_t<Float, py::arra
 
     size_t size = self.num_channels * self.num_shifts;
     for (size_t i = 0; i < size; i++) {
-        self.data[i] = static_cast<float>(array.data()[i]);
+        self.samples_buffer[i] = static_cast<float>(array.data()[i]);
     }
 }
 
 py::array_t<float> hops_to_numpy(const hops_t& self) {
     py::buffer_info buffer_info(
-        self.data,
+        self.samples_buffer,
         sizeof(float),
         py::format_descriptor<float>::format(),
         2,  // Number of dimensions

@@ -15,7 +15,7 @@ enum class Hardware {
 };
 
 struct mics_deleter {
-    void operator()(mics_t* p) const     {
+    void operator()(mics_t* p) const {
         mics_destroy(p);
     }
 };

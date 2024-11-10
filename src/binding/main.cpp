@@ -1,5 +1,6 @@
 #include <pybind11/pybind11.h>
 
+#include "signals/freqs.h"
 #include "signals/hops.h"
 
 #include "types/xyz.h"
@@ -17,6 +18,7 @@ PYBIND11_MODULE(_core, m) {
     m.attr("__name__") = "pyodas2"; // Remove ._core from the names
 
     auto signals_module = m.def_submodule("signals");
+    init_freqs(signals_module);
     init_hops(signals_module);
 
     auto types_module = m.def_submodule("types");

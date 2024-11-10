@@ -14,7 +14,7 @@ enum class Geometry {
 };
 
 struct points_deleter {
-    void operator()(points_t* p) const     {
+    void operator()(points_t* p) const {
         points_destroy(p);
     }
 };

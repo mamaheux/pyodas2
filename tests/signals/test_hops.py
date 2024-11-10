@@ -18,6 +18,7 @@ def test_init():
     assert testee.num_shifts == 512
     assert testee.num_samples == 512
 
+
 @pytest.mark.parametrize("dtype", [np.int8, np.int16, np.int32, np.int64, np.uint8, np.uint16, np.uint32, np.uint64, np.float32, np.float64])
 def test_numpy_invalid_shape_int(dtype):
     testee = Hops('xs', 2, 4)
