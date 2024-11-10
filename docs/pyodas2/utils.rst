@@ -19,6 +19,7 @@ Classes
    :members:
    :exclude-members: name
 
+|
 
 .. autoclass:: pyodas2.utils.Mics
 
@@ -31,6 +32,7 @@ Classes
    :members:
    :exclude-members: name
 
+|
 
 .. autoclass:: pyodas2.utils.Points
 

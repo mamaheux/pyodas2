@@ -17,6 +17,28 @@ Classes
    .. autoproperty:: num_pairs
    .. autoproperty:: num_bins
 
+|
+
+.. autoclass:: pyodas2.signals.Doas
+
+   .. automethod:: __init__
+
+   .. automethod:: __len__
+   .. automethod:: __getitem__
+   .. automethod:: __setitem__
+
+   .. autoproperty:: label
+
+.. autoclass:: pyodas2.signals::Doas.Src
+   :members:
+   :exclude-members: name
+
+.. autoclass:: pyodas2.signals::Doas.Dir
+   :special-members: __init__
+   :members:
+   :exclude-members: name
+
+|
 
 .. autoclass:: pyodas2.signals.Freqs
 
@@ -29,6 +51,7 @@ Classes
    .. autoproperty:: num_channels
    .. autoproperty:: num_bins
 
+|
 
 .. autoclass:: pyodas2.signals.Hops
 

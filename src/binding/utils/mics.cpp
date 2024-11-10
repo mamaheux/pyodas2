@@ -61,31 +61,13 @@ std::string mics_to_repr(const mics_t& self) {
     return ss.str();
 }
 
-std::string mics_to_string(const mics_t& self) {
-    std::stringstream ss;
-    ss << "Mics = [";
-    for (size_t i = 0; i < self.num_mics; i++) {
-        ss << "{";
-        ss << "P=(" << self.mics[i].position.x << "," << self.mics[i].position.y << "," << self.mics[i].position.z << "), ";
-        ss << "D=(" << self.mics[i].direction.x << "," << self.mics[i].direction.y << "," << self.mics[i].direction.z << "), ";
-        ss << self.mics[i].pattern << "}";
-
-        if (i < self.num_mics - 1) {
-            ss << ",";
-        }
-    }
-    ss << "]";
-    return ss.str();
-}
-
 void init_mics(pybind11::module& m) {
     py::class_<mics_t, std::shared_ptr<mics_t>> mics(m, "Mics", R"pbdoc(A class representing an array of microphones.)pbdoc");
     mics.def(py::init(&mics_init), R"pbdoc(Create the mics for a given hardware.)pbdoc", py::arg("hardware")) // TODO add a constructor that take a list of Mics
         .def("__len__", &mics_len, R"pbdoc(Get the number of microphones.)pbdoc")
         .def("__getitem__", &mics_get_item, R"pbdoc(Get the mutable microphone at the given index.)pbdoc", py::arg("index"), py::return_value_policy::reference)
         .def("__setitem__", &mics_set_item, R"pbdoc(Set the microphone at the given index.)pbdoc", py::arg("index"), py::arg("mic"))
-        .def("__repr__", &mics_to_repr)
-        .def("__str__", &mics_to_string);
+        .def("__repr__", &mics_to_repr);
 
     py::enum_<Hardware>(mics, "Hardware")
         .value("RESPEAKER_USB", Hardware::RESPEAKER_USB)

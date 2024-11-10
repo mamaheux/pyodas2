@@ -22,6 +22,7 @@ find_package(pybind11 CONFIG REQUIRED)
 python_add_library(_core MODULE
         src/binding/main.cpp
         src/binding/signals/covs.cpp
+        src/binding/signals/doas.cpp
         src/binding/signals/freqs.cpp
         src/binding/signals/hops.cpp
         src/binding/types/xyz.cpp

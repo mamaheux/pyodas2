@@ -41,9 +41,3 @@ def test_get_item_immutable():
 def test_repr():
     testee = Points(Points.Geometry.ARC)
     assert repr(testee) == '<pyodas2.utils.Points (len=181)>'
-
-
-def test_str():
-    testee = Points(Points.Geometry.ARC)
-    assert str(testee).startswith('[(1,0,0),')
-    assert str(testee).endswith(')]')

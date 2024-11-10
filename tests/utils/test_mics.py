@@ -78,3 +78,8 @@ def test_set_item():
     assert testee[0].position.x == 10.0
     assert testee[0].direction.x == 11.0
     assert testee[0].pattern == Mic.Pattern.CARDIOID
+
+
+def test_repr():
+    testee = Mics(Mics.Hardware.RESPEAKER_USB)
+    assert repr(testee) == '<pyodas2.utils.Mics (len=4)>'

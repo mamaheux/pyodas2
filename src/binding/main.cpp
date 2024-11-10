@@ -1,6 +1,7 @@
 #include <pybind11/pybind11.h>
 
 #include "signals/covs.h"
+#include "signals/doas.h"
 #include "signals/freqs.h"
 #include "signals/hops.h"
 
@@ -18,11 +19,6 @@ namespace py = pybind11;
 PYBIND11_MODULE(_core, m) {
     m.attr("__name__") = "pyodas2"; // Remove ._core from the names
 
-    auto signals_module = m.def_submodule("signals");
-    init_covs(signals_module);
-    init_freqs(signals_module);
-    init_hops(signals_module);
-
     auto types_module = m.def_submodule("types");
     init_xyz(types_module);
 
@@ -30,6 +26,12 @@ PYBIND11_MODULE(_core, m) {
     init_mic(utils_module);
     init_mics(utils_module);
     init_points(utils_module);
+
+    auto signals_module = m.def_submodule("signals");
+    init_covs(signals_module);
+    init_doas(signals_module);
+    init_freqs(signals_module);
+    init_hops(signals_module);
 
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);

@@ -40,8 +40,3 @@ def test_gain():
 def test_repr():
     testee = Mic(Xyz(1.0, 2.0, 3.0), Xyz(-1.0, -2.0, -3.0), Mic.Pattern.OMNIDIRECTIONAL)
     assert repr(testee) == '<pyodas2.utils.Mic (P=(1,2,3), D=(-1,-2,-3), omnidirectional)>'
-
-
-def test_str():
-    testee = Mic(Xyz(1.0, 2.0, 3.0), Xyz(-1.0, -2.0, -3.0), Mic.Pattern.CARDIOID)
-    assert str(testee) == 'P=(1,2,3), D=(-1,-2,-3), cardioid'
