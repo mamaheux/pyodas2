@@ -38,18 +38,18 @@ size_t points_len(const points_t& self) {
 
 xyz_t points_get_item(const points_t& self, size_t i) {
     if (i >= self.num_points) {
-        throw std::out_of_range("");
+        throw py::index_error();
     }
     return self.points[i];
 }
 
-std::string to_repr(const points_t& self) {
+std::string points_to_repr(const points_t& self) {
     std::stringstream ss;
     ss << "<pyodas2.utils.Points (len=" << self.num_points << ")>";
     return ss.str();
 }
 
-std::string to_string(const points_t& self) {
+std::string points_to_string(const points_t& self) {
     std::stringstream ss;
     ss << "[";
     for (size_t i = 0; i < self.num_points; i++) {
@@ -64,12 +64,12 @@ std::string to_string(const points_t& self) {
 
 void init_points(py::module& m)
 {
-    py::class_<points_t, std::shared_ptr<points_t>> points(m, "Points", R"pbdoc(A class representing a geometry and containing an array of points)pbdoc");
-    points.def(py::init(&points_init), R"pbdoc(Create the points for a given geometry)pbdoc", py::arg("geometry"))
-        .def("__len__", &points_len, R"pbdoc(Get the number of points)pbdoc")
-        .def("__getitem__", &points_get_item, R"pbdoc(Get the immutable point at the given index)pbdoc", py::arg("index"))
-        .def("__repr__", &to_repr)
-        .def("__str__", &to_string);
+    py::class_<points_t, std::shared_ptr<points_t>> points(m, "Points", R"pbdoc(A class representing a geometry and containing an array of points.)pbdoc");
+    points.def(py::init(&points_init), R"pbdoc(Create the points for a given geometry.)pbdoc", py::arg("geometry"))
+        .def("__len__", &points_len, R"pbdoc(Get the number of points.)pbdoc")
+        .def("__getitem__", &points_get_item, R"pbdoc(Get the immutable point at the given index.)pbdoc", py::arg("index"))
+        .def("__repr__", &points_to_repr)
+        .def("__str__", &points_to_string);
 
     py::enum_<Geometry>(points, "Geometry")
         .value("SPHERE", Geometry::SPHERE)

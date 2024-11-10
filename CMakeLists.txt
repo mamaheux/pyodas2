@@ -21,6 +21,7 @@ find_package(pybind11 CONFIG REQUIRED)
 # this)
 python_add_library(_core MODULE
         src/binding/main.cpp
+        src/binding/signals/hops.cpp
         src/binding/types/xyz.cpp
         src/binding/utils/mic.cpp
         src/binding/utils/mics.cpp

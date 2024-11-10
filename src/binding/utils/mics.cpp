@@ -43,25 +43,25 @@ size_t mics_len(const mics_t& self) {
 
 mic_t& mics_get_item(const mics_t& self, size_t i) {
     if (i >= self.num_mics) {
-        throw std::out_of_range("");
+        throw py::index_error();
     }
     return self.mics[i];
 }
 
 void mics_set_item(const mics_t& self, size_t i, const mic_t& value) {
     if (i >= self.num_mics) {
-        throw std::out_of_range("");
+        throw py::index_error();
     }
     self.mics[i] = value;
 }
 
-std::string to_repr(const mics_t& self) {
+std::string mics_to_repr(const mics_t& self) {
     std::stringstream ss;
     ss << "<pyodas2.utils.Mics (len=" << self.num_mics << ")>";
     return ss.str();
 }
 
-std::string to_string(const mics_t& self) {
+std::string mics_to_string(const mics_t& self) {
     std::stringstream ss;
     ss << "Mics = [";
     for (size_t i = 0; i < self.num_mics; i++) {
@@ -79,13 +79,13 @@ std::string to_string(const mics_t& self) {
 }
 
 void init_mics(pybind11::module& m) {
-    py::class_<mics_t, std::shared_ptr<mics_t>> mics(m, "Mics", R"pbdoc(A class representing an array of microphones)pbdoc");
-    mics.def(py::init(&mics_init), R"pbdoc(Create the mics for a given hardware)pbdoc", py::arg("hardware")) // TODO add a constructor that take a list of Mics
-        .def("__len__", &mics_len, R"pbdoc(Get the number of microphones)pbdoc")
-        .def("__getitem__", &mics_get_item, R"pbdoc(Get the mutable microphone at the given index)pbdoc", py::arg("index"), py::return_value_policy::reference)
-        .def("__setitem__", &mics_set_item, R"pbdoc(Set the microphone at the given index)pbdoc", py::arg("index"), py::arg("mic"))
-        .def("__repr__", &to_repr)
-        .def("__str__", &to_string);
+    py::class_<mics_t, std::shared_ptr<mics_t>> mics(m, "Mics", R"pbdoc(A class representing an array of microphones.)pbdoc");
+    mics.def(py::init(&mics_init), R"pbdoc(Create the mics for a given hardware.)pbdoc", py::arg("hardware")) // TODO add a constructor that take a list of Mics
+        .def("__len__", &mics_len, R"pbdoc(Get the number of microphones.)pbdoc")
+        .def("__getitem__", &mics_get_item, R"pbdoc(Get the mutable microphone at the given index.)pbdoc", py::arg("index"), py::return_value_policy::reference)
+        .def("__setitem__", &mics_set_item, R"pbdoc(Set the microphone at the given index.)pbdoc", py::arg("index"), py::arg("mic"))
+        .def("__repr__", &mics_to_repr)
+        .def("__str__", &mics_to_string);
 
     py::enum_<Hardware>(mics, "Hardware")
         .value("RESPEAKER_USB", Hardware::RESPEAKER_USB)
