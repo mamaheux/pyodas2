@@ -26,7 +26,7 @@ std::shared_ptr<freqs_t> freqs_init(const std::string& label, size_t num_channel
 
 void freqs_load_numpy(const freqs_t& self, const py::array_t<std::complex<float>, py::array::c_style | py::array::forcecast>& array) {
     if (array.ndim() != 2 || array.shape(0) != self.num_channels || array.shape(1) != self.num_bins) {
-        throw py::value_error("Invalid array shape. It must be (" + std::to_string(self.num_channels) + "," + std::to_string(self.num_bins) + ").");
+        throw py::value_error("Invalid array shape, it must be (" + std::to_string(self.num_channels) + "," + std::to_string(self.num_bins) + ").");
     }
 
     size_t size = self.num_channels * self.num_bins;
@@ -55,11 +55,11 @@ std::string freqs_to_repr(const freqs_t& self) {
 
 void init_freqs(py::module& m) {
     py::class_<freqs_t, std::shared_ptr<freqs_t>>(m, "Freqs", R"pbdoc(A class representing a freqs signals.)pbdoc")
-        .def(py::init(&freqs_init), R"pbdoc(Create the hops signals.)pbdoc", py::arg("label"), py::arg("num_channels"), py::arg("num_shifts"))
+        .def(py::init(&freqs_init), R"pbdoc(Create the hops signals.)pbdoc", py::arg("label"), py::arg("num_channels"), py::arg("num_bins"))
         .def_readonly("label", &freqs_t::label, R"pbdoc(Get the label.)pbdoc")
         .def_readonly("num_channels", &freqs_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_readonly("num_bins", &freqs_t::num_bins, R"pbdoc(Get the number of bins.)pbdoc")
-        .def("load_numpy", &freqs_load_numpy, R"pbdoc(Load the data of a numpy array.)pbdoc", py::arg("array"))
+        .def("load_numpy", &freqs_load_numpy, R"pbdoc(Load the freqs signal from a numpy array.)pbdoc", py::arg("array"))
         .def("to_numpy", &freqs_to_numpy, R"pbdoc(Get the freqs signal as a numpy array.)pbdoc")
         .def("__repr__", &freqs_to_repr);
 }

@@ -29,7 +29,7 @@ void hops_load_numpy_int(const hops_t& self, const py::array_t<Int, py::array::c
     static_assert(std::is_signed_v<Int>, "Signed required.");
 
     if (array.ndim() != 2 || array.shape(0) != self.num_channels || array.shape(1) != self.num_shifts) {
-        throw py::value_error("Invalid array shape. It must be (" + std::to_string(self.num_channels) + "," + std::to_string(self.num_shifts) + ").");
+        throw py::value_error("Invalid array shape, it must be (" + std::to_string(self.num_channels) + "," + std::to_string(self.num_shifts) + ").");
     }
 
     size_t size = self.num_channels * self.num_shifts;
@@ -44,7 +44,7 @@ void hops_load_numpy_uint(const hops_t& self, const py::array_t<UInt, py::array:
     static_assert(std::is_unsigned_v<UInt>, "Unsigned required.");
 
     if (array.ndim() != 2 || array.shape(0) != self.num_channels || array.shape(1) != self.num_shifts) {
-        throw py::value_error("Invalid array shape. It must be (" + std::to_string(self.num_channels) + "," + std::to_string(self.num_shifts) + ").");
+        throw py::value_error("Invalid array shape, it must be (" + std::to_string(self.num_channels) + "," + std::to_string(self.num_shifts) + ").");
     }
 
     size_t size = self.num_channels * self.num_shifts;
@@ -61,7 +61,7 @@ void hops_load_numpy_float(const hops_t& self, const py::array_t<Float, py::arra
     static_assert(std::is_floating_point_v<Float>, "Floating point required.");
 
     if (array.ndim() != 2 || array.shape(0) != self.num_channels || array.shape(1) != self.num_shifts) {
-        throw py::value_error("Invalid array shape. It must be (" + std::to_string(self.num_channels) + "," + std::to_string(self.num_shifts) + ").");
+        throw py::value_error("Invalid array shape, it must be (" + std::to_string(self.num_channels) + "," + std::to_string(self.num_shifts) + ").");
     }
 
     size_t size = self.num_channels * self.num_shifts;
@@ -97,16 +97,16 @@ void init_hops(py::module& m) {
         .def_readonly("num_channels", &hops_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_readonly("num_shifts", &hops_t::num_shifts, R"pbdoc(Get the number of samples.)pbdoc")
         .def_readonly("num_samples", &hops_t::num_shifts, R"pbdoc(Get the number of samples.)pbdoc")
-        .def("load_numpy", &hops_load_numpy_int<int8_t>, R"pbdoc(Load the data of a numpy array.)pbdoc", py::arg("array"))
-        .def("load_numpy", &hops_load_numpy_int<int16_t>, R"pbdoc(Load the data of a numpy array.)pbdoc", py::arg("array"))
-        .def("load_numpy", &hops_load_numpy_int<int32_t>, R"pbdoc(Load the data of a numpy array.)pbdoc", py::arg("array"))
-        .def("load_numpy", &hops_load_numpy_int<int64_t>, R"pbdoc(Load the data of a numpy array.)pbdoc", py::arg("array"))
-        .def("load_numpy", &hops_load_numpy_uint<uint8_t>, R"pbdoc(Load the data of a numpy array.)pbdoc", py::arg("array"))
-        .def("load_numpy", &hops_load_numpy_uint<uint16_t>, R"pbdoc(Load the data of a numpy array.)pbdoc", py::arg("array"))
-        .def("load_numpy", &hops_load_numpy_uint<uint32_t>, R"pbdoc(Load the data of a numpy array.)pbdoc", py::arg("array"))
-        .def("load_numpy", &hops_load_numpy_uint<uint64_t>, R"pbdoc(Load the data of a numpy array.)pbdoc", py::arg("array"))
-        .def("load_numpy", &hops_load_numpy_float<float>, R"pbdoc(Load the data of a numpy array.)pbdoc", py::arg("array"))
-        .def("load_numpy", &hops_load_numpy_float<double>, R"pbdoc(Load the data of a numpy array.)pbdoc", py::arg("array"))
+        .def("load_numpy", &hops_load_numpy_int<int8_t>, R"pbdoc(Load the hops signal from a numpy array.)pbdoc", py::arg("array"))
+        .def("load_numpy", &hops_load_numpy_int<int16_t>, R"pbdoc(Load the hops signal from a numpy array.)pbdoc", py::arg("array"))
+        .def("load_numpy", &hops_load_numpy_int<int32_t>, R"pbdoc(Load the hops signal from a numpy array.)pbdoc", py::arg("array"))
+        .def("load_numpy", &hops_load_numpy_int<int64_t>, R"pbdoc(Load the hops signal from a numpy array.)pbdoc", py::arg("array"))
+        .def("load_numpy", &hops_load_numpy_uint<uint8_t>, R"pbdoc(Load the hops signal from a numpy array.)pbdoc", py::arg("array"))
+        .def("load_numpy", &hops_load_numpy_uint<uint16_t>, R"pbdoc(Load the hops signal from a numpy array.)pbdoc", py::arg("array"))
+        .def("load_numpy", &hops_load_numpy_uint<uint32_t>, R"pbdoc(Load the hops signal from a numpy array.)pbdoc", py::arg("array"))
+        .def("load_numpy", &hops_load_numpy_uint<uint64_t>, R"pbdoc(Load the hops signal from a numpy array.)pbdoc", py::arg("array"))
+        .def("load_numpy", &hops_load_numpy_float<float>, R"pbdoc(Load the hops signal from a numpy array.)pbdoc", py::arg("array"))
+        .def("load_numpy", &hops_load_numpy_float<double>, R"pbdoc(Load the hops signal from a numpy array.)pbdoc", py::arg("array"))
         .def("to_numpy", &hops_to_numpy, R"pbdoc(Get the hops signal as a numpy array.)pbdoc")
         .def("__repr__", &hops_to_repr);
 }
