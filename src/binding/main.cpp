@@ -5,6 +5,7 @@
 #include "signals/freqs.h"
 #include "signals/hops.h"
 #include "signals/masks.h"
+#include "signals/tdoas.h"
 
 #include "types/xyz.h"
 
@@ -34,6 +35,7 @@ PYBIND11_MODULE(_core, m) {
     init_freqs(signals_module);
     init_hops(signals_module);
     init_masks(signals_module);
+    init_tdoas(signals_module);
 
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);

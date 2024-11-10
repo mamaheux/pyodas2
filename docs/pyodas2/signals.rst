@@ -36,7 +36,6 @@ Classes
 .. autoclass:: pyodas2.signals::Doas.Dir
    :special-members: __init__
    :members:
-   :exclude-members: name
 
 |
 
@@ -77,3 +76,22 @@ Classes
    .. autoproperty:: label
    .. autoproperty:: num_channels
    .. autoproperty:: num_bins
+
+|
+
+.. autoclass:: pyodas2.signals.Tdoas
+
+   .. automethod:: __init__
+
+   .. automethod:: __getitem__
+   .. automethod:: __setitem__
+
+   .. autoproperty:: label
+   .. autoproperty:: shape
+   .. autoproperty:: num_sources
+   .. autoproperty:: num_channels
+   .. autoproperty:: num_pairs
+
+.. autoclass:: pyodas2.signals::Tdoas.Tau
+   :special-members: __init__
+   :members:
