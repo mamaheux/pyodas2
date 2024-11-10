@@ -25,6 +25,7 @@ python_add_library(_core MODULE
         src/binding/signals/doas.cpp
         src/binding/signals/freqs.cpp
         src/binding/signals/hops.cpp
+        src/binding/signals/masks.cpp
         src/binding/types/xyz.cpp
         src/binding/utils/mic.cpp
         src/binding/utils/mics.cpp

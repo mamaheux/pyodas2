@@ -44,7 +44,7 @@ py::array_t<std::complex<float>> freqs_to_numpy(const freqs_t& self) {
         {self.num_bins * sizeof(cplx_t), sizeof(cplx_t)},
         true);  // Readonly
 
-    return py::array_t<uint8_t>(buffer_info);
+    return py::array_t<std::complex<float>>(buffer_info);
 }
 
 std::string freqs_to_repr(const freqs_t& self) {
@@ -55,7 +55,7 @@ std::string freqs_to_repr(const freqs_t& self) {
 
 void init_freqs(py::module& m) {
     py::class_<freqs_t, std::shared_ptr<freqs_t>>(m, "Freqs", R"pbdoc(A class representing a freqs signals.)pbdoc")
-        .def(py::init(&freqs_init), R"pbdoc(Create the hops signals.)pbdoc", py::arg("label"), py::arg("num_channels"), py::arg("num_bins"))
+        .def(py::init(&freqs_init), R"pbdoc(Create a freqs signal.)pbdoc", py::arg("label"), py::arg("num_channels"), py::arg("num_bins"))
         .def_readonly("label", &freqs_t::label, R"pbdoc(Get the label.)pbdoc")
         .def_readonly("num_channels", &freqs_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_readonly("num_bins", &freqs_t::num_bins, R"pbdoc(Get the number of bins.)pbdoc")

@@ -81,7 +81,7 @@ py::array_t<float> hops_to_numpy(const hops_t& self) {
         {self.num_shifts * sizeof(float), sizeof(float)},
         true);  // Readonly
 
-    return py::array_t<uint8_t>(buffer_info);
+    return py::array_t<float>(buffer_info);
 }
 
 std::string hops_to_repr(const hops_t& self) {
@@ -92,7 +92,7 @@ std::string hops_to_repr(const hops_t& self) {
 
 void init_hops(py::module& m) {
     py::class_<hops_t, std::shared_ptr<hops_t>>(m, "Hops", R"pbdoc(A class representing a hops signals.)pbdoc")
-        .def(py::init(&hops_init), R"pbdoc(Create the hops signals.)pbdoc", py::arg("label"), py::arg("num_channels"), py::arg("num_shifts"))
+        .def(py::init(&hops_init), R"pbdoc(Create a hops signal.)pbdoc", py::arg("label"), py::arg("num_channels"), py::arg("num_shifts"))
         .def_readonly("label", &hops_t::label, R"pbdoc(Get the label.)pbdoc")
         .def_readonly("num_channels", &hops_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_readonly("num_shifts", &hops_t::num_shifts, R"pbdoc(Get the number of samples.)pbdoc")

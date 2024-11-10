@@ -64,7 +64,7 @@ std::string dir_repr(const dir_t& self) {
 
 void init_doas(pybind11::module& m) {
     py::class_<doas_t, std::shared_ptr<doas_t>> doas(m, "Doas", R"pbdoc(A class representing an array of directions of arrival.)pbdoc");
-    doas.def(py::init(&doas_init), R"pbdoc(Create the doas.)pbdoc", py::arg("label"), py::arg("num_directions"))
+    doas.def(py::init(&doas_init), R"pbdoc(Create doas.)pbdoc", py::arg("label"), py::arg("num_directions"))
         .def_readonly("label", &doas_t::label, R"pbdoc(Get the label.)pbdoc")
         .def("__len__", &doas_len,  R"pbdoc(Get the number of directions of arrival.)pbdoc")
         .def("__getitem__", &doas_get_item, R"pbdoc(Get the mutable direction of arrival at the given index.)pbdoc", py::arg("index"), py::return_value_policy::reference)

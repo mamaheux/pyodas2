@@ -44,7 +44,7 @@ py::array_t<std::complex<float>> covs_xcorrs_to_numpy(const covs_t& self) {
         {self.num_bins * sizeof(cplx_t), sizeof(cplx_t)},
         true);  // Readonly
 
-    return py::array_t<uint8_t>(buffer_info);
+    return py::array_t<std::complex<float>>(buffer_info);
 }
 
 void covs_acorrs_load_numpy(const covs_t& self, const py::array_t<float, py::array::c_style | py::array::forcecast>& array) {
@@ -67,7 +67,7 @@ py::array_t<float> covs_acorrs_to_numpy(const covs_t& self) {
         {self.num_bins * sizeof(float), sizeof(float)},
         true);  // Readonly
 
-    return py::array_t<uint8_t>(buffer_info);
+    return py::array_t<float>(buffer_info);
 }
 
 std::string covs_to_repr(const covs_t& self) {
@@ -78,7 +78,7 @@ std::string covs_to_repr(const covs_t& self) {
 
 void init_covs(py::module& m) {
     py::class_<covs_t, std::shared_ptr<covs_t>>(m, "Covs", R"pbdoc(A class representing a freqs signals.)pbdoc")
-        .def(py::init(&covs_init), R"pbdoc(Create the hops signals.)pbdoc", py::arg("label"), py::arg("num_channels"), py::arg("num_bins"))
+        .def(py::init(&covs_init), R"pbdoc(Create a covs signal.)pbdoc", py::arg("label"), py::arg("num_channels"), py::arg("num_bins"))
         .def_readonly("label", &covs_t::label, R"pbdoc(Get the label.)pbdoc")
         .def_readonly("num_channels", &covs_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_readonly("num_pairs", &covs_t::num_pairs, R"pbdoc(Get the number of pairs.)pbdoc")

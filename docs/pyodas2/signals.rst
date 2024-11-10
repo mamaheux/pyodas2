@@ -64,3 +64,16 @@ Classes
    .. autoproperty:: num_channels
    .. autoproperty:: num_shifts
    .. autoproperty:: num_samples
+
+|
+
+.. autoclass:: pyodas2.signals.Masks
+
+   .. automethod:: __init__
+
+   .. automethod:: load_numpy
+   .. automethod:: to_numpy
+
+   .. autoproperty:: label
+   .. autoproperty:: num_channels
+   .. autoproperty:: num_bins
