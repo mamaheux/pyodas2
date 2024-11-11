@@ -51,10 +51,10 @@ void init_gcc(py::module& m) {
         .def(py::init(&gcc_init), R"pbdoc(Create a gcc process.)pbdoc", py::arg("num_sources"), py::arg("num_channels"), py::arg("num_bins"))
         .def_readonly("num_sources", &gcc_t::num_sources, R"pbdoc(Get the number of sources.)pbdoc")
         .def_readonly("num_channels", &gcc_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
-        .def_readonly("num_pairs", &gcc_t::num_channels, R"pbdoc(Get the number of pairs.)pbdoc")
+        .def_readonly("num_pairs", &gcc_t::num_pairs, R"pbdoc(Get the number of pairs.)pbdoc")
         .def_readonly("num_bins", &gcc_t::num_bins, R"pbdoc(Get the number of bins.)pbdoc")
         .def_readonly("num_samples", &gcc_t::num_samples, R"pbdoc(Get the number of samples.)pbdoc")
-        .def_readonly("interpolation_factor", &gcc_t::num_samples, R"pbdoc(Get the interpolation factor.)pbdoc")
+        .def_readonly("interpolation_factor", &gcc_t::interpolation_factor, R"pbdoc(Get the interpolation factor.)pbdoc")
         .def("process", &gcc_process_python, R"pbdoc(Perform the gcc process.)pbdoc", py::arg("covs"), py::arg("tdoas"))
         .def("__repr__", &gcc_to_repr);
 }

@@ -16,6 +16,22 @@ def test_init_invalid_num_bins(num_bins):
         Gcc(NUM_SOURCES, NUM_CHANNELS, num_bins)
 
 
+def test_init():
+    NUM_SOURCES = 2
+    NUM_CHANNELS = 4
+    NUM_BINS = 9
+
+    testee = Gcc(NUM_SOURCES, NUM_CHANNELS, NUM_BINS)
+
+    assert testee.num_sources == NUM_SOURCES
+    assert testee.num_channels == NUM_CHANNELS
+    assert testee.num_pairs == 6
+    assert testee.num_bins == NUM_BINS
+    assert testee.num_samples == 16
+    assert testee.interpolation_factor == 2
+
+
+
 def test_process_invalid_inputs():
     NUM_SOURCES = 2
     NUM_CHANNELS = 4
@@ -65,3 +81,11 @@ def test_process():
     for p in range(testee.num_pairs):
         assert math.isclose(tdoas[0, p].delay, DELAYS[p], abs_tol=0.2)
         assert math.isclose(tdoas[0, p].amplitude, AMPLITUDES[p], abs_tol=0.025)
+
+
+def test_repr():
+    NUM_SOURCES = 1
+    NUM_CHANNELS = 3
+    NUM_BINS = 257
+    testee = Gcc(NUM_SOURCES, NUM_CHANNELS, NUM_BINS)
+    assert repr(testee) == '<pyodas2.systems.Gcc (S=1, C=3, B=257)>'

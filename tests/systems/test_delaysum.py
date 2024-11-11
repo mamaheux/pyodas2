@@ -5,6 +5,19 @@ import math
 from pyodas2.systems import DelaySum
 from pyodas2.signals import Tdoas, Weights
 
+
+def test_init():
+    NUM_SOURCES = 2
+    NUM_CHANNELS = 4
+    NUM_BINS = 9
+
+    testee = DelaySum(NUM_SOURCES, NUM_CHANNELS, NUM_BINS)
+
+    assert testee.num_sources == NUM_SOURCES
+    assert testee.num_channels == NUM_CHANNELS
+    assert testee.num_bins == NUM_BINS
+
+
 def test_process_invalid_inputs():
     NUM_SOURCES = 3
     NUM_CHANNELS = 4

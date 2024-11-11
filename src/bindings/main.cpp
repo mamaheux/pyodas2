@@ -11,6 +11,7 @@
 #include "systems/beamformer.h"
 #include "systems/delaysum.h"
 #include "systems/gcc.h"
+#include "systems/mixer.h"
 
 #include "types/xyz.h"
 
@@ -47,6 +48,7 @@ PYBIND11_MODULE(_core, m) {
     init_beamformer(systems_module);
     init_delaysum(systems_module);
     init_gcc(systems_module);
+    init_mixer(systems_module);
 
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);

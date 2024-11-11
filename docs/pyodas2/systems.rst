@@ -39,3 +39,13 @@ Classes
    .. autoproperty:: num_bins
    .. autoproperty:: num_samples
    .. autoproperty:: interpolation_factor
+
+|
+
+.. autoclass:: pyodas2.systems.Mixer
+
+   .. automethod:: __init__
+
+   .. automethod:: process
+
+   .. autoproperty:: num_channels
