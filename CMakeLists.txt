@@ -20,23 +20,23 @@ find_package(pybind11 CONFIG REQUIRED)
 # Add a library using FindPython's tooling (pybind11 also provides a helper like
 # this)
 python_add_library(_core MODULE
-        src/binding/main.cpp
+        src/bindings/main.cpp
 
-        src/binding/signals/covs.cpp
-        src/binding/signals/doas.cpp
-        src/binding/signals/freqs.cpp
-        src/binding/signals/hops.cpp
-        src/binding/signals/masks.cpp
-        src/binding/signals/tdoas.cpp
-        src/binding/signals/weights.cpp
+        src/bindings/signals/covs.cpp
+        src/bindings/signals/doas.cpp
+        src/bindings/signals/freqs.cpp
+        src/bindings/signals/hops.cpp
+        src/bindings/signals/masks.cpp
+        src/bindings/signals/tdoas.cpp
+        src/bindings/signals/weights.cpp
 
-        src/binding/systems/beamformer.cpp
+        src/bindings/systems/beamformer.cpp
 
-        src/binding/types/xyz.cpp
+        src/bindings/types/xyz.cpp
 
-        src/binding/utils/mic.cpp
-        src/binding/utils/mics.cpp
-        src/binding/utils/points.cpp
+        src/bindings/utils/mic.cpp
+        src/bindings/utils/mics.cpp
+        src/bindings/utils/points.cpp
         WITH_SOABI)
 target_include_directories(_core PUBLIC src/odas2/core/include)
 target_link_libraries(_core PUBLIC pybind11::module odas2)
