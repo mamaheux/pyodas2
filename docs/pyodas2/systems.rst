@@ -12,3 +12,15 @@ Classes
    .. autoproperty:: num_sources
    .. autoproperty:: num_channels
    .. autoproperty:: num_bins
+
+|
+
+.. autoclass:: pyodas2.systems.DelaySum
+
+   .. automethod:: __init__
+
+   .. automethod:: process
+
+   .. autoproperty:: num_sources
+   .. autoproperty:: num_channels
+   .. autoproperty:: num_bins

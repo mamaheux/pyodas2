@@ -31,6 +31,7 @@ python_add_library(_core MODULE
         src/bindings/signals/weights.cpp
 
         src/bindings/systems/beamformer.cpp
+        src/bindings/systems/delaysum.cpp
 
         src/bindings/types/xyz.cpp
 
