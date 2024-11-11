@@ -41,14 +41,14 @@ size_t mics_len(const mics_t& self) {
     return self.num_mics;
 }
 
-mic_t& mics_get_item(const mics_t& self, size_t i) {
+mic_t& mics_get_item(mics_t& self, size_t i) {
     if (i >= self.num_mics) {
         throw py::index_error();
     }
     return self.mics[i];
 }
 
-void mics_set_item(const mics_t& self, size_t i, const mic_t& value) {
+void mics_set_item(mics_t& self, size_t i, const mic_t& value) {
     if (i >= self.num_mics) {
         throw py::index_error();
     }

@@ -23,7 +23,7 @@ std::shared_ptr<masks_t> masks_init(const std::string& label, size_t num_channel
     return {masks_construct(label.c_str(), num_channels, num_bins), masks_deleter()};
 }
 
-void masks_load_numpy(const masks_t& self, const py::array_t<float, py::array::c_style | py::array::forcecast>& array) {
+void masks_load_numpy(masks_t& self, const py::array_t<float, py::array::c_style | py::array::forcecast>& array) {
     if (array.ndim() != 2 || array.shape(0) != self.num_channels || array.shape(1) != self.num_bins) {
         throw py::value_error("Invalid array shape, it must be (" + std::to_string(self.num_channels) + "," + std::to_string(self.num_bins) + ").");
     }

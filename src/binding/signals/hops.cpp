@@ -24,7 +24,7 @@ std::shared_ptr<hops_t> hops_init(const std::string& label, size_t num_channels,
 }
 
 template <class Int>
-void hops_load_numpy_int(const hops_t& self, const py::array_t<Int, py::array::c_style>& array) {
+void hops_load_numpy_int(hops_t& self, const py::array_t<Int, py::array::c_style>& array) {
     static_assert(std::is_integral_v<Int>, "Integral required.");
     static_assert(std::is_signed_v<Int>, "Signed required.");
 
@@ -39,7 +39,7 @@ void hops_load_numpy_int(const hops_t& self, const py::array_t<Int, py::array::c
 }
 
 template <class UInt>
-void hops_load_numpy_uint(const hops_t& self, const py::array_t<UInt, py::array::c_style>& array) {
+void hops_load_numpy_uint(hops_t& self, const py::array_t<UInt, py::array::c_style>& array) {
     static_assert(std::is_integral_v<UInt>, "Integral required.");
     static_assert(std::is_unsigned_v<UInt>, "Unsigned required.");
 
@@ -57,7 +57,7 @@ void hops_load_numpy_uint(const hops_t& self, const py::array_t<UInt, py::array:
 }
 
 template <class Float>
-void hops_load_numpy_float(const hops_t& self, const py::array_t<Float, py::array::c_style>& array) {
+void hops_load_numpy_float(hops_t& self, const py::array_t<Float, py::array::c_style>& array) {
     static_assert(std::is_floating_point_v<Float>, "Floating point required.");
 
     if (array.ndim() != 2 || array.shape(0) != self.num_channels || array.shape(1) != self.num_shifts) {

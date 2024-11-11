@@ -25,14 +25,14 @@ size_t doas_len(const doas_t& self) {
     return self.num_directions;
 }
 
-dir_t& doas_get_item(const doas_t& self, size_t i) {
+dir_t& doas_get_item(doas_t& self, size_t i) {
     if (i >= self.num_directions) {
         throw py::index_error();
     }
     return self.dirs[i];
 }
 
-void doas_set_item(const doas_t& self, size_t i, dir_t direction) {
+void doas_set_item(doas_t& self, size_t i, dir_t direction) {
     if (i >= self.num_directions) {
         throw py::index_error();
     }

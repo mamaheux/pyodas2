@@ -22,7 +22,7 @@ mic_t mic_init(const xyz_t position, const xyz_t direction, Pattern pattern) {
     }
 }
 
-Pattern mic_get_pattern(const mic_t self) {
+Pattern mic_get_pattern(const mic_t& self) {
     if (strcmp(self.pattern, "omnidirectional") == 0) {
         return Pattern::OMNIDIRECTIONAL;
     }
@@ -34,7 +34,7 @@ Pattern mic_get_pattern(const mic_t self) {
     }
 }
 
-void mic_set_pattern(mic_t self, Pattern pattern) {
+void mic_set_pattern(mic_t& self, Pattern pattern) {
     switch (pattern) {
         case Pattern::OMNIDIRECTIONAL:
             strcpy(self.pattern, "omnidirectional");

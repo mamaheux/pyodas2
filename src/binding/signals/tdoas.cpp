@@ -28,14 +28,14 @@ std::tuple<size_t, size_t> tdoas_shape(const tdoas_t& self) {
     return {self.num_sources, self.num_pairs};
 }
 
-tau_t& tdoas_get_item(const tdoas_t& self, const std::tuple<size_t, size_t>& indexes) {
+tau_t& tdoas_get_item(tdoas_t& self, const std::tuple<size_t, size_t>& indexes) {
     if (std::get<0>(indexes) >= self.num_sources || std::get<1>(indexes) >= self.num_pairs) {
         throw py::index_error();
     }
     return self.taus[std::get<0>(indexes)][std::get<1>(indexes)];
 }
 
-void tdoas_set_item(const tdoas_t& self, const std::tuple<size_t, size_t>& indexes, tau_t tau) {
+void tdoas_set_item(tdoas_t& self, const std::tuple<size_t, size_t>& indexes, tau_t tau) {
     if (std::get<0>(indexes) >= self.num_sources || std::get<1>(indexes) >= self.num_pairs) {
         throw py::index_error();
     }

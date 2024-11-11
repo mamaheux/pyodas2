@@ -6,5 +6,6 @@ API
    :caption: Contents:
 
    pyodas2/signals
+   pyodas2/systems
    pyodas2/types
    pyodas2/utils

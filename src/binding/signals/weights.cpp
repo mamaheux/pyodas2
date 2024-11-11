@@ -24,7 +24,7 @@ std::shared_ptr<weights_t> weights_init(const std::string& label, size_t num_sou
     return {weights_construct(label.c_str(), num_sources, num_channels, num_bins), weights_deleter()};
 }
 
-void weights_load_numpy(const weights_t& self, const py::array_t<std::complex<float>, py::array::c_style | py::array::forcecast>& array) {
+void weights_load_numpy(weights_t& self, const py::array_t<std::complex<float>, py::array::c_style | py::array::forcecast>& array) {
     if (array.ndim() != 3 ||
         array.shape(0) != self.num_sources ||
         array.shape(1) != self.num_channels ||

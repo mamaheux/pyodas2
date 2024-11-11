@@ -30,6 +30,8 @@ python_add_library(_core MODULE
         src/binding/signals/tdoas.cpp
         src/binding/signals/weights.cpp
 
+        src/binding/systems/beamformer.cpp
+
         src/binding/types/xyz.cpp
 
         src/binding/utils/mic.cpp

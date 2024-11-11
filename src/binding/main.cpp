@@ -8,6 +8,8 @@
 #include "signals/tdoas.h"
 #include "signals/weights.h"
 
+#include "systems/beamformer.h"
+
 #include "types/xyz.h"
 
 #include "utils/mic.h"
@@ -38,6 +40,9 @@ PYBIND11_MODULE(_core, m) {
     init_masks(signals_module);
     init_tdoas(signals_module);
     init_weights(signals_module);
+
+    auto systems_module = m.def_submodule("systems");
+    init_beamformer(systems_module);
 
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);

@@ -7,6 +7,8 @@
 
 #include "freqs.h"
 
+#include <iostream>
+
 namespace py = pybind11;
 
 struct freqs_deleter {
@@ -24,7 +26,7 @@ std::shared_ptr<freqs_t> freqs_init(const std::string& label, size_t num_channel
     return {freqs_construct(label.c_str(), num_channels, num_bins), freqs_deleter()};
 }
 
-void freqs_load_numpy(const freqs_t& self, const py::array_t<std::complex<float>, py::array::c_style | py::array::forcecast>& array) {
+void freqs_load_numpy(freqs_t& self, const py::array_t<std::complex<float>, py::array::c_style | py::array::forcecast>& array) {
     if (array.ndim() != 2 || array.shape(0) != self.num_channels || array.shape(1) != self.num_bins) {
         throw py::value_error("Invalid array shape, it must be (" + std::to_string(self.num_channels) + "," + std::to_string(self.num_bins) + ").");
     }

@@ -24,7 +24,7 @@ std::shared_ptr<covs_t> covs_init(const std::string& label, size_t num_channels,
     return {covs_construct(label.c_str(), num_channels, num_bins), covs_deleter()};
 }
 
-void covs_xcorrs_load_numpy(const covs_t& self, const py::array_t<std::complex<float>, py::array::c_style | py::array::forcecast>& array) {
+void covs_xcorrs_load_numpy(covs_t& self, const py::array_t<std::complex<float>, py::array::c_style | py::array::forcecast>& array) {
     if (array.ndim() != 2 || array.shape(0) != self.num_pairs || array.shape(1) != self.num_bins) {
         throw py::value_error("Invalid array shape, it must be (" + std::to_string(self.num_channels) + "," + std::to_string(self.num_bins) + ").");
     }
@@ -47,7 +47,7 @@ py::array_t<std::complex<float>> covs_xcorrs_to_numpy(const covs_t& self) {
     return py::array_t<std::complex<float>>(buffer_info);
 }
 
-void covs_acorrs_load_numpy(const covs_t& self, const py::array_t<float, py::array::c_style | py::array::forcecast>& array) {
+void covs_acorrs_load_numpy(covs_t& self, const py::array_t<float, py::array::c_style | py::array::forcecast>& array) {
     if (array.ndim() != 2 || array.shape(0) != self.num_channels || array.shape(1) != self.num_bins) {
         throw py::value_error("Invalid array shape, it must be (" + std::to_string(self.num_channels) + "," + std::to_string(self.num_bins) + ").");
     }
