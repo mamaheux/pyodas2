@@ -24,3 +24,18 @@ Classes
    .. autoproperty:: num_sources
    .. autoproperty:: num_channels
    .. autoproperty:: num_bins
+
+|
+
+.. autoclass:: pyodas2.systems.Gcc
+
+   .. automethod:: __init__
+
+   .. automethod:: process
+
+   .. autoproperty:: num_sources
+   .. autoproperty:: num_channels
+   .. autoproperty:: num_pairs
+   .. autoproperty:: num_bins
+   .. autoproperty:: num_samples
+   .. autoproperty:: interpolation_factor
