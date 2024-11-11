@@ -6,6 +6,7 @@
 #include "signals/hops.h"
 #include "signals/masks.h"
 #include "signals/tdoas.h"
+#include "signals/weights.h"
 
 #include "types/xyz.h"
 
@@ -36,6 +37,7 @@ PYBIND11_MODULE(_core, m) {
     init_hops(signals_module);
     init_masks(signals_module);
     init_tdoas(signals_module);
+    init_weights(signals_module);
 
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);

@@ -95,3 +95,17 @@ Classes
 .. autoclass:: pyodas2.signals::Tdoas.Tau
    :special-members: __init__
    :members:
+
+|
+
+.. autoclass:: pyodas2.signals.Weights
+
+   .. automethod:: __init__
+
+   .. automethod:: load_numpy
+   .. automethod:: to_numpy
+
+   .. autoproperty:: label
+   .. autoproperty:: num_sources
+   .. autoproperty:: num_channels
+   .. autoproperty:: num_bins

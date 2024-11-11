@@ -54,7 +54,7 @@ std::string freqs_to_repr(const freqs_t& self) {
 }
 
 void init_freqs(py::module& m) {
-    py::class_<freqs_t, std::shared_ptr<freqs_t>>(m, "Freqs", R"pbdoc(A class representing a freqs signals.)pbdoc")
+    py::class_<freqs_t, std::shared_ptr<freqs_t>>(m, "Freqs", R"pbdoc(A class representing a freqs signal.)pbdoc")
         .def(py::init(&freqs_init), R"pbdoc(Create a freqs signal.)pbdoc", py::arg("label"), py::arg("num_channels"), py::arg("num_bins"))
         .def_readonly("label", &freqs_t::label, R"pbdoc(Get the label.)pbdoc")
         .def_readonly("num_channels", &freqs_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")

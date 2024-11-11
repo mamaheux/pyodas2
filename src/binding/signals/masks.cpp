@@ -53,7 +53,7 @@ std::string masks_to_repr(const masks_t& self) {
 }
 
 void init_masks(py::module& m) {
-    py::class_<masks_t, std::shared_ptr<masks_t>>(m, "Masks", R"pbdoc(A class representing a masks signals.)pbdoc")
+    py::class_<masks_t, std::shared_ptr<masks_t>>(m, "Masks", R"pbdoc(A class representing a masks signal.)pbdoc")
         .def(py::init(&masks_init), R"pbdoc(Create a masks signal.)pbdoc", py::arg("label"), py::arg("num_channels"), py::arg("num_bins"))
         .def_readonly("label", &masks_t::label, R"pbdoc(Get the label.)pbdoc")
         .def_readonly("num_channels", &masks_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")

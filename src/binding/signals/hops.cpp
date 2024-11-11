@@ -91,7 +91,7 @@ std::string hops_to_repr(const hops_t& self) {
 }
 
 void init_hops(py::module& m) {
-    py::class_<hops_t, std::shared_ptr<hops_t>>(m, "Hops", R"pbdoc(A class representing a hops signals.)pbdoc")
+    py::class_<hops_t, std::shared_ptr<hops_t>>(m, "Hops", R"pbdoc(A class representing a hops signal.)pbdoc")
         .def(py::init(&hops_init), R"pbdoc(Create a hops signal.)pbdoc", py::arg("label"), py::arg("num_channels"), py::arg("num_shifts"))
         .def_readonly("label", &hops_t::label, R"pbdoc(Get the label.)pbdoc")
         .def_readonly("num_channels", &hops_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
