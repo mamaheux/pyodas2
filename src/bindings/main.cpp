@@ -15,6 +15,7 @@
 #include "systems/mvdr.h"
 #include "systems/phat.h"
 #include "systems/ssl.h"
+#include "systems/sst.h"
 #include "systems/steering.h"
 #include "systems/stft.h"
 
@@ -57,6 +58,7 @@ PYBIND11_MODULE(_core, m) {
     init_mvdr(systems_module);
     init_phat(systems_module);
     init_ssl(systems_module);
+    init_sst(systems_module);
     init_steering(systems_module);
     init_stft_istft(systems_module);
 

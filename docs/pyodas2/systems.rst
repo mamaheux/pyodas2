@@ -108,6 +108,19 @@ Classes
 
 |
 
+.. autoclass:: pyodas2.systems.Sst
+
+   .. automethod:: __init__
+
+   .. automethod:: process
+
+   .. autoproperty:: num_tracks
+   .. autoproperty:: num_directions
+   .. autoproperty:: delta_time
+   .. autoproperty:: energy_threshold
+
+|
+
 .. autoclass:: pyodas2.systems.Window
    :members:
    :exclude-members: name
