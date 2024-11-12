@@ -17,18 +17,27 @@ std::shared_ptr<beamformer_t> beamformer_init(size_t num_sources, size_t num_cha
 }
 
 void beamformer_process_python(beamformer_t& self, const freqs_t& in, const weights_t& weights, freqs_t& out) {
-    if (self.num_sources != weights.num_sources || self.num_sources != out.num_channels) {
-        throw py::value_error("The number of sources does not match.");
+    if (self.num_sources != weights.num_sources) {
+        throw py::value_error("The number of sources of the weights must be " + std::to_string(self.num_sources) + ".");
     }
-    if (self.num_channels != in.num_channels || self.num_channels != weights.num_channels) {
-        throw py::value_error("The number of channels does not match.");
-        }
-    if (self.num_bins != in.num_bins ||
-            self.num_bins != weights.num_bins ||
-            self.num_bins != out.num_bins ) {
-        throw py::value_error("The number of bins does not match.");
+    if (self.num_sources != out.num_channels) {
+        throw py::value_error("The number of channels of the output must be " + std::to_string(self.num_sources) + ".");
     }
-
+    if (self.num_channels != in.num_channels) {
+        throw py::value_error("The number of channels of the input must be " + std::to_string(self.num_channels) + ".");
+    }
+    if (self.num_channels != weights.num_channels) {
+        throw py::value_error("The number of channels of the weights must be " + std::to_string(self.num_channels) + ".");
+    }
+    if (self.num_bins != in.num_bins) {
+        throw py::value_error("The number of bins of the input must be " + std::to_string(self.num_bins) + ".");
+    }
+    if (self.num_bins != weights.num_bins) {
+        throw py::value_error("The number of bins of the weights must be " + std::to_string(self.num_bins) + ".");
+    }
+    if (self.num_bins != out.num_bins) {
+        throw py::value_error("The number of bins of the output must be " + std::to_string(self.num_bins) + ".");
+    }
 
     if (beamformer_process(&self, &in, &weights, &out) != 0) {
         throw std::runtime_error("Failed to process beamformer");

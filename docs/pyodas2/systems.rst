@@ -49,3 +49,14 @@ Classes
    .. automethod:: process
 
    .. autoproperty:: num_channels
+
+|
+
+.. autoclass:: pyodas2.systems.Mvdr
+
+   .. automethod:: __init__
+
+   .. automethod:: process
+
+   .. autoproperty:: num_channels
+   .. autoproperty:: num_bins

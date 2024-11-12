@@ -23,13 +23,16 @@ std::shared_ptr<gcc_t> gcc_init(size_t num_sources, size_t num_channels, size_t 
 
 void gcc_process_python(gcc_t& self, const covs_t& covs, tdoas_t& tdoas) {
     if (self.num_sources != tdoas.num_sources) {
-        throw py::value_error("The number of sources does not match.");
+        throw py::value_error("The number of sources of the tdoas must be " + std::to_string(self.num_sources) + ".");
     }
-    if (self.num_channels != covs.num_channels || self.num_channels != tdoas.num_channels) {
-        throw py::value_error("The number of channels does not match.");
+    if (self.num_channels != covs.num_channels) {
+        throw py::value_error("The number of channels of the covs must be " + std::to_string(self.num_channels) + ".");
+    }
+    if (self.num_channels != tdoas.num_channels) {
+        throw py::value_error("The number of channels of the tdoas must be " + std::to_string(self.num_channels) + ".");
     }
     if (self.num_bins != covs.num_bins) {
-        throw py::value_error("The number of bins does not match.");
+        throw py::value_error("The number of bins of the covs must be " + std::to_string(self.num_bins) + ".");
     }
 
     if (gcc_process(&self, &covs, &tdoas) != 0) {

@@ -34,6 +34,7 @@ python_add_library(_core MODULE
         src/bindings/systems/delaysum.cpp
         src/bindings/systems/gcc.cpp
         src/bindings/systems/mixer.cpp
+        src/bindings/systems/mvdr.cpp
 
         src/bindings/types/xyz.cpp
 

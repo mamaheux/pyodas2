@@ -17,14 +17,20 @@ std::shared_ptr<delaysum_t> delaysum_init(size_t num_sources, size_t num_channel
 }
 
 void delaysum_process_python(delaysum_t& self, const tdoas_t& tdoas, weights_t& coeffs) {
-    if (self.num_sources != tdoas.num_sources || self.num_sources != coeffs.num_sources) {
-        throw py::value_error("The number of sources does not match.");
+    if (self.num_sources != tdoas.num_sources) {
+        throw py::value_error("The number of sources of the tdoas must be " + std::to_string(self.num_sources) + ".");
     }
-    if (self.num_channels != tdoas.num_channels || self.num_channels != coeffs.num_channels) {
-        throw py::value_error("The number of channels does not match.");
+    if (self.num_sources != coeffs.num_sources) {
+        throw py::value_error("The number of sources of the weights must be " + std::to_string(self.num_sources) + ".");
+    }
+    if (self.num_channels != tdoas.num_channels) {
+        throw py::value_error("The number of channels of the tdoas must be " + std::to_string(self.num_channels) + ".");
+    }
+    if (self.num_channels != coeffs.num_channels) {
+        throw py::value_error("The number of channels of the weights must be " + std::to_string(self.num_channels) + ".");
     }
     if (self.num_bins != coeffs.num_bins) {
-        throw py::value_error("The number of bins does not match.");
+        throw py::value_error("The number of bins of the weights must be " + std::to_string(self.num_bins) + ".");
     }
 
     if (delaysum_process(&self, &tdoas, &coeffs) != 0) {
