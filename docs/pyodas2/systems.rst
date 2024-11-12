@@ -72,3 +72,18 @@ Classes
    .. autoproperty:: num_channels
    .. autoproperty:: num_pairs
    .. autoproperty:: num_bins
+
+|
+
+.. autoclass:: pyodas2.systems.Steering
+
+   .. automethod:: __init__
+
+   .. automethod:: process
+
+   .. autoproperty:: num_channels
+   .. autoproperty:: num_pairs
+   .. autoproperty:: num_sources
+   .. autoproperty:: mics
+   .. autoproperty:: sample_rate
+   .. autoproperty:: sound_speed

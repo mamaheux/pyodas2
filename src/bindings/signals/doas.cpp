@@ -1,7 +1,5 @@
 #include <sstream>
 
-#include <odas2/signals/doas.h>
-
 #include "doas.h"
 
 namespace py = pybind11;
@@ -82,4 +80,12 @@ void init_doas(pybind11::module& m) {
         .def("__getitem__", &doas_get_item, R"pbdoc(Get the mutable direction of arrival at the given index.)pbdoc", py::arg("index"), py::return_value_policy::reference)
         .def("__setitem__", &doas_set_item, R"pbdoc(Set the direction of arrival at the given index.)pbdoc", py::arg("index"), py::arg("direction"))
         .def("__repr__", &doas_repr);
+}
+
+void verify_doas_direction(const doas_t& doas) {
+    for (size_t i = 0; i < doas.num_directions; i++) {
+        if (fabsf(xyz_l2(doas.dirs[i].coord) - 1.f) > 1e-3) {
+            throw py::value_error("All doas direction norms must 1");
+        }
+    }
 }

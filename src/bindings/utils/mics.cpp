@@ -1,7 +1,5 @@
 #include <sstream>
 
-#include <odas2/utils/mics.h>
-
 #include "mics.h"
 
 namespace py = pybind11;
@@ -75,4 +73,12 @@ void init_mics(pybind11::module& m) {
         .value("INTROLAB_CIRCULAR", Hardware::INTROLAB_CIRCULAR)
         .value("VIBEUS_CIRCULAR", Hardware::VIBEUS_CIRCULAR)
         .value("SOUNDSKRIT_MUG", Hardware::SOUNDSKRIT_MUG);
+}
+
+void verify_mics_directions(const mics_t& mics) {
+    for (size_t i = 0; i < mics.num_mics; i++) {
+        if (fabsf(xyz_l2(mics.mics[i].direction) - 1.f) > 1e-3) {
+            throw py::value_error("All microphone direction norms must 1");
+        }
+    }
 }
