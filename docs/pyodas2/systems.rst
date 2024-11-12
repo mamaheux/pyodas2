@@ -60,3 +60,15 @@ Classes
 
    .. autoproperty:: num_channels
    .. autoproperty:: num_bins
+
+|
+
+.. autoclass:: pyodas2.systems.Phat
+
+   .. automethod:: __init__
+
+   .. automethod:: process
+
+   .. autoproperty:: num_channels
+   .. autoproperty:: num_pairs
+   .. autoproperty:: num_bins

@@ -13,6 +13,7 @@
 #include "systems/gcc.h"
 #include "systems/mixer.h"
 #include "systems/mvdr.h"
+#include "systems/phat.h"
 
 #include "types/xyz.h"
 
@@ -51,6 +52,7 @@ PYBIND11_MODULE(_core, m) {
     init_gcc(systems_module);
     init_mixer(systems_module);
     init_mvdr(systems_module);
+    init_phat(systems_module);
 
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);

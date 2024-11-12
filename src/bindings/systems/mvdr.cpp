@@ -27,7 +27,7 @@ void mvdr_process_python(mvdr_t& self, const covs_t& covs, weights_t& coeffs) {
         throw py::value_error("The number of channels of the weights must be " + std::to_string(self.num_channels) + ".");
     }
     if (self.num_bins != covs.num_bins) {
-        throw py::value_error("The number of bins of the bins must be " + std::to_string(self.num_bins) + ".");
+        throw py::value_error("The number of bins of the covs must be " + std::to_string(self.num_bins) + ".");
     }
     if (self.num_bins != coeffs.num_bins) {
         throw py::value_error("The number of bins of the weights must be " + std::to_string(self.num_bins) + ".");
@@ -51,6 +51,6 @@ void init_mvdr(py::module& m) {
         .def(py::init(&mvdr_init), R"pbdoc(Create a mvdr process.)pbdoc", py::arg("num_sources"), py::arg("num_bins"))
         .def_readonly("num_channels", &mvdr_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_readonly("num_bins", &mvdr_t::num_bins, R"pbdoc(Get the number of bins.)pbdoc")
-        .def("process", &mvdr_process_python, R"pbdoc(Perform the mvdr process.)pbdoc", py::arg("tdoas"), py::arg("coeffs"))
+        .def("process", &mvdr_process_python, R"pbdoc(Perform the mvdr process.)pbdoc", py::arg("covs"), py::arg("coeffs"))
         .def("__repr__", &mvdr_to_repr);
 }
