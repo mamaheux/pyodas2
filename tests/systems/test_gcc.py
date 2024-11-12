@@ -31,7 +31,6 @@ def test_init():
     assert testee.interpolation_factor == 2
 
 
-
 def test_process_invalid_inputs():
     NUM_SOURCES = 2
     NUM_CHANNELS = 4

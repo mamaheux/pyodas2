@@ -15,7 +15,7 @@ struct gcc_deleter {
 std::shared_ptr<gcc_t> gcc_init(size_t num_sources, size_t num_channels, size_t num_bins) {
     float num_samples = static_cast<float>(num_bins - 1) * 2;
     if (ceilf(log2f(num_samples)) != floorf(log2f(num_samples))) {
-        throw py::value_error("Invalid number of bins");
+        throw py::value_error("The number of samples must be a power of 2 and the number of bins must be (num_samples / 2) + 1.");
     }
 
     return {gcc_construct(num_sources, num_channels, num_bins), gcc_deleter()};

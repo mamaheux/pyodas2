@@ -58,6 +58,11 @@ std::string mic_to_repr(const mic_t& self) {
 
 void init_mic(py::module &m) {
     py::class_<mic_t> mic(m, "Mic", R"pbdoc(A class representing a microphone.)pbdoc");
+
+    py::enum_<Pattern>(mic, "Pattern")
+        .value("OMNIDIRECTIONAL", Pattern::OMNIDIRECTIONAL)
+        .value("CARDIOID", Pattern::CARDIOID);
+
     mic.def(py::init(&mic_init), R"pbdoc(Create a new mic containing a position, a direction and a pattern.)pbdoc",
             py::arg("position"), py::arg("direction"), py::arg("pattern"))
         .def_readwrite("position", &mic_t::position, R"pbdoc(Get/set the position of the microphone in meters.)pbdoc")
@@ -66,8 +71,4 @@ void init_mic(py::module &m) {
         .def("gain", &mic_gain, R"pbdoc(Return the microphone gain for the given direction.)pbdoc",
             py::arg("direction"))
         .def("__repr__", &mic_to_repr);
-
-    py::enum_<Pattern>(mic, "Pattern")
-        .value("OMNIDIRECTIONAL", Pattern::OMNIDIRECTIONAL)
-        .value("CARDIOID", Pattern::CARDIOID);
 }

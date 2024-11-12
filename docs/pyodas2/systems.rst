@@ -87,3 +87,37 @@ Classes
    .. autoproperty:: mics
    .. autoproperty:: sample_rate
    .. autoproperty:: sound_speed
+
+|
+
+.. autoclass:: pyodas2.systems.Window
+   :members:
+   :exclude-members: name
+
+|
+
+.. autoclass:: pyodas2.systems.Stft
+
+   .. automethod:: __init__
+
+   .. automethod:: process
+
+   .. autoproperty:: num_channels
+   .. autoproperty:: num_samples
+   .. autoproperty:: num_shifts
+   .. autoproperty:: num_bins
+
+|
+
+.. autoclass:: pyodas2.systems.Istft
+
+   .. automethod:: __init__
+
+   .. automethod:: process
+
+   .. autoproperty:: num_channels
+   .. autoproperty:: num_samples
+   .. autoproperty:: num_shifts
+   .. autoproperty:: num_bins
+
+|

@@ -15,6 +15,7 @@
 #include "systems/mvdr.h"
 #include "systems/phat.h"
 #include "systems/steering.h"
+#include "systems/stft.h"
 
 #include "types/xyz.h"
 
@@ -55,6 +56,7 @@ PYBIND11_MODULE(_core, m) {
     init_mvdr(systems_module);
     init_phat(systems_module);
     init_steering(systems_module);
+    init_stft_istft(systems_module);
 
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
