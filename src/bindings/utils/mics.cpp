@@ -35,6 +35,10 @@ std::shared_ptr<mics_t> mics_init(Hardware hardware) {
     }
 }
 
+std::shared_ptr<mics_t> mics_init_uninitialized(size_t num_mics) {
+    return {mics_construct_uninitialized(num_mics), mics_deleter()};
+}
+
 size_t mics_len(const mics_t& self) {
     return self.num_mics;
 }
@@ -70,6 +74,7 @@ void init_mics(pybind11::module& m) {
         .value("SOUNDSKRIT_MUG", Hardware::SOUNDSKRIT_MUG);
 
     mics.def(py::init(&mics_init), R"pbdoc(Create the mics for a given hardware.)pbdoc", py::arg("hardware")) // TODO add a constructor that take a list of Mics
+        .def(py::init(&mics_init_uninitialized), R"pbdoc(Create a uninitialized mics instance.)pbdoc", py::arg("num_mics")) // TODO add a constructor that take a list of Mics
         .def("__len__", &mics_len, R"pbdoc(Get the number of microphones.)pbdoc")
         .def("__getitem__", &mics_get_item, R"pbdoc(Get the mutable microphone at the given index.)pbdoc", py::arg("index"), py::return_value_policy::reference)
         .def("__setitem__", &mics_set_item, R"pbdoc(Set the microphone at the given index.)pbdoc", py::arg("index"), py::arg("mic"))

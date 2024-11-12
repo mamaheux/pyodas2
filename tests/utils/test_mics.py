@@ -49,6 +49,12 @@ def test_init_soundskrit_mug():
     assert testee[0].position.z == pytest.approx(0.0)
 
 
+def test_init_num_mics():
+    testee = Mics(16)
+
+    assert len(testee) == 16
+
+
 def test_get_item_out_of_range():
     testee = Mics(Mics.Hardware.RESPEAKER_USB)
 
