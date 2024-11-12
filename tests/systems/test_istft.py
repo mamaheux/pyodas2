@@ -1,6 +1,5 @@
 import pytest
 
-import math
 import numpy as np
 
 from pyodas2.systems import Istft, Window
@@ -87,3 +86,12 @@ def test_process():
 
     expected_hops = np.array([[-0.725, -0.392, +1.090, -0.380], [-0.587, +0.125, +0.537, +0.616]], dtype=np.float32)
     assert np.allclose(hops.to_numpy(), expected_hops, atol=1e-3)
+
+
+def test_repr():
+    NUM_CHANNELS = 2
+    NUM_SAMPLES = 16
+    NUM_SHIFTS = 4
+
+    testee = Istft(NUM_CHANNELS, NUM_SAMPLES, NUM_SHIFTS, Window.HANN)
+    assert repr(testee) == '<pyodas2.systems.Istft (C=2, Sa=16, Sh=4, B=9)>'

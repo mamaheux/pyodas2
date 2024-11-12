@@ -108,7 +108,7 @@ void istft_process_python(istft_t& self, const freqs_t& freqs, hops_t& hops) {
     }
 }
 
-std::string istft_to_repr(const stft_t& self) {
+std::string istft_to_repr(const istft_t& self) {
     std::stringstream ss;
 
     ss << "<pyodas2.systems.Istft (C=" << self.num_channels << ", Sa=" << self.num_samples;

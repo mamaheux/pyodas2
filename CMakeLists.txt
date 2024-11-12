@@ -36,6 +36,7 @@ python_add_library(_core MODULE
         src/bindings/systems/mixer.cpp
         src/bindings/systems/mvdr.cpp
         src/bindings/systems/phat.cpp
+        src/bindings/systems/ssl.cpp
         src/bindings/systems/steering.cpp
         src/bindings/systems/stft.cpp
 

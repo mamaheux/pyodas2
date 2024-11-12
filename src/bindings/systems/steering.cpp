@@ -54,7 +54,7 @@ public:
             throw py::value_error("The number of directions of the doas must be " + std::to_string(m_steering->num_sources) + ".");
         }
         if (m_steering->num_sources != tdoas.num_sources) {
-            throw py::value_error("The number of directions of the tdoas must be " + std::to_string(m_steering->num_sources) + ".");
+            throw py::value_error("The number of sources of the tdoas must be " + std::to_string(m_steering->num_sources) + ".");
         }
         if (m_steering->num_channels != tdoas.num_channels) {
             throw py::value_error("The number of channels of the tdoas must be " + std::to_string(m_steering->num_channels) + ".");
@@ -83,7 +83,7 @@ void init_steering(py::module& m) {
         .def_property_readonly("num_sources", &Steering::num_sources, R"pbdoc(Get the number of sources.)pbdoc")
         .def_property_readonly("mics", &Steering::mics, R"pbdoc(Get the mics.)pbdoc")
         .def_property_readonly("sample_rate", &Steering::sample_rate, R"pbdoc(Get the sample rate.)pbdoc")
-        .def_property_readonly("sound_speed", &Steering::sound_speed, R"pbdoc(Get the mics.)pbdoc")
+        .def_property_readonly("sound_speed", &Steering::sound_speed, R"pbdoc(Get the sound speed.)pbdoc")
         .def("process", &Steering::process, R"pbdoc(Perform the steering process.)pbdoc", py::arg("doas"), py::arg("tdoas"))
         .def("__repr__", &Steering::to_repr);
 }

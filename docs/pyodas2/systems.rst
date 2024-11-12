@@ -90,6 +90,24 @@ Classes
 
 |
 
+.. autoclass:: pyodas2.systems.Ssl
+
+   .. automethod:: __init__
+
+   .. automethod:: process
+
+   .. autoproperty:: num_channels
+   .. autoproperty:: num_pairs
+   .. autoproperty:: num_sources
+   .. autoproperty:: num_directions
+   .. autoproperty:: num_points
+   .. autoproperty:: sample_rate
+   .. autoproperty:: sound_speed
+   .. autoproperty:: mics
+   .. autoproperty:: points
+
+|
+
 .. autoclass:: pyodas2.systems.Window
    :members:
    :exclude-members: name

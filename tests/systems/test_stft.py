@@ -1,6 +1,5 @@
 import pytest
 
-import math
 import numpy as np
 
 from pyodas2.systems import Stft, Window
@@ -87,3 +86,12 @@ def test_process():
         [[+0.391 + 0.000j, -0.780 + 0.075j, +0.016 - 0.962j, +1.733 - 0.287j, -0.856 + 2.858j, -1.589 - 3.099j, +2.653 + 2.038j, -3.320 - 1.356j, +3.897 + 0.000j],
          [+2.981 + 0.000j, -4.307 - 0.631j, +5.441 - 1.602j, -3.405 + 3.849j, +0.898 - 3.100j, -0.613 + 1.715j, +0.588 - 1.688j, +0.411 + 1.381j, -1.011 + 0.000j]], dtype=np.complex64)
     assert np.allclose(freqs.to_numpy(), expected_freqs, atol=1e-3)
+
+
+def test_repr():
+    NUM_CHANNELS = 2
+    NUM_SAMPLES = 16
+    NUM_SHIFTS = 4
+
+    testee = Stft(NUM_CHANNELS, NUM_SAMPLES, NUM_SHIFTS, Window.HANN)
+    assert repr(testee) == '<pyodas2.systems.Stft (C=2, Sa=16, Sh=4, B=9)>'
