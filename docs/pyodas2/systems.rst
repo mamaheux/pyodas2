@@ -75,7 +75,7 @@ Classes
 
 |
 
-.. autoclass:: pyodas2.systems.Steering
+.. autoclass:: pyodas2.systems.Scm
 
    .. automethod:: __init__
 
@@ -83,10 +83,8 @@ Classes
 
    .. autoproperty:: num_channels
    .. autoproperty:: num_pairs
-   .. autoproperty:: num_sources
-   .. autoproperty:: mics
-   .. autoproperty:: sample_rate
-   .. autoproperty:: sound_speed
+   .. autoproperty:: num_bins
+   .. autoproperty:: alpha
 
 |
 
@@ -124,6 +122,21 @@ Classes
 .. autoclass:: pyodas2.systems.Window
    :members:
    :exclude-members: name
+
+|
+
+.. autoclass:: pyodas2.systems.Steering
+
+   .. automethod:: __init__
+
+   .. automethod:: process
+
+   .. autoproperty:: num_channels
+   .. autoproperty:: num_pairs
+   .. autoproperty:: num_sources
+   .. autoproperty:: mics
+   .. autoproperty:: sample_rate
+   .. autoproperty:: sound_speed
 
 |
 

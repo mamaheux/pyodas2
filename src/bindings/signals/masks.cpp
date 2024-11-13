@@ -60,5 +60,7 @@ void init_masks(py::module& m) {
         .def_readonly("num_bins", &masks_t::num_bins, R"pbdoc(Get the number of bins.)pbdoc")
         .def("load_numpy", &masks_load_numpy, R"pbdoc(Load the masks signal from a numpy array.)pbdoc", py::arg("array"))
         .def("to_numpy", &masks_to_numpy, R"pbdoc(Get the masks signal as a numpy array.)pbdoc")
+        .def("set_zeros", &masks_zeros, R"pbdoc(Set the masks to zeros.)pbdoc")
+        .def("set_ones", &masks_ones, R"pbdoc(Set the masks to ones.)pbdoc")
         .def("__repr__", &masks_to_repr);
 }

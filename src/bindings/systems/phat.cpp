@@ -45,7 +45,7 @@ std::string phat_to_repr(const phat_t& self) {
 
 void init_phat(py::module& m) {
     py::class_<phat_t, std::shared_ptr<phat_t>>(m, "Phat", R"pbdoc(A class representing the phat process.)pbdoc")
-        .def(py::init(&phat_init), R"pbdoc(Create a phat process.)pbdoc", py::arg("num_sources"), py::arg("num_bins"))
+        .def(py::init(&phat_init), R"pbdoc(Create a phat process.)pbdoc", py::arg("num_channels"), py::arg("num_bins"))
         .def_readonly("num_channels", &phat_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_readonly("num_pairs", &phat_t::num_pairs, R"pbdoc(Get the number of pairs.)pbdoc")
         .def_readonly("num_bins", &phat_t::num_bins, R"pbdoc(Get the number of bins.)pbdoc")

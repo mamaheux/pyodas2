@@ -46,6 +46,26 @@ def test_numpy(dtype):
     assert np.allclose(output_data, expected_data)
 
 
+def test_set_zeros():
+    testee = Masks('Ms', 2, 4)
+
+    input_data = np.array([[1.0, 2.0, 3.0, 4.0],
+                           [5.0, 6.0, 7.0, 8.0]], dtype=np.float32)
+    testee.load_numpy(input_data)
+    testee.set_zeros()
+    assert np.allclose(testee.to_numpy(), np.zeros((2, 4), dtype=np.float32))
+
+
+def test_set_ones():
+    testee = Masks('Ms', 2, 4)
+
+    input_data = np.array([[1.0, 2.0, 3.0, 4.0],
+                           [5.0, 6.0, 7.0, 8.0]], dtype=np.float32)
+    testee.load_numpy(input_data)
+    testee.set_ones()
+    assert np.allclose(testee.to_numpy(), np.ones((2, 4), dtype=np.float32))
+
+
 def test_repr():
     testee = Masks('Ms', 2, 4)
     assert repr(testee) == '<pyodas2.signals.Masks (Ms, C=2, B=4)>'

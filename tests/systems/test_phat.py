@@ -69,3 +69,8 @@ def test_process():
     print(np.ones((3, 4), dtype=np.float32))
     assert np.allclose(np.abs(covs_out.xcorrs_to_numpy()), expected_xcorrs)
     assert np.allclose(covs_out.acorrs_to_numpy(), np.ones((3, 4), dtype=np.float32), atol=1e-3)
+
+
+def test_repr():
+    testee = Phat(4, 8)
+    assert repr(testee) == '<pyodas2.systems.Phat (C=4, B=8)>'
