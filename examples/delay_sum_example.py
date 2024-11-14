@@ -19,6 +19,7 @@ NUM_SOURCES = 1
 
 OUTPUT_SAMPLE_WIDTH=2
 
+
 def main():
     with wave.open(INPUT_PATH, 'rb') as wave_reader, wave.open(OUTPUT_PATH, 'wb') as wave_writer:
         wave_writer.setnchannels(NUM_SOURCES)
