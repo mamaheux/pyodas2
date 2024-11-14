@@ -39,7 +39,7 @@ def bytes_to_numpy(data: bytes, nchannels: int, sample_width: int) -> np.ndarray
 
 def display_result(result: SslPipelineResult):
     for d in result.directions:
-        print('energie:', d.energy, '\tdirection:', d.coord)
+        print('energy:', d.energy, '\tdirection:', d.coord)
     print()
 
 if __name__ == '__main__':

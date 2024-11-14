@@ -40,11 +40,11 @@ def bytes_to_numpy(data: bytes, nchannels: int, sample_width: int) -> np.ndarray
 def display_result(result: SstPipelineResult):
     print('Potential directions')
     for d in result.potential_directions:
-        print('\tenergie:', d.energy, '\tdirection:', d.coord)
+        print('\tenergy:', d.energy, '\tdirection:', d.coord)
 
     print('Tracked directions')
     for i, d in result.tracked_directions_by_index.items():
-        print('\t', i, '\tenergie:', d.energy, '\tdirection:', d.coord)
+        print('\t', i, '\tenergy:', d.energy, '\tdirection:', d.coord)
 
     print()
 
