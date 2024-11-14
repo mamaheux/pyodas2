@@ -49,10 +49,14 @@ dir_t dir_init(src_t type, xyz_t coord, float energy) {
     return {type, coord, energy};
 }
 
+dir_t dir_copy(const dir_t& self) {
+    return self;
+}
+
 std::string dir_repr(const dir_t& self) {
     std::stringstream ss;
 
-    ss << "<pyodas2.signals.Doas.Dir ((" << self.coord.x << "," << self.coord.y << "," << self.coord.y << ")";
+    ss << "<pyodas2.signals.Doas.Dir ((" << self.coord.x << "," << self.coord.y << "," << self.coord.z << ")";
     ss << ", T=" << self.type << ", E=" << self.energy << ")>";
 
     return ss.str();
@@ -72,6 +76,7 @@ void init_doas(pybind11::module& m) {
         .def_readwrite("type", &dir_t::type, R"pbdoc(Get/set the type of the direction of arrival.)pbdoc")
         .def_readwrite("coord", &dir_t::coord, R"pbdoc(Get/set the coord of the direction of arrival.)pbdoc")
         .def_readwrite("energy", &dir_t::energy, R"pbdoc(Get/set the energy of the direction of arrival.)pbdoc")
+        .def("copy", &dir_copy, R"pbdoc(Copy the direction of arrival.)pbdoc")
         .def("__repr__", &dir_repr);
 
     doas.def(py::init(&doas_init), R"pbdoc(Create doas.)pbdoc", py::arg("label"), py::arg("num_directions"))
