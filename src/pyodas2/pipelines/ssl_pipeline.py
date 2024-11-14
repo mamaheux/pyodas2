@@ -19,6 +19,13 @@ class SslPipelineResult:
 class SslPipeline:
     """
     This is a class performing sound source localization.
+
+                                 Ms (all 1's)
+                                      |
+                                      *
+    +----+   xs   +------+   Xs   +-----+   XXs   +------+   XXps   +---------+  tdoas   +-----+  doas   +-----+
+    | In | -----* | STFT | -----* | SCM | ------* | PHAT | -------* | GCC/FCC | -------* | SSL | ------* | Out |
+    +----+        +------+        +-----+         +------+          +---------+          +-----+         +-----+
     """
     def __init__(self,
                  mics: Mics,

@@ -20,6 +20,14 @@ class SstPipelineResult:
 class SstPipeline:
     """
     This is a class performing sound source tracking.
+
+
+                                 Ms (all 1's)
+                                      |
+                                      *
+    +----+   xs   +------+   Xs   +-----+   XXs   +------+   XXps   +---------+  tdoas   +-----+  doas   +-----+  doas   +-----+
+    | In | -----* | STFT | -----* | SCM | ------* | PHAT | -------* | GCC/FCC | -------* | SSL | ------* | SST | ------* | Out |
+    +----+        +------+        +-----+         +------+          +---------+          +-----+         +-----+         +-----+
     """
     def __init__(self,
                  mics: Mics,

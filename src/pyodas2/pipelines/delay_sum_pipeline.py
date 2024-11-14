@@ -16,6 +16,24 @@ class DelaySumPipelineResult:
 
 
 class DelaySumPipeline:
+    """
+    This is a class performing delay and sum beamforming.
+
+                               Ms (all 1's)
+                                     |
+                                     *
+    +----+   xs   +------+   Xs   +-----+   XXs   +------+   XXps   +---------+
+    | In | -----* | STFT | -----* | SCM | ------* | PHAT | -------* | GCC/FCC |
+    +----+        +------+   |    +-----+         +------+          +---------+
+                             |                                           |
+                             |             Ws      +----+      tdoas     |
+                             |        +------------| DS | *--------------+
+                             |        |            +----*
+                             |        *
+                             |    +-------+   Ys   +-------+   ys   +-----+
+                             +--* | Bfmer | -----* | iSTFT | -----* | Out |
+                                  +-------+        +-------+        +-----+
+    """
     def __init__(self,
                  mics: Mics,
                  hop_length: int = 128,
