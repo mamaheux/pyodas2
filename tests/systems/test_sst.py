@@ -3,49 +3,48 @@ import pytest
 import math
 
 from pyodas2.systems import Sst
-from pyodas2.signals import Doas
+from pyodas2.signals import Doas, Dsf
 from pyodas2.types import Xyz
 
 
 def test_init():
     NUM_TRACKS = 3
     NUM_DIRECTIONS = 4
-    DELTA_TIME = 128.0 / 16000.0
-    ENERGY_THRESHOLD = 0.2
+    NUM_PASTS = 40
 
-    testee = Sst(NUM_TRACKS, NUM_DIRECTIONS, DELTA_TIME, ENERGY_THRESHOLD)
+    testee = Sst(NUM_TRACKS, NUM_DIRECTIONS, NUM_PASTS)
 
     assert testee.num_tracks == NUM_TRACKS
     assert testee.num_directions == NUM_DIRECTIONS
-    assert math.isclose(testee.delta_time, DELTA_TIME, abs_tol=1e-6)
-    assert math.isclose(testee.energy_threshold, ENERGY_THRESHOLD, abs_tol=1e-6)
+    assert math.isclose(testee.num_pasts, NUM_PASTS, abs_tol=1e-6)
 
 
 def test_process_invalid_inputs():
     NUM_TRACKS = 3
     NUM_DIRECTIONS = 4
-    DELTA_TIME = 128.0 / 16000.0
-    ENERGY_THRESHOLD = 0.2
+    NUM_PASTS = 40
 
-    testee = Sst(NUM_TRACKS, NUM_DIRECTIONS, DELTA_TIME, ENERGY_THRESHOLD)
+    testee = Sst(NUM_TRACKS, NUM_DIRECTIONS, NUM_PASTS)
 
     with pytest.raises(ValueError):
-        testee.process(Doas('', NUM_DIRECTIONS + 1),
+        testee.process(Dsf(''),
+                       Doas('', NUM_DIRECTIONS + 1),
                        Doas('', NUM_TRACKS))
 
     with pytest.raises(ValueError):
-        testee.process(Doas('', NUM_DIRECTIONS),
+        testee.process(Dsf(''),
+                       Doas('', NUM_DIRECTIONS),
                        Doas('', NUM_TRACKS + 1))
 
 
 def test_process():
     NUM_TRACKS = 3
     NUM_DIRECTIONS = 4
-    DELTA_TIME = 128.0 / 16000.0
-    ENERGY_THRESHOLD = 0.2
+    NUM_PASTS = 40
 
-    testee = Sst(NUM_TRACKS, NUM_DIRECTIONS, DELTA_TIME, ENERGY_THRESHOLD)
+    testee = Sst(NUM_TRACKS, NUM_DIRECTIONS, NUM_PASTS)
 
+    dsf = Dsf('')
     doas_src = Doas('', NUM_DIRECTIONS)
     doas_dst = Doas('', NUM_TRACKS)
 
@@ -76,7 +75,7 @@ def test_process():
             index_noise += 1
             index_noise %= len(noises)
 
-        testee.process(doas_src, doas_dst)
+        testee.process(dsf, doas_src, doas_dst)
 
     assert doas_dst[0].type == Doas.Src.TRACKED
     assert (doas_dst[0].coord - targets[0].coord).mag() < 0.01
@@ -88,8 +87,7 @@ def test_process():
 def test_repr():
     NUM_TRACKS = 3
     NUM_DIRECTION = 4
-    DELTA_TIME = 128.0 / 16000.0
-    ENERGY_THRESHOLD = 0.2
+    NUM_PASTS = 40
 
-    testee = Sst(NUM_TRACKS, NUM_DIRECTION, DELTA_TIME, ENERGY_THRESHOLD)
-    assert repr(testee) == '<pyodas2.systems.Sst (T=3, D=4)>'
+    testee = Sst(NUM_TRACKS, NUM_DIRECTION, NUM_PASTS)
+    assert repr(testee) == '<pyodas2.systems.Sst (T=3, D=4, P=40)>'

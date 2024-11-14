@@ -2,6 +2,7 @@
 
 #include "signals/covs.h"
 #include "signals/doas.h"
+#include "signals/dsf.h"
 #include "signals/freqs.h"
 #include "signals/hops.h"
 #include "signals/masks.h"
@@ -45,6 +46,7 @@ PYBIND11_MODULE(_core, m) {
     auto signals_module = m.def_submodule("signals");
     init_covs(signals_module);
     init_doas(signals_module);
+    init_dsf(signals_module);
     init_freqs(signals_module);
     init_hops(signals_module);
     init_masks(signals_module);

@@ -114,8 +114,7 @@ Classes
 
    .. autoproperty:: num_tracks
    .. autoproperty:: num_directions
-   .. autoproperty:: delta_time
-   .. autoproperty:: energy_threshold
+   .. autoproperty:: num_pasts
 
 |
 

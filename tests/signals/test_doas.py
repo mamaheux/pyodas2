@@ -1,7 +1,5 @@
 import pytest
 
-from copy import deepcopy
-
 from pyodas2.signals import Doas
 from pyodas2.types import Xyz
 

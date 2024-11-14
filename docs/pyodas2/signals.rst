@@ -39,6 +39,23 @@ Classes
 
 |
 
+.. autoclass:: pyodas2.signals.Dsf
+
+   .. automethod:: __init__
+
+   .. autoproperty:: label
+   .. autoproperty:: sigmoid_mean
+   .. autoproperty:: sigmoid_slope
+   .. autoproperty:: tracked_source_sigma2
+   .. autoproperty:: tracked_source_threshold
+   .. autoproperty:: tracked_source_rate
+   .. autoproperty:: new_source_sigma2
+   .. autoproperty:: new_threshold
+   .. autoproperty:: delete_threshold
+   .. autoproperty:: delete_decay
+
+|
+
 .. autoclass:: pyodas2.signals.Freqs
 
    .. automethod:: __init__
