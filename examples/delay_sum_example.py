@@ -26,7 +26,7 @@ def main():
         wave_writer.setsampwidth(OUTPUT_SAMPLE_WIDTH)
         wave_writer.setframerate(wave_reader.getframerate())
 
-        mics = Mics(Mics.Hardware.RESPEAKER_USB)
+        mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
         pipeline = DelaySumPipeline(mics, hop_length=HOP_LENGTH, num_sources=NUM_SOURCES)
 
         data_size = HOP_LENGTH * wave_reader.getnchannels() * wave_reader.getsampwidth()

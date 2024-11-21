@@ -15,7 +15,7 @@ def test_init():
     NUM_SOURCES = 4
     NUM_DIRECTIONS = 2
 
-    mics = Mics(Mics.Hardware.RESPEAKER_USB)
+    mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
     points = Points(Points.Geometry.HALFSPHERE)
     testee = Ssl(mics, points, SAMPLE_RATE, SOUND_SPEED, NUM_SOURCES, NUM_DIRECTIONS)
 
@@ -36,7 +36,7 @@ def test_process_invalid_inputs():
     NUM_SOURCES = 4
     NUM_DIRECTIONS = 2
 
-    mics = Mics(Mics.Hardware.RESPEAKER_USB)
+    mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
     points = Points(Points.Geometry.HALFSPHERE)
     testee = Ssl(mics, points, SAMPLE_RATE, SOUND_SPEED, NUM_SOURCES, NUM_DIRECTIONS)
 
@@ -59,7 +59,7 @@ def test_process():
     NUM_SOURCES = 4
     NUM_DIRECTIONS = 2
 
-    mics = Mics(Mics.Hardware.RESPEAKER_USB)
+    mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
     points = Points(Points.Geometry.HALFSPHERE)
     testee = Ssl(mics, points, SAMPLE_RATE, SOUND_SPEED, NUM_SOURCES, NUM_DIRECTIONS)
     steering = Steering(mics, SAMPLE_RATE, SOUND_SPEED, NUM_SOURCES)
@@ -95,7 +95,7 @@ def test_repr():
     NUM_SOURCES = 4
     NUM_DIRECTIONS = 2
 
-    mics = Mics(Mics.Hardware.RESPEAKER_USB)
+    mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
     points = Points(Points.Geometry.HALFSPHERE)
     testee = Ssl(mics, points, SAMPLE_RATE, SOUND_SPEED, NUM_SOURCES, NUM_DIRECTIONS)
     assert repr(testee) == '<pyodas2.systems.Ssl (S=4, D=2)>'

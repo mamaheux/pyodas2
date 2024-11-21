@@ -4,12 +4,21 @@ from pyodas2.utils import Mics, Mic
 from pyodas2.types import Xyz
 
 
-def test_init_respeaker_usb():
-    testee = Mics(Mics.Hardware.RESPEAKER_USB)
+def test_init_respeaker_usb_4():
+    testee = Mics(Mics.Hardware.RESPEAKER_USB_4)
 
     assert len(testee) == 4
     assert testee[0].position.x == pytest.approx(-0.032)
     assert testee[0].position.y == pytest.approx(0.0)
+    assert testee[0].position.z == pytest.approx(0.0)
+
+
+def test_init_respeaker_usb_6():
+    testee = Mics(Mics.Hardware.RESPEAKER_USB_6)
+
+    assert len(testee) == 6
+    assert testee[0].position.x == pytest.approx(-0.0232)
+    assert testee[0].position.y == pytest.approx(0.0401)
     assert testee[0].position.z == pytest.approx(0.0)
 
 
@@ -81,14 +90,14 @@ def test_init_list():
 
 
 def test_get_item_out_of_range():
-    testee = Mics(Mics.Hardware.RESPEAKER_USB)
+    testee = Mics(Mics.Hardware.RESPEAKER_USB_4)
 
     with pytest.raises(IndexError):
         a = testee[5]
 
 
 def test_get_item_mutable():
-    testee = Mics(Mics.Hardware.RESPEAKER_USB)
+    testee = Mics(Mics.Hardware.RESPEAKER_USB_4)
     testee[0].position.x = 10.0
     testee[1].position = Xyz(-10.0, 0.0, 0.0)
 
@@ -96,14 +105,14 @@ def test_get_item_mutable():
     assert testee[1].position.x == -10.0
 
 def test_set_item_out_of_range():
-    testee = Mics(Mics.Hardware.RESPEAKER_USB)
+    testee = Mics(Mics.Hardware.RESPEAKER_USB_4)
 
     with pytest.raises(IndexError):
         testee[5] = Mic(Xyz(1.0, 2.0, 3.0), Xyz(1.0, 2.0, 3.0), Mic.Pattern.CARDIOID)
 
 
 def test_set_item():
-    testee = Mics(Mics.Hardware.RESPEAKER_USB)
+    testee = Mics(Mics.Hardware.RESPEAKER_USB_4)
     testee[0] = Mic(Xyz(10.0, 0.0, 0.0), Xyz(11.0, 0.0, 0.0), Mic.Pattern.CARDIOID)
 
     assert testee[0].position.x == 10.0
@@ -112,5 +121,5 @@ def test_set_item():
 
 
 def test_repr():
-    testee = Mics(Mics.Hardware.RESPEAKER_USB)
+    testee = Mics(Mics.Hardware.RESPEAKER_USB_4)
     assert repr(testee) == '<pyodas2.utils.Mics (len=4)>'

@@ -7,7 +7,8 @@
 namespace py = pybind11;
 
 enum class Hardware {
-    RESPEAKER_USB,
+    RESPEAKER_USB_4,
+    RESPEAKER_USB_6,
     MINIDSP_UMA,
     INTROLAB_CIRCULAR,
     VIBEUS_CIRCULAR,
@@ -22,8 +23,10 @@ struct mics_deleter {
 
 std::shared_ptr<mics_t> mics_init(Hardware hardware) {
     switch (hardware) {
-        case Hardware::RESPEAKER_USB:
-            return {mics_construct("respeaker_usb"), mics_deleter()};
+        case Hardware::RESPEAKER_USB_4:
+            return {mics_construct("respeaker_usb_4"), mics_deleter()};
+        case Hardware::RESPEAKER_USB_6:
+            return {mics_construct("respeaker_usb_6"), mics_deleter()};
         case Hardware::MINIDSP_UMA:
             return {mics_construct("minidsp_uma"), mics_deleter()};
         case Hardware::INTROLAB_CIRCULAR:
@@ -79,7 +82,8 @@ void init_mics(pybind11::module& m) {
     py::class_<mics_t, std::shared_ptr<mics_t>> mics(m, "Mics", R"pbdoc(A class representing an array of microphones.)pbdoc");
 
     py::enum_<Hardware>(mics, "Hardware")
-        .value("RESPEAKER_USB", Hardware::RESPEAKER_USB)
+        .value("RESPEAKER_USB_4", Hardware::RESPEAKER_USB_4)
+        .value("RESPEAKER_USB_6", Hardware::RESPEAKER_USB_6)
         .value("MINIDSP_UMA", Hardware::MINIDSP_UMA)
         .value("INTROLAB_CIRCULAR", Hardware::INTROLAB_CIRCULAR)
         .value("VIBEUS_CIRCULAR", Hardware::VIBEUS_CIRCULAR)

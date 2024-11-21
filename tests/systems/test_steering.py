@@ -14,7 +14,7 @@ def test_init():
     NUM_PAIRS = 6
     NUM_SOURCES = 3
 
-    mics = Mics(Mics.Hardware.RESPEAKER_USB)
+    mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
     testee = Steering(mics, SAMPLE_RATE, SOUND_SPEED, NUM_SOURCES)
 
     assert testee.num_channels == len(mics)
@@ -30,7 +30,7 @@ def test_process_invalid_inputs():
     SOUND_SPEED = 343.0
     NUM_SOURCES = 3
 
-    mics = Mics(Mics.Hardware.RESPEAKER_USB)
+    mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
     testee = Steering(mics, SAMPLE_RATE, SOUND_SPEED, NUM_SOURCES)
 
     with pytest.raises(ValueError):
@@ -59,7 +59,7 @@ def test_process():
     NUM_PAIRS = 6
     NUM_SOURCES = 3
 
-    mics = Mics(Mics.Hardware.RESPEAKER_USB)
+    mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
     testee = Steering(mics, SAMPLE_RATE, SOUND_SPEED, NUM_SOURCES)
 
     doas = Doas('doas', NUM_SOURCES)
@@ -89,6 +89,6 @@ def test_repr():
     NUM_PAIRS = 6
     NUM_SOURCES = 3
 
-    mics = Mics(Mics.Hardware.RESPEAKER_USB)
+    mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
     testee = Steering(mics, SAMPLE_RATE, SOUND_SPEED, NUM_SOURCES)
     assert repr(testee) == '<pyodas2.systems.Steering (C=4, S=3)>'
