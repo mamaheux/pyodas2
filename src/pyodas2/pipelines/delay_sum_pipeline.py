@@ -12,7 +12,7 @@ class DelaySumPipelineResult:
     """
     This is a class representing the results of the delay and sum beamforming
     """
-    audio: np.ndarray[np.float32]
+    audio: np.ndarray
 
 
 class DelaySumPipeline:

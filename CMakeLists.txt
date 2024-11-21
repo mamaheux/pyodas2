@@ -2,6 +2,10 @@
 # policies up to CMake 3.27
 cmake_minimum_required(VERSION 3.15...3.27)
 
+if(NOT CMAKE_BUILD_TYPE)
+    SET(CMAKE_BUILD_TYPE "Release")
+endif(NOT CMAKE_BUILD_TYPE)
+
 set(BUILD_SHARED_LIBS OFF)
 add_subdirectory(src/odas2/core)
 
@@ -16,6 +20,8 @@ project(
 # scikit-build-core's built-in backport)
 find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
 find_package(pybind11 CONFIG REQUIRED)
+
+set(CMAKE_CXX_STANDARD 17)
 
 # Add a library using FindPython's tooling (pybind11 also provides a helper like
 # this)
