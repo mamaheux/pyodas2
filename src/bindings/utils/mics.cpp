@@ -10,7 +10,7 @@ enum class Hardware {
     RESPEAKER_USB_4,
     RESPEAKER_USB_6,
     MINIDSP_UMA,
-    INTROLAB_CIRCULAR,
+    SC16_DEMO_ARRAY,
     VIBEUS_CIRCULAR,
     SOUNDSKRIT_MUG
 };
@@ -29,8 +29,8 @@ std::shared_ptr<mics_t> mics_init(Hardware hardware) {
             return {mics_construct("respeaker_usb_6"), mics_deleter()};
         case Hardware::MINIDSP_UMA:
             return {mics_construct("minidsp_uma"), mics_deleter()};
-        case Hardware::INTROLAB_CIRCULAR:
-            return {mics_construct("introlab_circular"), mics_deleter()};
+        case Hardware::SC16_DEMO_ARRAY:
+            return {mics_construct("sc16_demo_array"), mics_deleter()};
         case Hardware::VIBEUS_CIRCULAR:
             return {mics_construct("vibeus_circular"), mics_deleter()};
         case Hardware::SOUNDSKRIT_MUG:
@@ -85,7 +85,7 @@ void init_mics(pybind11::module& m) {
         .value("RESPEAKER_USB_4", Hardware::RESPEAKER_USB_4)
         .value("RESPEAKER_USB_6", Hardware::RESPEAKER_USB_6)
         .value("MINIDSP_UMA", Hardware::MINIDSP_UMA)
-        .value("INTROLAB_CIRCULAR", Hardware::INTROLAB_CIRCULAR)
+        .value("SC16_DEMO_ARRAY", Hardware::SC16_DEMO_ARRAY)
         .value("VIBEUS_CIRCULAR", Hardware::VIBEUS_CIRCULAR)
         .value("SOUNDSKRIT_MUG", Hardware::SOUNDSKRIT_MUG);
 

@@ -31,10 +31,10 @@ def test_init_minidsp_uma():
     assert testee[0].position.z == pytest.approx(0.0)
 
 
-def test_init_introlab_circular():
-    testee = Mics(Mics.Hardware.INTROLAB_CIRCULAR)
+def test_init_sc16_demo_array():
+    testee = Mics(Mics.Hardware.SC16_DEMO_ARRAY)
 
-    assert len(testee) == 4
+    assert len(testee) == 16
     assert testee[0].position.x == pytest.approx(0.088)
     assert testee[0].position.y == pytest.approx(0.0)
     assert testee[0].position.z == pytest.approx(0.0)
