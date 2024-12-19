@@ -1,7 +1,6 @@
 import threading
-import time
 
-import pyaudio
+import alsaaudio
 import numpy as np
 
 import matplotlib.pyplot as plt
@@ -22,17 +21,19 @@ stop_requested = False
 def audio_thread_run():
     global directions
 
-    mics = Mics(Mics.Hardware.RESPEAKER_USB_6)
+    mics = Mics(Mics.Hardware.SC16_DEMO_ARRAY)
     pipeline = SslPipeline(mics, sample_rate=RATE, hop_length=HOP_LENGTH)
 
-    p = pyaudio.PyAudio()
-    stream = p.open(format=pyaudio.paInt32,
-                    channels=len(mics),
-                    rate=RATE,
-                    input=True)
+    pcm = alsaaudio.PCM(alsaaudio.PCM_CAPTURE, alsaaudio.PCM_NORMAL,
+                        channels=len(mics), rate=RATE, format=alsaaudio.PCM_FORMAT_S32_LE,
+                        periodsize=HOP_LENGTH, device='hw:CARD=SC16,DEV=0')
 
     while not stop_requested:
-        audio = np.frombuffer(stream.read(HOP_LENGTH), dtype=np.int32).reshape(-1, len(mics)).T
+        l, data = pcm.read()
+        if l < 0:
+            continue
+
+        audio = np.frombuffer(data, dtype=np.int32).reshape(-1, len(mics)).T
         result = pipeline.process(audio)
 
         with lock:
@@ -41,7 +42,6 @@ def audio_thread_run():
                 directions[i, 0] = result.directions[i].coord.x
                 directions[i, 1] = result.directions[i].coord.y
                 directions[i, 2] = result.directions[i].coord.z
-        time.sleep(0.1)
 
 
 def main():
