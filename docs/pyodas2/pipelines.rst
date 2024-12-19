@@ -50,3 +50,15 @@ Classes
    :undoc-members:
 
 |
+
+.. autoclass:: pyodas2.pipelines.SstDelaySumPipeline
+
+   .. automethod:: __init__
+   .. automethod:: process
+
+.. autoclass:: pyodas2.pipelines.SstDelaySumPipelineResult
+   :special-members: __init__
+   :members:
+   :undoc-members:
+
+|

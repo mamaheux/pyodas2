@@ -1,5 +1,5 @@
 """
-This is an example to illustrate how to perform delay and sum beamforming using a file.
+This is an example to illustrate how to perform delay and sum beamforming at given directions using a file.
 """
 
 import os
@@ -8,7 +8,8 @@ import wave
 import numpy as np
 
 from pyodas2.utils import Mics
-from pyodas2.pipelines import DelaySumPipeline
+from pyodas2.types import Xyz
+from pyodas2.pipelines import SteeringDelaySumPipeline
 
 
 INPUT_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio', 'mix.wav')
@@ -27,7 +28,8 @@ def main():
         wave_writer.setframerate(wave_reader.getframerate())
 
         mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
-        pipeline = DelaySumPipeline(mics, hop_length=HOP_LENGTH, num_sources=NUM_SOURCES)
+        pipeline = SteeringDelaySumPipeline(mics, hop_length=HOP_LENGTH, num_sources=NUM_SOURCES)
+        pipeline.set_directions([Xyz(0.0, 0.0, 1.0)]) # Can be updated while processing
 
         data_size = HOP_LENGTH * wave_reader.getnchannels() * wave_reader.getsampwidth()
         while True:

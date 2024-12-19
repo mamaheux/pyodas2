@@ -1,3 +1,7 @@
+"""
+This is an example to illustrate how to perform sound source localization using a live audio stream.
+"""
+
 import threading
 
 import alsaaudio
