@@ -38,3 +38,15 @@ Classes
    :undoc-members:
 
 |
+
+.. autoclass:: pyodas2.pipelines.SteeringDelaySumPipeline
+
+   .. automethod:: __init__
+   .. automethod:: process
+
+.. autoclass:: pyodas2.pipelines.SteeringDelaySumPipelineResult
+   :special-members: __init__
+   :members:
+   :undoc-members:
+
+|
