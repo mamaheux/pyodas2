@@ -40,6 +40,15 @@ def test_init_sc16_demo_array():
     assert testee[0].position.z == pytest.approx(0.0)
 
 
+def test_init_sc16f():
+    testee = Mics(Mics.Hardware.SC16F)
+
+    assert len(testee) == 16
+    assert testee[0].position.x == pytest.approx(-0.0675)
+    assert testee[0].position.y == pytest.approx(0.0675)
+    assert testee[0].position.z == pytest.approx(0.0)
+
+
 def test_init_vibeus_circular():
     testee = Mics(Mics.Hardware.VIBEUS_CIRCULAR)
 
