@@ -3,6 +3,7 @@ This is an example to illustrate how to perform sound source tracking using a li
 """
 
 import threading
+import signal
 
 import alsaaudio
 import numpy as np
@@ -45,6 +46,7 @@ def audio_thread_run(elevation_azimuth_widget: ElevationAzimuthWidget, source_lo
 
 def main():
     app = pg.mkQApp("PyODAS2 - SSL Example")
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
 
     elevation_azimuth_widget = ElevationAzimuthWidget(sample_rate=RATE, hop_length=HOP_LENGTH)
     elevation_azimuth_widget.show()
