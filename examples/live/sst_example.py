@@ -7,26 +7,20 @@ import threading
 import alsaaudio
 import numpy as np
 
-import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
+import pyqtgraph as pg
 
 from pyodas2.utils import Mics
 from pyodas2.pipelines import SstPipeline
+from pyodas2.visualization import ElevationAzimuthWidget, SourceLocationWidget
 
-HOP_LENGTH = 128
+HOP_LENGTH = 256
 RATE = 16000
 
 
-lock = threading.Lock()
-potential_directions = np.zeros((0, 3))
-tracked_directions = np.zeros((0, 3))
 stop_requested = False
 
 
-def audio_thread_run():
-    global potential_directions
-    global tracked_directions
-
+def audio_thread_run(elevation_azimuth_widget: ElevationAzimuthWidget, source_location_widget: SourceLocationWidget):
     mics = Mics(Mics.Hardware.SC16_DEMO_ARRAY)
     pipeline = SstPipeline(mics, sample_rate=RATE, hop_length=HOP_LENGTH)
 
@@ -42,52 +36,27 @@ def audio_thread_run():
         audio = np.frombuffer(data, dtype=np.int32).reshape(-1, len(mics)).T
         result = pipeline.process(audio)
 
-        with lock:
-            potential_directions = np.zeros((len(result.potential_directions), 3))
-            for i, d in enumerate(result.potential_directions):
-                potential_directions[i, 0] = d.coord.x
-                potential_directions[i, 1] = d.coord.y
-                potential_directions[i, 2] = d.coord.z
+        elevation_azimuth_widget.add_potential_sources(result.potential_directions)
+        elevation_azimuth_widget.add_tracked_sources(result.tracked_directions_by_index)
 
-            tracked_directions = np.zeros((len(result.tracked_directions_by_index), 3))
-            for i, d in enumerate(result.tracked_directions_by_index.values()):
-                tracked_directions[i, 0] = d.coord.x
-                tracked_directions[i, 1] = d.coord.y
-                tracked_directions[i, 2] = d.coord.z
+        source_location_widget.set_potential_sources(result.potential_directions)
+        source_location_widget.set_tracked_sources(result.tracked_directions_by_index)
 
 
 def main():
-    audio_thread = threading.Thread(target=audio_thread_run)
+    app = pg.mkQApp("PyODAS2 - SSL Example")
+
+    elevation_azimuth_widget = ElevationAzimuthWidget(sample_rate=RATE, hop_length=HOP_LENGTH)
+    elevation_azimuth_widget.show()
+
+    source_location_widget = SourceLocationWidget()
+    source_location_widget.show()
+
+    audio_thread = threading.Thread(target=audio_thread_run, args=[elevation_azimuth_widget, source_location_widget])
     audio_thread.start()
 
-    fig = plt.figure()
-    ax = fig.add_subplot(projection='3d')
-
-    def update(_):
-        global potential_directions
-        global tracked_directions
-
-        with lock:
-            new_potential_directions = potential_directions
-            new_tracked_directions = tracked_directions
-
-        ax.clear()
-        ax.scatter(new_potential_directions[:, 0], new_potential_directions[:, 1], new_potential_directions[:, 2],
-                   color='blue', label='Potential')
-        ax.scatter(new_tracked_directions[:, 0], new_tracked_directions[:, 1], new_tracked_directions[:, 2],
-                   color='red', label='Tracked')
-        ax.set_xlim(-1, 1)
-        ax.set_ylim(-1, 1)
-        ax.set_zlim(-1, 1)
-        ax.set_xlabel('X')
-        ax.set_ylabel('Y')
-        ax.set_zlabel('Z')
-        ax.legend()
-
-    _animation = FuncAnimation(fig, func=update, interval=100)
-
     try:
-        plt.show()
+        pg.exec()
     finally:
         global stop_requested
         stop_requested = True

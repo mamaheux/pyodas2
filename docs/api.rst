@@ -6,6 +6,7 @@ API
    :caption: Contents:
 
    pyodas2/pipelines
+   pyodas2/visualization
    pyodas2/signals
    pyodas2/systems
    pyodas2/types
