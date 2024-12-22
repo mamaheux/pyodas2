@@ -1,5 +1,3 @@
-import time
-
 from typing import List, Dict, Iterable
 
 import numpy as np
@@ -31,9 +29,6 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
         self.setWindowTitle("Source Elevation and Azimuth")
         self.resize(1000, 600)
 
-        self._add_source_elevation_plot(history_duration_s)
-        self._add_source_azimuth_plot(history_duration_s)
-
         self._max_point_count = int((history_duration_s * sample_rate) / hop_length)
         self._times = -np.array([i * history_duration_s / self._max_point_count for i in reversed(range(self._max_point_count))])
 
@@ -41,6 +36,8 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
         self._elevation_tracked_sources = [[] for _ in range(self._max_point_count)]
         self._azimuth_potential_sources = [[] for _ in range(self._max_point_count)]
         self._azimuth_tracked_sources = [[] for _ in range(self._max_point_count)]
+
+        self._add_source_plots(history_duration_s)
 
         self._dirty = True
         self._update_timer = QtCore.QTimer()
@@ -54,7 +51,7 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
             self._update_tracked_sources()
             self._dirty = False
 
-    def _add_source_elevation_plot(self, history_duration_s):
+    def _add_source_plots(self, history_duration_s):
         self._source_elevation_plot = self.addPlot(title='Source Elevation', row=0, col=0)
         self._source_elevation_plot.setLabel('left', 'Elevation', units='°')
         self._source_elevation_plot.setLabel('bottom', 'Time', units='s')
@@ -63,12 +60,8 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
         self._source_elevation_plot.setYRange(-180, 180, padding=0)
 
         self._elevation_potential_source_item = pg.ScatterPlotItem()
-        self._source_elevation_plot.addItem(self._elevation_potential_source_item)
-
         self._elevation_tracked_source_item = pg.ScatterPlotItem()
-        self._source_elevation_plot.addItem(self._elevation_tracked_source_item)
 
-    def _add_source_azimuth_plot(self, history_duration_s):
         self._source_azimuth_plot = self.addPlot(title='Source Azimuth', row=1, col=0)
         self._source_azimuth_plot.setLabel('left', 'Azimuth', units='°')
         self._source_azimuth_plot.setLabel('bottom', 'Time', units='s')
@@ -77,9 +70,14 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
         self._source_azimuth_plot.setYRange(-180, 180, padding=0)
 
         self._azimuth_potential_source_item = pg.ScatterPlotItem()
-        self._source_azimuth_plot.addItem(self._azimuth_potential_source_item)
-
         self._azimuth_tracked_source_item = pg.ScatterPlotItem()
+
+        self._update_potential_sources()
+        self._update_tracked_sources()
+
+        self._source_elevation_plot.addItem(self._elevation_tracked_source_item)
+        self._source_elevation_plot.addItem(self._elevation_potential_source_item)
+        self._source_azimuth_plot.addItem(self._azimuth_potential_source_item)
         self._source_azimuth_plot.addItem(self._azimuth_tracked_source_item)
 
     def _update_potential_sources(self):
