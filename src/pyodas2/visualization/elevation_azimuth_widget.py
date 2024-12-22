@@ -57,7 +57,7 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
         self._source_elevation_plot.setLabel('bottom', 'Time', units='s')
         self._source_elevation_plot.addLegend()
         self._source_elevation_plot.setXRange(-history_duration_s, 0, padding=0)
-        self._source_elevation_plot.setYRange(-180, 180, padding=0)
+        self._source_elevation_plot.setYRange(-90, 90, padding=0)
 
         self._elevation_potential_source_item = pg.ScatterPlotItem()
         self._elevation_tracked_source_item = pg.ScatterPlotItem()
