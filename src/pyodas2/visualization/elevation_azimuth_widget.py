@@ -10,9 +10,6 @@ from pyqtgraph.Qt import QtCore
 from pyodas2.signals import Doas
 
 
-FRAME_RATE = 30
-
-
 class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
     """
     A PyQtGraph widget to display the elevation and azimuth of sources over time.
@@ -21,6 +18,7 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
                  sample_rate: float = 16000,
                  hop_length: int = 128,
                  history_duration_s: float = 5,
+                 frame_rate: float = 30,
                  parent=None):
         """
         Creates a new ElevationAzimuthWidget.
@@ -44,8 +42,17 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
         self._azimuth_potential_sources = [[] for _ in range(self._max_point_count)]
         self._azimuth_tracked_sources = [[] for _ in range(self._max_point_count)]
 
-        self._last_potential_source_update_time = time.time()
-        self._last_tracked_source_update_time = time.time()
+        self._dirty = True
+        self._update_timer = QtCore.QTimer()
+        self._update_timer.setInterval(int(1 / frame_rate * 1000))
+        self._update_timer.timeout.connect(self._on_update_timeout)
+        self._update_timer.start()
+
+    def _on_update_timeout(self):
+        if self._dirty:
+            self._update_potential_sources()
+            self._update_tracked_sources()
+            self._dirty = False
 
     def _add_source_elevation_plot(self, history_duration_s):
         self._source_elevation_plot = self.addPlot(title='Source Elevation', row=0, col=0)
@@ -75,26 +82,6 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
         self._azimuth_tracked_source_item = pg.ScatterPlotItem()
         self._source_azimuth_plot.addItem(self._azimuth_tracked_source_item)
 
-    def add_potential_sources(self, directions: List[Doas.Dir]):
-        """
-        Add the potential sources.
-
-        :param directions: The potential sources directions
-        :return:
-        """
-        elevations, azimuths = self._directions_to_elevation_azimuth(directions)
-
-        def update():
-            self._elevation_potential_sources.append(elevations)
-            self._elevation_potential_sources.pop(0)
-
-            self._azimuth_potential_sources.append(azimuths)
-            self._azimuth_potential_sources.pop(0)
-
-            self._update_potential_sources()
-
-        QtCore.QTimer.singleShot(0, self, update)
-
     def _update_potential_sources(self):
         c = sum(map(lambda x: len(x), self._elevation_potential_sources))
         all_elevations = np.zeros((c, 2))
@@ -111,28 +98,9 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
 
             i += c
 
-        if (time.time() - self._last_potential_source_update_time) > 1 / FRAME_RATE:
-            self._elevation_potential_source_item.setData(all_elevations[:, 0], all_elevations[:, 1], pen=(0, 0, 255), name='Potential Sources')
-            self._azimuth_potential_source_item.setData(all_azimuths[:, 0], all_azimuths[:, 1], pen=(0, 0, 255), name='Potential Sources')
-            self._last_potential_source_update_time = time.time()
+        self._elevation_potential_source_item.setData(all_elevations[:, 0], all_elevations[:, 1], pen=(0, 0, 255), name='Potential Sources')
+        self._azimuth_potential_source_item.setData(all_azimuths[:, 0], all_azimuths[:, 1], pen=(0, 0, 255), name='Potential Sources')
 
-    def add_tracked_sources(self, tracked_directions_by_index: Dict[int, Doas.Dir]):
-        """
-        Add the tracked sources.
-        :param tracked_directions_by_index: The tracked sources directions.
-        :return:
-        """
-        elevations, azimuths = self._directions_to_elevation_azimuth(tracked_directions_by_index.values())
-
-        def update():
-            self._elevation_tracked_sources.append(elevations)
-            self._elevation_tracked_sources.pop(0)
-            self._azimuth_tracked_sources.append(azimuths)
-            self._azimuth_tracked_sources.pop(0)
-
-            self._update_tracked_sources()
-
-        QtCore.QTimer.singleShot(0, self, update)
 
     def _update_tracked_sources(self):
         c = sum(map(lambda x: len(x), self._elevation_tracked_sources))
@@ -150,10 +118,43 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
 
             i += c
 
-        if (time.time() - self._last_tracked_source_update_time) > 1 / FRAME_RATE:
-            self._elevation_tracked_source_item.setData(all_elevations[:, 0], all_elevations[:, 1], pen=(255, 0, 0), name='Tracked Sources')
-            self._azimuth_tracked_source_item.setData(all_azimuths[:, 0], all_azimuths[:, 1], pen=(255, 0, 0), name='Tracked Sources')
-            self._last_tracked_source_update_time = time.time()
+        self._elevation_tracked_source_item.setData(all_elevations[:, 0], all_elevations[:, 1], pen=(255, 0, 0), name='Tracked Sources')
+        self._azimuth_tracked_source_item.setData(all_azimuths[:, 0], all_azimuths[:, 1], pen=(255, 0, 0), name='Tracked Sources')
+
+    def add_potential_sources(self, directions: List[Doas.Dir]):
+        """
+        Add the potential sources.
+
+        :param directions: The potential sources directions
+        :return:
+        """
+        elevations, azimuths = self._directions_to_elevation_azimuth(directions)
+
+        def update():
+            self._elevation_potential_sources.append(elevations)
+            self._elevation_potential_sources.pop(0)
+            self._azimuth_potential_sources.append(azimuths)
+            self._azimuth_potential_sources.pop(0)
+            self._dirty = True
+
+        QtCore.QTimer.singleShot(0, self, update)
+
+    def add_tracked_sources(self, tracked_directions_by_index: Dict[int, Doas.Dir]):
+        """
+        Add the tracked sources.
+        :param tracked_directions_by_index: The tracked sources directions.
+        :return:
+        """
+        elevations, azimuths = self._directions_to_elevation_azimuth(tracked_directions_by_index.values())
+
+        def update():
+            self._elevation_tracked_sources.append(elevations)
+            self._elevation_tracked_sources.pop(0)
+            self._azimuth_tracked_sources.append(azimuths)
+            self._azimuth_tracked_sources.pop(0)
+            self._dirty = True
+
+        QtCore.QTimer.singleShot(0, self, update)
 
     def _directions_to_elevation_azimuth(self, directions: Iterable[Doas.Dir]):
         directions = list(directions)
