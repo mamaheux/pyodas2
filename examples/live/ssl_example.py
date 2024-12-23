@@ -13,6 +13,8 @@ import pyqtgraph as pg
 from pyodas2.utils import Mics
 from pyodas2.pipelines import SslPipeline
 from pyodas2.visualization import ElevationAzimuthWidget, SourceLocationWidget
+from pyodas2.pcm import interleaved_pcm_to_numpy
+
 
 HOP_LENGTH = 256
 RATE = 16000
@@ -34,7 +36,7 @@ def audio_thread_run(elevation_azimuth_widget: ElevationAzimuthWidget, source_lo
         if l < 0:
             continue
 
-        audio = np.frombuffer(data, dtype=np.int32).reshape(-1, len(mics)).T
+        audio = interleaved_pcm_to_numpy(data, len(mics), dtype=np.int32) # The dtype must match the alsa format.
         result = pipeline.process(audio)
 
         elevation_azimuth_widget.add_potential_sources(result.directions)

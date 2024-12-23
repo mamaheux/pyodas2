@@ -1,2 +1,2 @@
-pyalsaaudio
+pyalsaaudio==0.11.0
 ../../

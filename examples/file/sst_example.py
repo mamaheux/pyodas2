@@ -5,10 +5,9 @@ This is an example to illustrate how to perform sound source tracking.
 import os
 import wave
 
-import numpy as np
-
 from pyodas2.utils import Mics
 from pyodas2.pipelines import SstPipeline, SstPipelineResult
+from pyodas2.pcm import interleaved_pcm_to_numpy
 
 
 AUDIO_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio', 'mix.wav')
@@ -26,16 +25,9 @@ def main():
             if len(data) != data_size:
                 break
 
-            audio = bytes_to_numpy(data, wave_reader.getnchannels(), wave_reader.getsampwidth())
+            audio = interleaved_pcm_to_numpy(data, wave_reader.getnchannels(), sample_width=wave_reader.getsampwidth())
             result = pipeline.process(audio)
             display_result(result)
-
-
-def bytes_to_numpy(data: bytes, nchannels: int, sample_width: int) -> np.ndarray:
-    if sample_width == 2:
-        return np.frombuffer(data, dtype=np.int16).reshape(-1, nchannels).T
-    else:
-        raise ValueError('Not supported sample width.')
 
 
 def display_result(result: SstPipelineResult):

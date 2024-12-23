@@ -5,10 +5,9 @@ This is an example to illustrate how to perform delay and sum beamforming using 
 import os
 import wave
 
-import numpy as np
-
 from pyodas2.utils import Mics
 from pyodas2.pipelines import DelaySumPipeline
+from pyodas2.pcm import interleaved_pcm_to_numpy, numpy_to_interleaved_pcm
 
 
 INPUT_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio', 'mix.wav')
@@ -35,24 +34,9 @@ def main():
             if len(data) != data_size:
                 break
 
-            audio = bytes_to_numpy(data, wave_reader.getnchannels(), wave_reader.getsampwidth())
+            audio = interleaved_pcm_to_numpy(data, wave_reader.getnchannels(), sample_width=wave_reader.getsampwidth())
             result = pipeline.process(audio)
-            wave_writer.writeframes(numpy_to_bytes(result.audio))
-
-
-def bytes_to_numpy(data: bytes, nchannels: int, sample_width: int) -> np.ndarray:
-    if sample_width == 2:
-        return np.frombuffer(data, dtype=np.int16).reshape(-1, nchannels).T
-    else:
-        raise ValueError('Not supported sample width.')
-
-
-def numpy_to_bytes(audio: np.ndarray[np.float32]) -> bytes:
-    if OUTPUT_SAMPLE_WIDTH == 2:
-        return (audio * np.iinfo(np.int16).max).astype(np.int16).T.tobytes()
-    else:
-        raise ValueError('Not supported sample width.')
-
+            wave_writer.writeframes(numpy_to_interleaved_pcm(result.audio, sample_width=OUTPUT_SAMPLE_WIDTH))
 
 if __name__ == '__main__':
     main()

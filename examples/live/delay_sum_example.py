@@ -7,6 +7,7 @@ import numpy as np
 
 from pyodas2.utils import Mics
 from pyodas2.pipelines import DelaySumPipeline
+from pyodas2.pcm import interleaved_pcm_to_numpy, numpy_to_interleaved_pcm
 
 HOP_LENGTH = 128
 RATE = 16000
@@ -31,10 +32,10 @@ def main():
     while True:
         l, input_data = input_pcm.read()
 
-        input_audio = np.frombuffer(input_data, dtype=np.int32).reshape(-1, len(mics)).T
+        input_audio = interleaved_pcm_to_numpy(input_data, len(mics), dtype=np.int32) # The dtype must match the input_pcm alsa format.
         result = pipeline.process(input_audio)
 
-        output_data = (result.audio * np.iinfo(np.int32).max).astype(np.int32).T.tobytes()
+        output_data = numpy_to_interleaved_pcm(result.audio, dtype=np.int32) # The dtype must match the output_pcm alsa format.
         output_pcm.write(output_data)
 
 

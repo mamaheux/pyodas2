@@ -5,6 +5,7 @@ API
    :maxdepth: 2
    :caption: Contents:
 
+   pyodas2/pcm
    pyodas2/pipelines
    pyodas2/visualization
    pyodas2/signals
