@@ -2,9 +2,9 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from pyodas2.utils import Mics, Points
-from pyodas2.signals import Hops, Freqs, Masks, Covs, Tdoas, Weights
-from pyodas2.systems import Stft, Window, Scm, Phat, Gcc, DelaySum, Beamformer, Istft
+from pyodas2.signals import Covs, Freqs, Hops, Masks, Tdoas, Weights
+from pyodas2.systems import Beamformer, DelaySum, Gcc, Istft, Phat, Scm, Stft, Window
+from pyodas2.utils import Mics
 
 
 @dataclass

@@ -1,7 +1,7 @@
 import pytest
 
-from pyodas2.utils import Mics, Mic
 from pyodas2.types import Xyz
+from pyodas2.utils import Mic, Mics
 
 
 def test_init_respeaker_usb_4():
@@ -102,7 +102,7 @@ def test_get_item_out_of_range():
     testee = Mics(Mics.Hardware.RESPEAKER_USB_4)
 
     with pytest.raises(IndexError):
-        a = testee[5]
+        _a = testee[5]
 
 
 def test_get_item_mutable():

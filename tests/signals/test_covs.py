@@ -1,13 +1,13 @@
+import numpy as np
 import pytest
 
-import numpy as np
-
 from pyodas2.signals import Covs
+
 
 def test_init_too_long_label():
     Covs('1' * 63, 4, 512)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The label is too long. The maximum length is 63.'):
         Covs('1' * 64, 4, 512)
 
 def test_init():
@@ -23,13 +23,13 @@ def test_init():
 def test_numpy_xcorrs_invalid_shape(dtype):
     testee = Covs('XXs', 4, 2)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='Invalid array shape, it must be *'):
         testee.xcorrs_load_numpy(np.zeros(12, dtype=dtype))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='Invalid array shape, it must be *'):
         testee.xcorrs_load_numpy(np.zeros((5, 2), dtype=dtype))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='Invalid array shape, it must be *'):
         testee.xcorrs_load_numpy(np.zeros((6, 3), dtype=dtype))
 
 
@@ -55,13 +55,13 @@ def test_xcorrs_numpy(dtype):
 def test_numpy_acorrs_invalid_shape(dtype):
     testee = Covs('XXs', 2, 4)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='Invalid array shape, it must be *'):
         testee.acorrs_load_numpy(np.zeros(12, dtype=dtype))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='Invalid array shape, it must be *'):
         testee.acorrs_load_numpy(np.zeros((3, 4), dtype=dtype))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='Invalid array shape, it must be *'):
         testee.acorrs_load_numpy(np.zeros((2, 5), dtype=dtype))
 
 

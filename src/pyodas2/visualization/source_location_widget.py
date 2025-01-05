@@ -1,12 +1,10 @@
-from typing import List, Dict
+from typing import Dict, List
 
 import numpy as np
-
 import pyqtgraph.opengl as gl
 from pyqtgraph.Qt import QtCore
 
 from pyodas2.signals import Doas
-
 
 AXIS_SIZE = 1.5
 SPHERE_RADIUS = 1.0

@@ -1,9 +1,8 @@
+import numpy as np
 import pytest
 
-import numpy as np
-
-from pyodas2.systems import Mvdr
 from pyodas2.signals import Covs, Weights
+from pyodas2.systems import Mvdr
 
 
 def test_init():
@@ -23,23 +22,23 @@ def test_process_invalid_inputs():
 
     testee = Mvdr(NUM_CHANNELS, NUM_BINS)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of channels of the covs must be 4.'):
         testee.process(Covs('', NUM_CHANNELS + 1, NUM_BINS),
                        Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of bins of the covs must be 8.'):
         testee.process(Covs('', NUM_CHANNELS, NUM_BINS + 1),
                        Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of sources of the weights must be 1.'):
         testee.process(Covs('', NUM_CHANNELS, NUM_BINS),
                        Weights('', NUM_SOURCES + 1, NUM_CHANNELS, NUM_BINS))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of channels of the weights must be 4.'):
         testee.process(Covs('', NUM_CHANNELS, NUM_BINS),
                        Weights('', NUM_SOURCES, NUM_CHANNELS + 1, NUM_BINS))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of bins of the weights must be 8.'):
         testee.process(Covs('', NUM_CHANNELS, NUM_BINS),
                        Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS + 1))
 

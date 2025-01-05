@@ -1,10 +1,10 @@
+import math
+
+import numpy as np
 import pytest
 
-import math
-import numpy as np
-
-from pyodas2.systems import Gcc
 from pyodas2.signals import Covs, Tdoas
+from pyodas2.systems import Gcc
 
 
 @pytest.mark.parametrize("num_bins", [8, 10])
@@ -12,7 +12,7 @@ def test_init_invalid_num_bins(num_bins):
     NUM_SOURCES = 2
     NUM_CHANNELS = 4
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of samples must be a power of 2*'):
         Gcc(NUM_SOURCES, NUM_CHANNELS, num_bins)
 
 
@@ -38,19 +38,19 @@ def test_process_invalid_inputs():
 
     testee = Gcc(NUM_SOURCES, NUM_CHANNELS, NUM_BINS)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of channels of the covs must be 4.'):
         testee.process(Covs('', NUM_CHANNELS + 1, NUM_BINS),
                        Tdoas('', NUM_CHANNELS, NUM_SOURCES))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of bins of the covs must be 9.'):
         testee.process(Covs('', NUM_CHANNELS, NUM_BINS + 1),
                        Tdoas('', NUM_CHANNELS, NUM_SOURCES))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of channels of the tdoas must be 4.'):
         testee.process(Covs('', NUM_CHANNELS, NUM_BINS),
                        Tdoas('', NUM_CHANNELS + 1, NUM_SOURCES))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of sources of the tdoas must be 2.'):
         testee.process(Covs('', NUM_CHANNELS, NUM_BINS),
                        Tdoas('', NUM_CHANNELS, NUM_SOURCES + 1))
 

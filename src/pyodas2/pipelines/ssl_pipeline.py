@@ -1,11 +1,11 @@
-from typing import List
 from dataclasses import dataclass
+from typing import List
 
 import numpy as np
 
+from pyodas2.signals import Covs, Doas, Freqs, Hops, Masks, Tdoas
+from pyodas2.systems import Gcc, Phat, Scm, Ssl, Stft, Window
 from pyodas2.utils import Mics, Points
-from pyodas2.signals import Hops, Freqs, Masks, Covs, Tdoas, Doas
-from pyodas2.systems import Stft, Window, Scm, Phat, Gcc, Ssl
 
 
 @dataclass

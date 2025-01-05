@@ -2,10 +2,11 @@ import pytest
 
 from pyodas2.signals import Tdoas
 
+
 def test_init_too_long_label():
     Tdoas('1' * 63, 4, 2)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The label is too long. The maximum length is 63.'):
         Tdoas('1' * 64, 4, 2)
 
 def test_init():
@@ -22,10 +23,10 @@ def test_get_item_out_of_range():
     testee = Tdoas('tdoas', 4, 2)
 
     with pytest.raises(IndexError):
-        a = testee[3, 0]
+        _a = testee[3, 0]
 
     with pytest.raises(IndexError):
-        a = testee[0, 6]
+        _a = testee[0, 6]
 
 
 def test_get_item_mutable():

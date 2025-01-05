@@ -1,9 +1,9 @@
-import pytest
-
 import math
 
-from pyodas2.systems import DelaySum
+import pytest
+
 from pyodas2.signals import Tdoas, Weights
+from pyodas2.systems import DelaySum
 
 
 def test_init():
@@ -25,23 +25,23 @@ def test_process_invalid_inputs():
 
     testee = DelaySum(NUM_SOURCES, NUM_CHANNELS, NUM_BINS)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of channels of the tdoas must be 4.'):
         testee.process(Tdoas('', NUM_CHANNELS + 1, NUM_SOURCES),
                        Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of sources of the tdoas must be 3.'):
         testee.process(Tdoas('', NUM_CHANNELS, NUM_SOURCES + 1),
                        Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of sources of the weights must be 3.'):
         testee.process(Tdoas('', NUM_CHANNELS, NUM_SOURCES),
                        Weights('', NUM_SOURCES + 1, NUM_CHANNELS, NUM_BINS))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of channels of the weights must be 4.'):
         testee.process(Tdoas('', NUM_CHANNELS, NUM_SOURCES),
                        Weights('', NUM_SOURCES, NUM_CHANNELS + 1, NUM_BINS))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of bins of the weights must be 9.'):
         testee.process(Tdoas('', NUM_CHANNELS, NUM_SOURCES),
                        Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS + 1))
 

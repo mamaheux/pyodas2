@@ -1,9 +1,9 @@
-import pytest
-
 import math
 
-from pyodas2.systems import Sst
+import pytest
+
 from pyodas2.signals import Doas, Dsf
+from pyodas2.systems import Sst
 from pyodas2.types import Xyz
 
 
@@ -26,12 +26,12 @@ def test_process_invalid_inputs():
 
     testee = Sst(NUM_TRACKS, NUM_DIRECTIONS, NUM_PASTS)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of directions of the input must be 4.'):
         testee.process(Dsf(''),
                        Doas('', NUM_DIRECTIONS + 1),
                        Doas('', NUM_TRACKS))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of directions of the output must be 3.'):
         testee.process(Dsf(''),
                        Doas('', NUM_DIRECTIONS),
                        Doas('', NUM_TRACKS + 1))
@@ -66,7 +66,7 @@ def test_process():
     ]
 
     index_noise = 0
-    for index_frame in range(20):
+    for _index_frame in range(20):
         for index_pot in range(NUM_DIRECTIONS):
             doas_src[index_pot] = targets[index_pot]
             doas_src[index_pot].coord = (doas_src[index_pot].coord + noises[index_noise].coord).unit()

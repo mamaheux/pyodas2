@@ -1,9 +1,8 @@
+import numpy as np
 import pytest
 
-import numpy as np
-
-from pyodas2.systems import Phat
 from pyodas2.signals import Covs
+from pyodas2.systems import Phat
 
 
 def test_init():
@@ -23,19 +22,19 @@ def test_process_invalid_inputs():
 
     testee = Phat(NUM_CHANNELS, NUM_BINS)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of channels of the input must be 4.'):
         testee.process(Covs('', NUM_CHANNELS + 1, NUM_BINS),
                        Covs('', NUM_CHANNELS, NUM_BINS))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of bins of the input must be 8.'):
         testee.process(Covs('', NUM_CHANNELS, NUM_BINS + 1),
                        Covs('', NUM_CHANNELS, NUM_BINS))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of channels of the output must be 4.'):
         testee.process(Covs('', NUM_CHANNELS, NUM_BINS),
                        Covs('', NUM_CHANNELS + 1, NUM_BINS))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of bins of the output must be 8.'):
         testee.process(Covs('', NUM_CHANNELS, NUM_BINS),
                        Covs('', NUM_CHANNELS, NUM_BINS + 1))
 

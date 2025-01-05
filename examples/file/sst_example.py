@@ -5,10 +5,9 @@ This is an example to illustrate how to perform sound source tracking.
 import os
 import wave
 
-from pyodas2.utils import Mics
-from pyodas2.pipelines import SstPipeline, SstPipelineResult
 from pyodas2.pcm import interleaved_pcm_to_numpy
-
+from pyodas2.pipelines import SstPipeline, SstPipelineResult
+from pyodas2.utils import Mics
 
 AUDIO_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio', 'mix.wav')
 HOP_LENGTH = 128

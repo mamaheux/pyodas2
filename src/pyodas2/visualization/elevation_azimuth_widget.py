@@ -1,7 +1,6 @@
-from typing import List, Dict, Iterable
+from typing import Dict, Iterable, List
 
 import numpy as np
-
 import pyqtgraph as pg
 from pyqtgraph.Qt import QtCore
 
@@ -81,7 +80,7 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
         self._source_azimuth_plot.addItem(self._azimuth_tracked_source_item)
 
     def _update_potential_sources(self):
-        c = sum(map(lambda x: len(x), self._elevation_potential_sources))
+        c = sum(len(x) for x in self._elevation_potential_sources)
         all_elevations = np.zeros((c, 2))
         all_azimuths = np.zeros((c, 2))
 
@@ -101,7 +100,7 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
 
 
     def _update_tracked_sources(self):
-        c = sum(map(lambda x: len(x), self._elevation_tracked_sources))
+        c = sum(len(x) for x in self._elevation_tracked_sources)
         all_elevations = np.zeros((c, 2))
         all_azimuths = np.zeros((c, 2))
 

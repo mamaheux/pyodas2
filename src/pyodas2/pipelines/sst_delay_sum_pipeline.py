@@ -1,11 +1,23 @@
-from typing import List, Dict
 from dataclasses import dataclass
+from typing import Dict, List
 
 import numpy as np
 
+from pyodas2.signals import Covs, Doas, Dsf, Freqs, Hops, Masks, Tdoas, Weights
+from pyodas2.systems import (
+    Beamformer,
+    DelaySum,
+    Gcc,
+    Istft,
+    Phat,
+    Scm,
+    Ssl,
+    Sst,
+    Steering,
+    Stft,
+    Window,
+)
 from pyodas2.utils import Mics, Points
-from pyodas2.signals import Hops, Freqs, Masks, Covs, Tdoas, Doas, Dsf, Weights
-from pyodas2.systems import Stft, Window, Scm, Phat, Gcc, Ssl, Sst, Steering, DelaySum, Beamformer, Istft
 
 
 @dataclass

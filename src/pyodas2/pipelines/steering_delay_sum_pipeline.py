@@ -2,10 +2,10 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from pyodas2.utils import Mics, Points
-from pyodas2.signals import Hops, Freqs, Doas, Tdoas, Weights
-from pyodas2.systems import Stft, Window, Steering, DelaySum, Beamformer, Istft
+from pyodas2.signals import Doas, Freqs, Hops, Tdoas, Weights
+from pyodas2.systems import Beamformer, DelaySum, Istft, Steering, Stft, Window
 from pyodas2.types import Xyz
+from pyodas2.utils import Mics
 
 
 @dataclass
@@ -82,7 +82,8 @@ class SteeringDelaySumPipeline:
         :return: None
         """
         if len(directions) != len(self._doas):
-            raise ValueError(f'Expected {len(self._doas)} directions')
+            msg = f'Expected {len(self._doas)} directions'
+            raise ValueError(msg)
 
         for i in range(len(directions)):
             self._doas[i].type = Doas.Src.TARGET

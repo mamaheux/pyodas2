@@ -1,23 +1,21 @@
+import numpy as np
 import pytest
 
-import numpy as np
-
+from pyodas2.signals import Freqs, Hops
 from pyodas2.systems import Stft, Window
-from pyodas2.signals import Hops, Freqs
 
 
-@pytest.mark.parametrize("num_bins", [8, 10])
-def test_init_invalid_num_bins(num_bins):
+def test_init_invalid_values():
     NUM_CHANNELS = 4
 
-    with pytest.raises(ValueError):
-        NUM_SAMPLES = 15
-        NUM_SHIFTS = 4
+    NUM_SAMPLES = 15
+    NUM_SHIFTS = 4
+    with pytest.raises(ValueError, match='The number of samples must be a power of 2*'):
         Stft(NUM_CHANNELS, NUM_SAMPLES, NUM_SHIFTS, Window.HANN)
 
-    with pytest.raises(ValueError):
-        NUM_SAMPLES = 16
-        NUM_SHIFTS = 17
+    NUM_SAMPLES = 16
+    NUM_SHIFTS = 17
+    with pytest.raises(ValueError, match='The number of samples must be higher than number of shifts.'):
         Stft(NUM_CHANNELS, NUM_SAMPLES, NUM_SHIFTS, Window.HANN)
 
 
@@ -43,19 +41,19 @@ def test_process_invalid_inputs():
 
     testee = Stft(NUM_CHANNELS, NUM_SAMPLES, NUM_SHIFTS, Window.HANN)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of sources of the hops must be 2.'):
         testee.process(Hops('xs', NUM_CHANNELS + 1, NUM_SHIFTS),
                        Freqs('Xs', NUM_CHANNELS, NUM_BINS))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of shifts of the hops must be 4.'):
         testee.process(Hops('xs', NUM_CHANNELS, NUM_SHIFTS + 1),
                        Freqs('Xs', NUM_CHANNELS, NUM_BINS))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of channels of the freqs must be 2.'):
         testee.process(Hops('xs', NUM_CHANNELS, NUM_SHIFTS),
                        Freqs('Xs', NUM_CHANNELS + 1, NUM_BINS))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of bins of the freqs must be 9.'):
         testee.process(Hops('xs', NUM_CHANNELS, NUM_SHIFTS),
                        Freqs('Xs', NUM_CHANNELS, NUM_BINS + 1))
 

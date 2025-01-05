@@ -18,7 +18,7 @@ def test_get_item_out_of_range():
     sphere = Points(Points.Geometry.SPHERE)
     i = 0
     for i, _ in enumerate(sphere):
-        pass
+        assert i < len(sphere)
 
     assert i == 2561
 

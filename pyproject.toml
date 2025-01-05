@@ -86,7 +86,17 @@ extend-select = [
 ignore = [
   "PLR09",    # Too many X
   "PLR2004",  # Magic comparison
+  "PTH118",   # os.path.join
+  "PTH120",   # os.path.dirname
+  "PTH123",   # open
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["T20"]
+"tests/**" = [
+  "T20",
+  "NPY002",   # np.random
+]
+"examples/**" = [
+  "PLW0603",  # Global statement
+  "T201",     # Print
+]

@@ -1,7 +1,7 @@
 import pytest
 
-from pyodas2.utils import Mic
 from pyodas2.types import Xyz
+from pyodas2.utils import Mic
 
 
 def test_init_omnidirectional():

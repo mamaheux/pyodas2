@@ -2,18 +2,17 @@
 This is an example to illustrate how to perform sound source tracking using a live audio stream.
 """
 
-import threading
 import signal
+import threading
 
 import alsaaudio
 import numpy as np
-
 import pyqtgraph as pg
 
-from pyodas2.utils import Mics
-from pyodas2.pipelines import SstPipeline
-from pyodas2.visualization import ElevationAzimuthWidget, SourceLocationWidget
 from pyodas2.pcm import interleaved_pcm_to_numpy
+from pyodas2.pipelines import SstPipeline
+from pyodas2.utils import Mics
+from pyodas2.visualization import ElevationAzimuthWidget, SourceLocationWidget
 
 HOP_LENGTH = 256
 RATE = 16000
@@ -31,11 +30,12 @@ def audio_thread_run(elevation_azimuth_widget: ElevationAzimuthWidget, source_lo
                         periodsize=HOP_LENGTH, device='hw:CARD=SC16,DEV=0')
 
     while not stop_requested:
-        l, data = pcm.read()
-        if l < 0:
+        length, data = pcm.read()
+        if length < 0:
             continue
 
-        audio = interleaved_pcm_to_numpy(data, len(mics), dtype=np.int32) # The dtype must match the alsa format.
+        # The dtype must match the alsa format.
+        audio = interleaved_pcm_to_numpy(data, len(mics), dtype=np.int32)
         result = pipeline.process(audio)
 
         elevation_azimuth_widget.add_potential_sources(result.potential_directions)
@@ -46,7 +46,7 @@ def audio_thread_run(elevation_azimuth_widget: ElevationAzimuthWidget, source_lo
 
 
 def main():
-    app = pg.mkQApp("PyODAS2 - SSL Example")
+    _app = pg.mkQApp("PyODAS2 - SSL Example")
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
     elevation_azimuth_widget = ElevationAzimuthWidget(sample_rate=RATE, hop_length=HOP_LENGTH)

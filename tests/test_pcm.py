@@ -1,23 +1,23 @@
+import numpy as np
 import pytest
 
-import numpy as np
-
 from pyodas2.pcm import interleaved_pcm_to_numpy, numpy_to_interleaved_pcm
+
 
 def test_interleaved_pcm_to_numpy_invalid_inputs():
     data = b'1234567801234567'
     nchannels = 2
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The sample_width or the dtype must be provided, not both.'):
         interleaved_pcm_to_numpy(data, nchannels, sample_width=2, dtype=np.int32)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='Not supported sample_width.'):
         interleaved_pcm_to_numpy(data, nchannels, sample_width=1)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='Not supported dtype.'):
         interleaved_pcm_to_numpy(data, nchannels, dtype=np.complex64)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The sample_width or the dtype must be provided.'):
         interleaved_pcm_to_numpy(data, nchannels)
 
 
@@ -55,19 +55,19 @@ def test_interleaved_pcm_to_numpy_dtype():
 
 
 def test_numpy_to_interleaved_pcm_invalid_inputs():
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The sample_width or the dtype must be provided, not both.'):
         numpy_to_interleaved_pcm(np.zeros((2, 3), dtype=np.float32), sample_width=2, dtype=np.int32)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The data dtype is not supported.'):
         numpy_to_interleaved_pcm(np.zeros((2, 3), dtype=np.complex64), sample_width=2)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='Not supported sample_width.'):
         numpy_to_interleaved_pcm(np.zeros((2, 3), dtype=np.float32), sample_width=1)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='Not supported dtype.'):
         numpy_to_interleaved_pcm(np.zeros((2, 3), dtype=np.float32), dtype=np.complex64)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r'The sample_width or the dtype must be provided.'):
         numpy_to_interleaved_pcm(np.zeros((2, 3), dtype=np.float32))
 
 

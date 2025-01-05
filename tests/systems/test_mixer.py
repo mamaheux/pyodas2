@@ -1,9 +1,8 @@
+import numpy as np
 import pytest
 
-import numpy as np
-
-from pyodas2.systems import Mixer
 from pyodas2.signals import Hops
+from pyodas2.systems import Mixer
 
 
 def test_init():
@@ -18,11 +17,11 @@ def test_process_invalid_inputs():
 
     testee = Mixer(MAPPING)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='hops_in does not have enough channels.'):
         testee.process(Hops('in', max(MAPPING), NUM_SHIFT),
                        Hops('ou', len(MAPPING), NUM_SHIFT))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='hops_out does not have the same number of channels as the mixer.'):
         testee.process(Hops('in', max(MAPPING) + 1, NUM_SHIFT),
                        Hops('ou', len(MAPPING) + 1, NUM_SHIFT))
 

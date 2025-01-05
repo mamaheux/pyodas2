@@ -91,7 +91,7 @@ void verify_doas_direction(const doas_t& doas) {
     for (size_t i = 0; i < doas.num_directions; i++) {
         float l2 = xyz_l2(doas.dirs[i].coord);
         if (fabsf(l2 - 1.f) > 1e-3 && l2 != 0.f) {
-            throw py::value_error("All doas direction norms must 1 (" + std::to_string(xyz_l2(doas.dirs[i].coord)) + ")");
+            throw py::value_error("All doas direction norms must be 1.");
         }
     }
 }

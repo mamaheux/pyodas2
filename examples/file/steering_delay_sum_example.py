@@ -5,11 +5,10 @@ This is an example to illustrate how to perform delay and sum beamforming at giv
 import os
 import wave
 
-from pyodas2.utils import Mics
-from pyodas2.types import Xyz
-from pyodas2.pipelines import SteeringDelaySumPipeline
 from pyodas2.pcm import interleaved_pcm_to_numpy, numpy_to_interleaved_pcm
-
+from pyodas2.pipelines import SteeringDelaySumPipeline
+from pyodas2.types import Xyz
+from pyodas2.utils import Mics
 
 INPUT_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio', 'mix.wav')
 OUTPUT_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'output.wav')

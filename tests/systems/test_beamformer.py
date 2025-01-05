@@ -1,9 +1,8 @@
+import numpy as np
 import pytest
 
-import numpy as np
-
-from pyodas2.systems import Beamformer
 from pyodas2.signals import Freqs, Weights
+from pyodas2.systems import Beamformer
 
 
 def test_init():
@@ -25,37 +24,37 @@ def test_process_invalid_inputs():
 
     testee = Beamformer(NUM_SOURCES, NUM_CHANNELS, NUM_BINS)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of channels of the input must be 4.'):
         testee.process(Freqs('', NUM_CHANNELS + 1, NUM_BINS),
                        Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS),
                        Freqs('', NUM_SOURCES, NUM_BINS))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of bins of the input must be 8.'):
         testee.process(Freqs('', NUM_CHANNELS, NUM_BINS + 1),
                        Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS),
                        Freqs('', NUM_SOURCES, NUM_BINS))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of sources of the weights must be 2.'):
         testee.process(Freqs('', NUM_CHANNELS, NUM_BINS),
                        Weights('', NUM_SOURCES + 1, NUM_CHANNELS, NUM_BINS),
                        Freqs('', NUM_SOURCES, NUM_BINS))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of channels of the weights must be 4.'):
         testee.process(Freqs('', NUM_CHANNELS, NUM_BINS),
                        Weights('', NUM_SOURCES, NUM_CHANNELS + 1, NUM_BINS),
                        Freqs('', NUM_SOURCES, NUM_BINS))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of bins of the weights must be 8.'):
         testee.process(Freqs('', NUM_CHANNELS, NUM_BINS),
                        Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS + 1),
                        Freqs('', NUM_SOURCES, NUM_BINS))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of channels of the output must be 2.'):
         testee.process(Freqs('', NUM_CHANNELS, NUM_BINS),
                        Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS),
                        Freqs('', NUM_SOURCES + 1, NUM_BINS))
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='The number of bins of the output must be 8.'):
         testee.process(Freqs('', NUM_CHANNELS, NUM_BINS),
                        Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS),
                        Freqs('', NUM_SOURCES, NUM_BINS + 1))

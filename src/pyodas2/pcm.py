@@ -1,7 +1,12 @@
+from typing import Optional
+
 import numpy as np
 
 
-def interleaved_pcm_to_numpy(data: bytes, nchannels: int, sample_width: int = None, dtype : np.dtype = None) -> np.ndarray:
+def interleaved_pcm_to_numpy(data: bytes,
+                             nchannels: int,
+                             sample_width: Optional[int] = None,
+                             dtype : Optional[np.dtype] = None) -> np.ndarray:
     """
     Converts interleaved pcm bytes to a PyODAS2 compatible numpy array.
     The sample_width or the dtype must be provided.
@@ -13,25 +18,32 @@ def interleaved_pcm_to_numpy(data: bytes, nchannels: int, sample_width: int = No
     :return: The compatible numpy array.
     """
     if sample_width is not None and dtype is not None:
-        raise ValueError('The sample_width or the dtype must be provided, not both.')
+        msg = 'The sample_width or the dtype must be provided, not both.'
+        raise ValueError(msg)
 
     if sample_width is not None:
         if sample_width == 2:
             return np.frombuffer(data, dtype=np.int16).reshape(-1, nchannels).T
-        elif sample_width == 4:
+        if sample_width == 4:
             return np.frombuffer(data, dtype=np.int32).reshape(-1, nchannels).T
-        else:
-            raise ValueError('Not supported sample_width.')
-    elif dtype is not None:
+
+        msg = 'Not supported sample_width.'
+        raise ValueError(msg)
+
+    if dtype is not None:
         if np.issubdtype(dtype, np.integer) or np.issubdtype(dtype, np.floating):
             return np.frombuffer(data, dtype=dtype).reshape(-1, nchannels).T
-        else:
-            raise ValueError('Not supported dtype.')
-    else:
-        raise ValueError('The sample_width or the dtype must be provided.')
+
+        msg = 'Not supported dtype.'
+        raise ValueError(msg)
+
+    msg = 'The sample_width or the dtype must be provided.'
+    raise ValueError(msg)
 
 
-def numpy_to_interleaved_pcm(data: np.ndarray, sample_width: int = None, dtype : np.dtype = None) -> bytes:
+def numpy_to_interleaved_pcm(data: np.ndarray,
+                             sample_width: Optional[int] = None,
+                             dtype : Optional[np.dtype] = None) -> bytes:
     """
     Converts a PyODAS2 compatible numpy array to interleaved pcm bytes.
     The sample_width or the dtype must be provided.
@@ -42,9 +54,11 @@ def numpy_to_interleaved_pcm(data: np.ndarray, sample_width: int = None, dtype :
     :return: The interleaved pcm bytes.
     """
     if sample_width is not None and dtype is not None:
-        raise ValueError('The sample_width or the dtype must be provided, not both.')
+        msg = 'The sample_width or the dtype must be provided, not both.'
+        raise ValueError(msg)
     if not np.issubdtype(data.dtype, np.integer) and not np.issubdtype(data.dtype, np.floating):
-        raise ValueError('The data dtype is not supported.')
+        msg = 'The data dtype is not supported.'
+        raise ValueError(msg)
 
     if np.issubdtype(data.dtype, np.signedinteger):
         data = -data.astype(np.float32) / np.iinfo(data.dtype).min
@@ -56,16 +70,20 @@ def numpy_to_interleaved_pcm(data: np.ndarray, sample_width: int = None, dtype :
     if sample_width is not None:
         if sample_width == 2:
             return (data * np.iinfo(np.int16).max).astype(np.int16).T.tobytes()
-        elif sample_width == 4:
+        if sample_width == 4:
             return (data * np.iinfo(np.int32).max).astype(np.int32).T.tobytes()
-        else:
-            raise ValueError('Not supported sample_width.')
-    elif dtype is not None:
+
+        msg = 'Not supported sample_width.'
+        raise ValueError(msg)
+
+    if dtype is not None:
         if np.issubdtype(dtype, np.integer):
             return (data * np.iinfo(dtype).max).astype(dtype).T.tobytes()
-        elif np.issubdtype(dtype, np.floating):
+        if np.issubdtype(dtype, np.floating):
             return data.astype(dtype).T.tobytes()
-        else:
-            raise ValueError('Not supported dtype.')
-    else:
-        raise ValueError('The sample_width or the dtype must be provided.')
+
+        msg = 'Not supported dtype.'
+        raise ValueError(msg)
+
+    msg = 'The sample_width or the dtype must be provided.'
+    raise ValueError(msg)

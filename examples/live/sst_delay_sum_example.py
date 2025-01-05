@@ -5,9 +5,9 @@ This is an example to illustrate how to perform sound source tracking and delay 
 import alsaaudio
 import numpy as np
 
-from pyodas2.utils import Mics
-from pyodas2.pipelines import SstDelaySumPipeline, SstDelaySumPipelineResult
 from pyodas2.pcm import interleaved_pcm_to_numpy, numpy_to_interleaved_pcm
+from pyodas2.pipelines import SstDelaySumPipeline, SstDelaySumPipelineResult
+from pyodas2.utils import Mics
 
 HOP_LENGTH = 128
 RATE = 16000
@@ -30,13 +30,16 @@ def main():
         output_pcm.write(np.zeros(NUM_SOURCES * HOP_LENGTH, dtype=np.int32).tobytes())
 
     while True:
-        l, input_data = input_pcm.read()
+        _length, input_data = input_pcm.read()
 
-        input_audio = interleaved_pcm_to_numpy(input_data, len(mics), dtype=np.int32) # The dtype must match the input_pcm alsa format.
+        # The dtype must match the input_pcm alsa format.
+        input_audio = interleaved_pcm_to_numpy(input_data, len(mics), dtype=np.int32)
         result = pipeline.process(input_audio)
 
         most_energy_tracked_audio = get_most_energy_tracked_audio(result)
-        output_data = numpy_to_interleaved_pcm(most_energy_tracked_audio, dtype=np.int32) # The dtype must match the output_pcm alsa format.
+
+        # The dtype must match the output_pcm alsa format.
+        output_data = numpy_to_interleaved_pcm(most_energy_tracked_audio, dtype=np.int32)
         output_pcm.write(output_data)
 
 
