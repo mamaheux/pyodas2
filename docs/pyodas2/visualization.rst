@@ -3,6 +3,17 @@ pyodas2.visualization
 
 Classes
 ----------------
+.. autoclass:: pyodas2.visualization.AcousticImageCalibrationWidget
+
+   .. automethod:: __init__
+   .. automethod:: set_camera_image
+   .. automethod:: set_targets
+
+.. autoclass:: pyodas2.visualization.AcousticImageWidget
+
+   .. automethod:: __init__
+   .. automethod:: set_images
+
 .. autoclass:: pyodas2.visualization.SourceLocationWidget
 
    .. automethod:: __init__

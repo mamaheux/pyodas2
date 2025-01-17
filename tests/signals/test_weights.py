@@ -19,7 +19,7 @@ def test_init():
     assert testee.num_bins == 512
 
 
-@pytest.mark.parametrize("dtype", [np.complex64, np.complex128])
+@pytest.mark.parametrize('dtype', [np.complex64, np.complex128])
 def test_numpy_invalid_shape(dtype):
     testee = Weights('Ws', 2, 4, 8)
 
@@ -39,7 +39,7 @@ def test_numpy_invalid_shape(dtype):
         testee.load_numpy(np.zeros((2, 4, 7), dtype=dtype))
 
 
-@pytest.mark.parametrize("dtype", [np.complex64, np.complex128])
+@pytest.mark.parametrize('dtype', [np.complex64, np.complex128])
 def test_numpy(dtype):
     testee = Weights('Ws', 2, 4, 8)
 

@@ -5,7 +5,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "pyodas2"
-version = "0.0.1"
+version = "0.0.0"
 description=""
 readme = "README.md"
 authors = [
@@ -27,11 +27,12 @@ dependencies = [
   "pyside6 >=6.4.0, <7.0.0",
   "opencv-python >=4.6, <5.0",
   "pyqtgraph >= 0.13, <0.14",
-  "pyopengl >= 3.1, <3.2"
+  "pyopengl >= 3.1, <3.2",
 ]
 
 [project.optional-dependencies]
-test = ["pytest"]
+dev = ["ruff", "pytest", "build"]
+pi = ["picamera2 >= 0.3, < 0.4"]
 
 
 [tool.scikit-build]
@@ -58,6 +59,9 @@ test-extras = ["test"]
 
 [tool.cibuildwheel.pyodide]
 build-frontend = {name = "build", args = ["--exports", "whole_archive"]}
+
+[tool.ruff]
+line-length = 100
 
 [tool.ruff.lint]
 extend-select = [
@@ -100,3 +104,7 @@ ignore = [
   "PLW0603",  # Global statement
   "T201",     # Print
 ]
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"

@@ -34,7 +34,7 @@ class SstPipeline:
                  sound_speed: float = 343.0,
                  ssl_geometry: Points.Geometry = Points.Geometry.HALFSPHERE,
                  scm_alpha: float = 0.5,
-                 sst_num_pasts: int = 40):
+                 sst_num_pasts: int = 40) -> None:
         """
         Create a new sound source tracking pipeline.
 

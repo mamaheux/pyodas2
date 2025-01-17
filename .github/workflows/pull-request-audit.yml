@@ -1,0 +1,38 @@
+on:
+  pull_request:
+    branches:
+      - main
+
+name: Pull Request Audit
+
+jobs:
+  format-linter-tests:
+    name: Tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, macos-13, macos-14, windows-2022]
+        python-version: [ "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14" ]
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install PyODAS2
+        run: pip install .[dev]
+
+      - name: Check Formatting
+        run: ruff format --diff
+
+      - name: Linter
+        run: ruff check
+
+      - name: Tests
+        run: pytest

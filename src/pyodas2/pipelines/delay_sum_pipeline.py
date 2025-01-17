@@ -26,7 +26,7 @@ class DelaySumPipeline:
                  num_sources: int = 1,
                  n_fft: int = 512,
                  fft_window: Window = Window.HANN,
-                 scm_alpha: float = 0.5):
+                 scm_alpha: float = 0.5) -> None:
         """
         Create a new delay and sum pipeline.
 

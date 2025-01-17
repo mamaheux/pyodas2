@@ -28,7 +28,7 @@ class SteeringDelaySumPipeline:
                  num_sources: int = 1,
                  n_fft: int = 512,
                  fft_window: Window = Window.HANN,
-                 sound_speed: float = 343.0,):
+                 sound_speed: float = 343.0,) -> None:
         """
         Create a new steering delay and sum pipeline.
 
@@ -74,7 +74,7 @@ class SteeringDelaySumPipeline:
 
         return SteeringDelaySumPipelineResult(self._hops_out.to_numpy().copy())
 
-    def set_directions(self, directions: [Xyz]):
+    def set_directions(self, directions: [Xyz]) -> None:
         """
         Update the directions to listen.
 

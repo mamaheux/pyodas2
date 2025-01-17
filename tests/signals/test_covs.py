@@ -19,7 +19,7 @@ def test_init():
     assert testee.num_bins == 512
 
 
-@pytest.mark.parametrize("dtype", [np.complex64, np.complex128])
+@pytest.mark.parametrize('dtype', [np.complex64, np.complex128])
 def test_numpy_xcorrs_invalid_shape(dtype):
     testee = Covs('XXs', 4, 2)
 
@@ -33,7 +33,7 @@ def test_numpy_xcorrs_invalid_shape(dtype):
         testee.xcorrs_load_numpy(np.zeros((6, 3), dtype=dtype))
 
 
-@pytest.mark.parametrize("dtype", [np.complex64, np.complex128])
+@pytest.mark.parametrize('dtype', [np.complex64, np.complex128])
 def test_xcorrs_numpy(dtype):
     testee = Covs('XXs', 4, 2)
 
@@ -51,7 +51,7 @@ def test_xcorrs_numpy(dtype):
     assert np.allclose(output_data, expected_data)
 
 
-@pytest.mark.parametrize("dtype", [np.float32, np.float64])
+@pytest.mark.parametrize('dtype', [np.float32, np.float64])
 def test_numpy_acorrs_invalid_shape(dtype):
     testee = Covs('XXs', 2, 4)
 
@@ -65,7 +65,7 @@ def test_numpy_acorrs_invalid_shape(dtype):
         testee.acorrs_load_numpy(np.zeros((2, 5), dtype=dtype))
 
 
-@pytest.mark.parametrize("dtype", [np.float32, np.float64])
+@pytest.mark.parametrize('dtype', [np.float32, np.float64])
 def test_acorrs_numpy(dtype):
     testee = Covs('XXs', 2, 4)
 

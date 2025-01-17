@@ -22,6 +22,7 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
         :param sample_rate: The sample rate of the sound.
         :param hop_length: The number of samples in each processed audio frame, also named num_shifts.
         :param history_duration_s: The duration of the history in seconds
+        :param frame_rate: The refresh rate of the plots
         :param parent:
         """
         super().__init__(parent)
@@ -79,7 +80,7 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
         self._source_azimuth_plot.addItem(self._azimuth_potential_source_item)
         self._source_azimuth_plot.addItem(self._azimuth_tracked_source_item)
 
-    def _update_potential_sources(self):
+    def _update_potential_sources(self) -> None:
         c = sum(len(x) for x in self._elevation_potential_sources)
         all_elevations = np.zeros((c, 2))
         all_azimuths = np.zeros((c, 2))
@@ -99,7 +100,7 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
         self._azimuth_potential_source_item.setData(all_azimuths[:, 0], all_azimuths[:, 1], pen=(0, 0, 255), name='Potential Sources')
 
 
-    def _update_tracked_sources(self):
+    def _update_tracked_sources(self) -> None:
         c = sum(len(x) for x in self._elevation_tracked_sources)
         all_elevations = np.zeros((c, 2))
         all_azimuths = np.zeros((c, 2))
@@ -118,7 +119,7 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
         self._elevation_tracked_source_item.setData(all_elevations[:, 0], all_elevations[:, 1], pen=(255, 0, 0), name='Tracked Sources')
         self._azimuth_tracked_source_item.setData(all_azimuths[:, 0], all_azimuths[:, 1], pen=(255, 0, 0), name='Tracked Sources')
 
-    def add_potential_sources(self, directions: List[Doas.Dir]):
+    def add_potential_sources(self, directions: List[Doas.Dir]) -> None:
         """
         Add the potential sources.
 
@@ -136,7 +137,7 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
 
         QtCore.QTimer.singleShot(0, self, update)
 
-    def add_tracked_sources(self, tracked_directions_by_index: Dict[int, Doas.Dir]):
+    def add_tracked_sources(self, tracked_directions_by_index: Dict[int, Doas.Dir]) -> None:
         """
         Add the tracked sources.
         :param tracked_directions_by_index: The tracked sources directions.

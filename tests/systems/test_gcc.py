@@ -7,7 +7,7 @@ from pyodas2.signals import Covs, Tdoas
 from pyodas2.systems import Gcc
 
 
-@pytest.mark.parametrize("num_bins", [8, 10])
+@pytest.mark.parametrize('num_bins', [8, 10])
 def test_init_invalid_num_bins(num_bins):
     NUM_SOURCES = 2
     NUM_CHANNELS = 4

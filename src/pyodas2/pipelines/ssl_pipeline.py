@@ -31,7 +31,7 @@ class SslPipeline:
                  fft_window: Window = Window.HANN,
                  sound_speed: float = 343.0,
                  ssl_geometry: Points.Geometry = Points.Geometry.HALFSPHERE,
-                 scm_alpha: float = 0.5):
+                 scm_alpha: float = 0.5) -> None:
         """
         Create a new sound source localization pipeline.
 

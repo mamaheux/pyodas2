@@ -18,7 +18,7 @@ def test_init():
     assert testee.num_bins == 512
 
 
-@pytest.mark.parametrize("dtype", [np.float32, np.float64])
+@pytest.mark.parametrize('dtype', [np.float32, np.float64])
 def test_numpy_invalid_dtype(dtype):
     testee = Masks('Ms', 2, 4)
 
@@ -32,7 +32,7 @@ def test_numpy_invalid_dtype(dtype):
         testee.load_numpy(np.zeros((2, 6), dtype=dtype))
 
 
-@pytest.mark.parametrize("dtype", [np.float32, np.float64])
+@pytest.mark.parametrize('dtype', [np.float32, np.float64])
 def test_numpy(dtype):
     testee = Masks('Ms', 2, 4)
 

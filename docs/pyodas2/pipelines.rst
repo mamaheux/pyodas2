@@ -62,3 +62,21 @@ Classes
    :undoc-members:
 
 |
+
+.. autoclass:: pyodas2.pipelines.AcousticImageCalibrationPipeline
+
+   .. automethod:: __init__
+   .. autoproperty:: targets
+   .. autoproperty:: current_target_index
+   .. autoproperty:: is_finished
+   .. automethod:: process
+   .. automethod:: record_tdoas
+   .. automethod:: calibrate
+
+|
+
+.. autoclass:: pyodas2.pipelines.AcousticImagePipeline
+
+   .. automethod:: __init__
+   .. automethod:: process
+   .. automethod:: generate_acoustic_image

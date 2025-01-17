@@ -14,9 +14,10 @@ class SourceLocationWidget(gl.GLViewWidget):
     """
     A PyQtGraph widget to display active source location in 3D.
     """
-    def __init__(self, frame_rate: float = 30, parent=None):
+    def __init__(self, frame_rate: float = 30, parent=None) -> None:
         """
         Create a new SourceLocationWidget.
+        :param frame_rate: The refresh rate of the plots
         :param parent: The parent widget
         """
         super().__init__(parent)
@@ -39,7 +40,7 @@ class SourceLocationWidget(gl.GLViewWidget):
         self._update_timer.timeout.connect(self._on_update_timeout)
         self._update_timer.start()
 
-    def _add_axis_item(self):
+    def _add_axis_item(self) -> None:
         axis_item = gl.GLAxisItem()
         axis_item.setSize(AXIS_SIZE, AXIS_SIZE, AXIS_SIZE)
         self.addItem(axis_item)
@@ -48,7 +49,7 @@ class SourceLocationWidget(gl.GLViewWidget):
         self.addItem(gl.GLTextItem(pos=(0.0, AXIS_SIZE, 0.0), text='Y', color=(255, 255, 0, 255)))
         self.addItem(gl.GLTextItem(pos=(0.0, 0.0, AXIS_SIZE), text='Z', color=(0, 0, 255, 255)))
 
-    def _add_xy_plan_item(self):
+    def _add_xy_plan_item(self) -> None:
         verts = np.array([
             [-1, -1, -0.01],
             [-1, 1, -0.01],
@@ -69,7 +70,7 @@ class SourceLocationWidget(gl.GLViewWidget):
         xy_plan_item = gl.GLMeshItem(vertexes=verts, faces=faces, faceColors=colors, smooth=False)
         self.addItem(xy_plan_item)
 
-    def _add_sphere_item(self):
+    def _add_sphere_item(self) -> None:
         sphere_data = gl.MeshData.sphere(rows=10, cols=10, radius=1)
         sphere_item = gl.GLMeshItem(
             meshdata=sphere_data,
@@ -79,21 +80,21 @@ class SourceLocationWidget(gl.GLViewWidget):
         )
         self.addItem(sphere_item)
 
-    def _add_potential_source_item(self):
+    def _add_potential_source_item(self) -> None:
         self._potential_source_item = gl.GLScatterPlotItem()
         self.addItem(self._potential_source_item)
 
-    def _add_tracked_source_item(self):
+    def _add_tracked_source_item(self) -> None:
         self._tracked_source_item = gl.GLScatterPlotItem()
         self.addItem(self._tracked_source_item)
 
-    def _on_update_timeout(self):
+    def _on_update_timeout(self) -> None:
         if self._dirty:
             self._potential_source_item.setData(pos=self._potential_directions, color=(0, 0, 1, 1), size=5)
             self._tracked_source_item.setData(pos=self._tracked_directions, color=(1, 0, 0, 1), size=10)
             self._dirty = False
 
-    def set_potential_sources(self, directions: List[Doas.Dir]):
+    def set_potential_sources(self, directions: List[Doas.Dir]) -> None:
         """
         Update the potential sources.
 
@@ -112,7 +113,7 @@ class SourceLocationWidget(gl.GLViewWidget):
 
         QtCore.QTimer.singleShot(0, self, set_data)
 
-    def set_tracked_sources(self, tracked_directions_by_index: Dict[int, Doas.Dir]):
+    def set_tracked_sources(self, tracked_directions_by_index: Dict[int, Doas.Dir]) -> None:
         """
         Update the tracked sources.
         :param tracked_directions_by_index: The tracked sources directions.
