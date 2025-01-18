@@ -28,6 +28,17 @@ PyODAS2 is designed to work seamlessly on embedded systems, ensuring low latency
 constrained environments.
 
 
+Platform Compatibility
+***********************
+* **Pre-recorded Audio Processing**: PyODAS2 supports all major platforms, including Windows, Linux, and macOS,
+  for processing audio files.
+
+* **Live Audio Processing**: Real-time processing of live audio streams is currently supported only on Linux due to the
+  usage of PyAlsaAudio.
+
+Make sure to check the platform requirements for your use case to ensure a smooth experience.
+
+
 Task Descriptions
 ******************
 
