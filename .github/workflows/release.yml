@@ -72,6 +72,10 @@ jobs:
       - name: Build sdist
         run: python -m build --sdist
 
+      - name: Build HTML Documentation
+        working-directory: docs
+        run: make html
+
       - name: Tag
         run:
           git config user.name "GitHub Actions Bot"
@@ -87,5 +91,14 @@ jobs:
           gh release create v${{ steps.semantic_version.outputs.version }} -t pyodas2_v${{ steps.semantic_version.outputs.version }} -n "github.event.head_commit.message"
           gh release upload v${{ steps.semantic_version.outputs.version }} dist/*
 
-      # TODO pypi
-      # TODO doc
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          attestations: true
+
+      - name: Publish Documentation
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          folder: docs/_build/html
+          target-folder: ${{ steps.semantic_version.outputs.version }}
