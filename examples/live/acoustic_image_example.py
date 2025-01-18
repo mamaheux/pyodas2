@@ -1,11 +1,11 @@
 import os
 
 # Disable numpy multithreading
-os.environ["OMP_NUM_THREADS"] = "1"
-os.environ["OPENBLAS_NUM_THREADS"] = "1"
-os.environ["MKL_NUM_THREADS"] = "1"
-os.environ["VECLIB_MAXIMUM_THREADS"] = "1"
-os.environ["NUMEXPR_NUM_THREADS"] = "1"
+os.environ['OMP_NUM_THREADS'] = '1'
+os.environ['OPENBLAS_NUM_THREADS'] = '1'
+os.environ['MKL_NUM_THREADS'] = '1'
+os.environ['VECLIB_MAXIMUM_THREADS'] = '1'
+os.environ['NUMEXPR_NUM_THREADS'] = '1'
 
 import signal
 import threading
@@ -41,21 +41,27 @@ def video_thread_run(pipeline: AcousticImagePipeline, acoustic_image_widget: Aco
 
 
 def audio_thread_run(mics: Mics, pipeline: AcousticImagePipeline):
-    pcm = alsaaudio.PCM(alsaaudio.PCM_CAPTURE, alsaaudio.PCM_NORMAL,
-                        channels=len(mics), rate=RATE, format=alsaaudio.PCM_FORMAT_S32_LE,
-                        periodsize=HOP_LENGTH, device='hw:CARD=SC16,DEV=0')
+    pcm = alsaaudio.PCM(
+        alsaaudio.PCM_CAPTURE,
+        alsaaudio.PCM_NORMAL,
+        channels=len(mics),
+        rate=RATE,
+        format=alsaaudio.PCM_FORMAT_S32_LE,
+        periodsize=HOP_LENGTH,
+        device='hw:CARD=SC16,DEV=0',
+    )
 
     while not stop_requested:
         length, data = pcm.read()
         if length < 0:
             continue
 
-        audio = interleaved_pcm_to_numpy(data, len(mics), dtype=np.int32) # The dtype must match the alsa format.
+        audio = interleaved_pcm_to_numpy(data, len(mics), dtype=np.int32)  # The dtype must match the alsa format.
         pipeline.process(audio)
 
 
 def main():
-    _app = pg.mkQApp("PyODAS2 - Acoustic Image Example")
+    _app = pg.mkQApp('PyODAS2 - Acoustic Image Example')
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
     mics = Mics(Mics.Hardware.SC16_DEMO_ARRAY)

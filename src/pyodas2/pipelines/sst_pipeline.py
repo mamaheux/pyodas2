@@ -13,6 +13,7 @@ class SstPipelineResult:
     """
     This is a class representing the results of the sound source tracking
     """
+
     potential_directions: List[Doas.Dir]
     tracked_directions_by_index: Dict[int, Doas.Dir]
 
@@ -22,19 +23,21 @@ class SstPipeline:
     This is a class performing sound source tracking.
     """
 
-    def __init__(self,
-                 mics: Mics,
-                 sample_rate: float = 16000,
-                 hop_length: int = 128,
-                 num_sources: int = 1,
-                 num_directions: int = 2,
-                 num_tracks: int = 3,
-                 n_fft: int = 512,
-                 fft_window: Window = Window.HANN,
-                 sound_speed: float = 343.0,
-                 ssl_geometry: Points.Geometry = Points.Geometry.HALFSPHERE,
-                 scm_alpha: float = 0.5,
-                 sst_num_pasts: int = 40) -> None:
+    def __init__(
+        self,
+        mics: Mics,
+        sample_rate: float = 16000,
+        hop_length: int = 128,
+        num_sources: int = 1,
+        num_directions: int = 2,
+        num_tracks: int = 3,
+        n_fft: int = 512,
+        fft_window: Window = Window.HANN,
+        sound_speed: float = 343.0,
+        ssl_geometry: Points.Geometry = Points.Geometry.HALFSPHERE,
+        scm_alpha: float = 0.5,
+        sst_num_pasts: int = 40,
+    ) -> None:
         """
         Create a new sound source tracking pipeline.
 
@@ -59,15 +62,15 @@ class SstPipeline:
         self._num_channels = len(mics)
         self._points = Points(ssl_geometry)
 
-        self._hops = Hops("xs", self._num_channels, hop_length)
-        self._freqs = Freqs("Xs", self._num_channels, self._num_bins)
-        self._masks = Masks("Ms", self._num_channels, self._num_bins)
-        self._covs = Covs("XXs", self._num_channels, self._num_bins)
-        self._covs_phat = Covs("XXps", self._num_channels, self._num_bins)
-        self._tdoas = Tdoas("tdoas", self._num_channels, num_sources)
-        self._doas_potential = Doas("doas_potential", num_directions)
-        self._dsf = Dsf("dsf")
-        self._doas_tracked = Doas("doas_tracked", num_tracks)
+        self._hops = Hops('xs', self._num_channels, hop_length)
+        self._freqs = Freqs('Xs', self._num_channels, self._num_bins)
+        self._masks = Masks('Ms', self._num_channels, self._num_bins)
+        self._covs = Covs('XXs', self._num_channels, self._num_bins)
+        self._covs_phat = Covs('XXps', self._num_channels, self._num_bins)
+        self._tdoas = Tdoas('tdoas', self._num_channels, num_sources)
+        self._doas_potential = Doas('doas_potential', num_directions)
+        self._dsf = Dsf('dsf')
+        self._doas_tracked = Doas('doas_tracked', num_tracks)
 
         self._stft = Stft(self._num_channels, n_fft, hop_length, fft_window)
         self._scm = Scm(self._num_channels, self._num_bins, scm_alpha)
@@ -95,5 +98,7 @@ class SstPipeline:
         self._ssl.process(self._tdoas, self._doas_potential)
         self._sst.process(self._dsf, self._doas_potential, self._doas_tracked)
 
-        return SstPipelineResult([d.copy() for d in self._doas_potential if d.type == Doas.Src.POTENTIAL],
-                                 {i: d.copy() for i, d in enumerate(self._doas_tracked) if d.type == Doas.Src.TRACKED})
+        return SstPipelineResult(
+            [d.copy() for d in self._doas_potential if d.type == Doas.Src.POTENTIAL],
+            {i: d.copy() for i, d in enumerate(self._doas_tracked) if d.type == Doas.Src.TRACKED},
+        )

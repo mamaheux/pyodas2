@@ -10,6 +10,7 @@ def test_init_too_long_label():
     with pytest.raises(ValueError, match='The label is too long. The maximum length is 63.'):
         Masks('1' * 64, 4, 512)
 
+
 def test_init():
     testee = Masks('Ms', 4, 512)
 
@@ -36,8 +37,7 @@ def test_numpy_invalid_dtype(dtype):
 def test_numpy(dtype):
     testee = Masks('Ms', 2, 4)
 
-    input_data = np.array([[1.0, 2.0, 3.0, 4.0],
-                           [5.0, 6.0, 7.0, 8.0]], dtype=dtype)
+    input_data = np.array([[1.0, 2.0, 3.0, 4.0], [5.0, 6.0, 7.0, 8.0]], dtype=dtype)
     testee.load_numpy(input_data)
     output_data = testee.to_numpy()
     assert output_data.dtype == np.float32
@@ -49,8 +49,7 @@ def test_numpy(dtype):
 def test_set_zeros():
     testee = Masks('Ms', 2, 4)
 
-    input_data = np.array([[1.0, 2.0, 3.0, 4.0],
-                           [5.0, 6.0, 7.0, 8.0]], dtype=np.float32)
+    input_data = np.array([[1.0, 2.0, 3.0, 4.0], [5.0, 6.0, 7.0, 8.0]], dtype=np.float32)
     testee.load_numpy(input_data)
     testee.set_zeros()
     assert np.allclose(testee.to_numpy(), np.zeros((2, 4), dtype=np.float32))
@@ -59,8 +58,7 @@ def test_set_zeros():
 def test_set_ones():
     testee = Masks('Ms', 2, 4)
 
-    input_data = np.array([[1.0, 2.0, 3.0, 4.0],
-                           [5.0, 6.0, 7.0, 8.0]], dtype=np.float32)
+    input_data = np.array([[1.0, 2.0, 3.0, 4.0], [5.0, 6.0, 7.0, 8.0]], dtype=np.float32)
     testee.load_numpy(input_data)
     testee.set_ones()
     assert np.allclose(testee.to_numpy(), np.ones((2, 4), dtype=np.float32))

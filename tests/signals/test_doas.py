@@ -10,6 +10,7 @@ def test_init_too_long_label():
     with pytest.raises(ValueError, match='The label is too long. The maximum length is 63.'):
         Doas('1' * 64, 4)
 
+
 def test_init():
     testee = Doas('potential', 4)
 
@@ -33,6 +34,7 @@ def test_get_item_mutable():
     assert testee[0].type == Doas.Src.POTENTIAL
     assert testee[1].coord.x == -10.0
     assert testee[2].energy == 2.0
+
 
 def test_set_item_out_of_range():
     testee = Doas('potential', 4)

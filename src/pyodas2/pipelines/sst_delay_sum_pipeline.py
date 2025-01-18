@@ -25,6 +25,7 @@ class SstDelaySumPipelineResult:
     """
     This is a class representing the results of the sound source tracking and delay and sum on the tracked directions.
     """
+
     potential_directions: List[Doas.Dir]
     tracked_directions_by_index: Dict[int, Doas.Dir]
     audio: np.ndarray
@@ -35,19 +36,21 @@ class SstDelaySumPipeline:
     This is a class performing sound source tracking and delay and sum on the tracked directions.
     """
 
-    def __init__(self,
-                 mics: Mics,
-                 sample_rate: float = 16000,
-                 hop_length: int = 128,
-                 num_sources: int = 1,
-                 num_directions: int = 2,
-                 num_tracks: int = 3,
-                 n_fft: int = 512,
-                 fft_window: Window = Window.HANN,
-                 sound_speed: float = 343.0,
-                 ssl_geometry: Points.Geometry = Points.Geometry.HALFSPHERE,
-                 scm_alpha: float = 0.5,
-                 sst_num_pasts: int = 40) -> None:
+    def __init__(
+        self,
+        mics: Mics,
+        sample_rate: float = 16000,
+        hop_length: int = 128,
+        num_sources: int = 1,
+        num_directions: int = 2,
+        num_tracks: int = 3,
+        n_fft: int = 512,
+        fft_window: Window = Window.HANN,
+        sound_speed: float = 343.0,
+        ssl_geometry: Points.Geometry = Points.Geometry.HALFSPHERE,
+        scm_alpha: float = 0.5,
+        sst_num_pasts: int = 40,
+    ) -> None:
         """
         Create a new sound source tracking pipeline.
 
@@ -72,19 +75,19 @@ class SstDelaySumPipeline:
         self._num_channels = len(mics)
         self._points = Points(ssl_geometry)
 
-        self._hops_in = Hops("xs", self._num_channels, hop_length)
-        self._freqs_in = Freqs("Xs", self._num_channels, self._num_bins)
-        self._masks = Masks("Ms", self._num_channels, self._num_bins)
-        self._covs = Covs("XXs", self._num_channels, self._num_bins)
-        self._covs_phat = Covs("XXps", self._num_channels, self._num_bins)
-        self._tdoas = Tdoas("tdoas", self._num_channels, num_sources)
-        self._doas_potential = Doas("doas_potential", num_directions)
-        self._dsf = Dsf("dsf")
-        self._doas_tracked = Doas("doas_tracked", num_tracks)
-        self._tdoas_tracked = Tdoas("tdoas_tracked", self._num_channels, num_tracks)
-        self._weights = Weights("Ws", num_tracks, self._num_channels, self._num_bins)
-        self._freqs_out = Freqs("Ys", num_tracks, self._num_bins)
-        self._hops_out = Hops("ys", num_tracks, hop_length)
+        self._hops_in = Hops('xs', self._num_channels, hop_length)
+        self._freqs_in = Freqs('Xs', self._num_channels, self._num_bins)
+        self._masks = Masks('Ms', self._num_channels, self._num_bins)
+        self._covs = Covs('XXs', self._num_channels, self._num_bins)
+        self._covs_phat = Covs('XXps', self._num_channels, self._num_bins)
+        self._tdoas = Tdoas('tdoas', self._num_channels, num_sources)
+        self._doas_potential = Doas('doas_potential', num_directions)
+        self._dsf = Dsf('dsf')
+        self._doas_tracked = Doas('doas_tracked', num_tracks)
+        self._tdoas_tracked = Tdoas('tdoas_tracked', self._num_channels, num_tracks)
+        self._weights = Weights('Ws', num_tracks, self._num_channels, self._num_bins)
+        self._freqs_out = Freqs('Ys', num_tracks, self._num_bins)
+        self._hops_out = Hops('ys', num_tracks, hop_length)
 
         self._stft = Stft(self._num_channels, n_fft, hop_length, fft_window)
         self._scm = Scm(self._num_channels, self._num_bins, scm_alpha)
@@ -129,5 +132,5 @@ class SstDelaySumPipeline:
         return SstDelaySumPipelineResult(
             [d.copy() for d in self._doas_potential if d.type == Doas.Src.POTENTIAL],
             {i: d.copy() for i, d in enumerate(self._doas_tracked) if d.type == Doas.Src.TRACKED},
-            output_audio
+            output_audio,
         )

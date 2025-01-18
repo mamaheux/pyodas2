@@ -15,17 +15,32 @@ RATE = 16000
 NUM_SOURCES = 1
 PERIODS = 10
 
+
 def main():
     mics = Mics(Mics.Hardware.SC16_DEMO_ARRAY)
     pipeline = SteeringDelaySumPipeline(mics, hop_length=HOP_LENGTH, num_sources=NUM_SOURCES)
-    pipeline.set_directions([Xyz(0.0, 0.0, 1.0)]) # Can be updated while processing
+    pipeline.set_directions([Xyz(0.0, 0.0, 1.0)])  # Can be updated while processing
 
-    input_pcm = alsaaudio.PCM(alsaaudio.PCM_CAPTURE, alsaaudio.PCM_NORMAL,
-                              channels=len(mics), rate=RATE, format=alsaaudio.PCM_FORMAT_S32_LE,
-                              periodsize=HOP_LENGTH, periods=PERIODS, device='hw:CARD=SC16,DEV=0')
-    output_pcm = alsaaudio.PCM(alsaaudio.PCM_PLAYBACK, alsaaudio.PCM_NORMAL,
-                               channels=NUM_SOURCES, rate=RATE, format=alsaaudio.PCM_FORMAT_S32_LE,
-                               periodsize=HOP_LENGTH, periods=PERIODS, device='default')
+    input_pcm = alsaaudio.PCM(
+        alsaaudio.PCM_CAPTURE,
+        alsaaudio.PCM_NORMAL,
+        channels=len(mics),
+        rate=RATE,
+        format=alsaaudio.PCM_FORMAT_S32_LE,
+        periodsize=HOP_LENGTH,
+        periods=PERIODS,
+        device='hw:CARD=SC16,DEV=0',
+    )
+    output_pcm = alsaaudio.PCM(
+        alsaaudio.PCM_PLAYBACK,
+        alsaaudio.PCM_NORMAL,
+        channels=NUM_SOURCES,
+        rate=RATE,
+        format=alsaaudio.PCM_FORMAT_S32_LE,
+        periodsize=HOP_LENGTH,
+        periods=PERIODS,
+        device='default',
+    )
 
     # Buffer the output PCM
     for _ in range(PERIODS):

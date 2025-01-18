@@ -74,10 +74,12 @@ def test_init_uninitialized():
 
 
 def test_init_list():
-    testee = Mics([
-        Mic(Xyz(1.0, 2.0, 3.0), Xyz(4.0, 5.0, 6.0), Mic.Pattern.OMNIDIRECTIONAL),
-        Mic(Xyz(7.0, 8.0, 9.0), Xyz(10.0, 11.0, 12.0), Mic.Pattern.CARDIOID),
-    ])
+    testee = Mics(
+        [
+            Mic(Xyz(1.0, 2.0, 3.0), Xyz(4.0, 5.0, 6.0), Mic.Pattern.OMNIDIRECTIONAL),
+            Mic(Xyz(7.0, 8.0, 9.0), Xyz(10.0, 11.0, 12.0), Mic.Pattern.CARDIOID),
+        ]
+    )
 
     assert len(testee) == 2
 
@@ -112,6 +114,7 @@ def test_get_item_mutable():
 
     assert testee[0].position.x == 10.0
     assert testee[1].position.x == -10.0
+
 
 def test_set_item_out_of_range():
     testee = Mics(Mics.Hardware.RESPEAKER_USB_4)

@@ -14,6 +14,7 @@ class SourceLocationWidget(gl.GLViewWidget):
     """
     A PyQtGraph widget to display active source location in 3D.
     """
+
     def __init__(self, frame_rate: float = 30, parent=None) -> None:
         """
         Create a new SourceLocationWidget.
@@ -21,7 +22,7 @@ class SourceLocationWidget(gl.GLViewWidget):
         :param parent: The parent widget
         """
         super().__init__(parent)
-        self.resize(600,600)
+        self.resize(600, 600)
         self.setWindowTitle('Source Locations')
         self.setCameraPosition(distance=4)
 
@@ -50,34 +51,28 @@ class SourceLocationWidget(gl.GLViewWidget):
         self.addItem(gl.GLTextItem(pos=(0.0, 0.0, AXIS_SIZE), text='Z', color=(0, 0, 255, 255)))
 
     def _add_xy_plan_item(self) -> None:
-        verts = np.array([
-            [-1, -1, -0.01],
-            [-1, 1, -0.01],
-            [1, 1, -0.01],
-            [1, -1, -0.01],
-        ])
-        faces = np.array([
-            [0, 1, 2],
-            [0, 2, 3],
-        ])
-        colors = np.array([
-            [0, 0.5, 0, 0.5],
-            [0, 0.5, 0, 0.5],
-            [0, 0.5, 0, 0.5],
-            [1, 0.5, 0, 0.5]
-        ])
+        verts = np.array(
+            [
+                [-1, -1, -0.01],
+                [-1, 1, -0.01],
+                [1, 1, -0.01],
+                [1, -1, -0.01],
+            ]
+        )
+        faces = np.array(
+            [
+                [0, 1, 2],
+                [0, 2, 3],
+            ]
+        )
+        colors = np.array([[0, 0.5, 0, 0.5], [0, 0.5, 0, 0.5], [0, 0.5, 0, 0.5], [1, 0.5, 0, 0.5]])
 
         xy_plan_item = gl.GLMeshItem(vertexes=verts, faces=faces, faceColors=colors, smooth=False)
         self.addItem(xy_plan_item)
 
     def _add_sphere_item(self) -> None:
         sphere_data = gl.MeshData.sphere(rows=10, cols=10, radius=1)
-        sphere_item = gl.GLMeshItem(
-            meshdata=sphere_data,
-            drawEdges=True,
-            drawFaces=False,
-            color=(1, 0, 0, 0)
-        )
+        sphere_item = gl.GLMeshItem(meshdata=sphere_data, drawEdges=True, drawFaces=False, color=(1, 0, 0, 0))
         self.addItem(sphere_item)
 
     def _add_potential_source_item(self) -> None:

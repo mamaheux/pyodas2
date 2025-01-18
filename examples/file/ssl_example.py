@@ -34,5 +34,6 @@ def display_result(result: SslPipelineResult):
         print('energy:', d.energy, '\tdirection:', d.coord)
     print()
 
+
 if __name__ == '__main__':
     main()

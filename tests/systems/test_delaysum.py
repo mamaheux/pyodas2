@@ -26,24 +26,19 @@ def test_process_invalid_inputs():
     testee = DelaySum(NUM_SOURCES, NUM_CHANNELS, NUM_BINS)
 
     with pytest.raises(ValueError, match='The number of channels of the tdoas must be 4.'):
-        testee.process(Tdoas('', NUM_CHANNELS + 1, NUM_SOURCES),
-                       Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS))
+        testee.process(Tdoas('', NUM_CHANNELS + 1, NUM_SOURCES), Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS))
 
     with pytest.raises(ValueError, match='The number of sources of the tdoas must be 3.'):
-        testee.process(Tdoas('', NUM_CHANNELS, NUM_SOURCES + 1),
-                       Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS))
+        testee.process(Tdoas('', NUM_CHANNELS, NUM_SOURCES + 1), Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS))
 
     with pytest.raises(ValueError, match='The number of sources of the weights must be 3.'):
-        testee.process(Tdoas('', NUM_CHANNELS, NUM_SOURCES),
-                       Weights('', NUM_SOURCES + 1, NUM_CHANNELS, NUM_BINS))
+        testee.process(Tdoas('', NUM_CHANNELS, NUM_SOURCES), Weights('', NUM_SOURCES + 1, NUM_CHANNELS, NUM_BINS))
 
     with pytest.raises(ValueError, match='The number of channels of the weights must be 4.'):
-        testee.process(Tdoas('', NUM_CHANNELS, NUM_SOURCES),
-                       Weights('', NUM_SOURCES, NUM_CHANNELS + 1, NUM_BINS))
+        testee.process(Tdoas('', NUM_CHANNELS, NUM_SOURCES), Weights('', NUM_SOURCES, NUM_CHANNELS + 1, NUM_BINS))
 
     with pytest.raises(ValueError, match='The number of bins of the weights must be 9.'):
-        testee.process(Tdoas('', NUM_CHANNELS, NUM_SOURCES),
-                       Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS + 1))
+        testee.process(Tdoas('', NUM_CHANNELS, NUM_SOURCES), Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS + 1))
 
 
 def test_process():
@@ -56,9 +51,11 @@ def test_process():
     tdoas = Tdoas('tdoas', NUM_CHANNELS, NUM_SOURCES)
     weights = Weights('Ws', NUM_SOURCES, NUM_CHANNELS, NUM_BINS)
 
-    delays = [[-1.4927, -2.9854, -1.4927, -1.4927, +0.0000, +1.4927],
-              [+1.4927, +0.0000, -1.4927, -1.4927, -2.9854, -1.4927],
-              [+0.0000, +2.1107, +2.1107, +2.1107, +2.1107, +0.0000]]
+    delays = [
+        [-1.4927, -2.9854, -1.4927, -1.4927, +0.0000, +1.4927],
+        [+1.4927, +0.0000, -1.4927, -1.4927, -2.9854, -1.4927],
+        [+0.0000, +2.1107, +2.1107, +2.1107, +2.1107, +0.0000],
+    ]
 
     for s in range(tdoas.num_sources):
         for p in range(tdoas.num_pairs):

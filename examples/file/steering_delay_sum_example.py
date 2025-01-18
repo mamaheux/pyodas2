@@ -16,7 +16,7 @@ OUTPUT_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio',
 HOP_LENGTH = 128
 NUM_SOURCES = 1
 
-OUTPUT_SAMPLE_WIDTH=2
+OUTPUT_SAMPLE_WIDTH = 2
 
 
 def main():
@@ -27,7 +27,7 @@ def main():
 
         mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
         pipeline = SteeringDelaySumPipeline(mics, hop_length=HOP_LENGTH, num_sources=NUM_SOURCES)
-        pipeline.set_directions([Xyz(0.0, 0.0, 1.0)]) # Can be updated while processing
+        pipeline.set_directions([Xyz(0.0, 0.0, 1.0)])  # Can be updated while processing
 
         data_size = HOP_LENGTH * wave_reader.getnchannels() * wave_reader.getsampwidth()
         while True:

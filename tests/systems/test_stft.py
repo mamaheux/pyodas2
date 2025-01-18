@@ -42,20 +42,16 @@ def test_process_invalid_inputs():
     testee = Stft(NUM_CHANNELS, NUM_SAMPLES, NUM_SHIFTS, Window.HANN)
 
     with pytest.raises(ValueError, match='The number of sources of the hops must be 2.'):
-        testee.process(Hops('xs', NUM_CHANNELS + 1, NUM_SHIFTS),
-                       Freqs('Xs', NUM_CHANNELS, NUM_BINS))
+        testee.process(Hops('xs', NUM_CHANNELS + 1, NUM_SHIFTS), Freqs('Xs', NUM_CHANNELS, NUM_BINS))
 
     with pytest.raises(ValueError, match='The number of shifts of the hops must be 4.'):
-        testee.process(Hops('xs', NUM_CHANNELS, NUM_SHIFTS + 1),
-                       Freqs('Xs', NUM_CHANNELS, NUM_BINS))
+        testee.process(Hops('xs', NUM_CHANNELS, NUM_SHIFTS + 1), Freqs('Xs', NUM_CHANNELS, NUM_BINS))
 
     with pytest.raises(ValueError, match='The number of channels of the freqs must be 2.'):
-        testee.process(Hops('xs', NUM_CHANNELS, NUM_SHIFTS),
-                       Freqs('Xs', NUM_CHANNELS + 1, NUM_BINS))
+        testee.process(Hops('xs', NUM_CHANNELS, NUM_SHIFTS), Freqs('Xs', NUM_CHANNELS + 1, NUM_BINS))
 
     with pytest.raises(ValueError, match='The number of bins of the freqs must be 9.'):
-        testee.process(Hops('xs', NUM_CHANNELS, NUM_SHIFTS),
-                       Freqs('Xs', NUM_CHANNELS, NUM_BINS + 1))
+        testee.process(Hops('xs', NUM_CHANNELS, NUM_SHIFTS), Freqs('Xs', NUM_CHANNELS, NUM_BINS + 1))
 
 
 def test_process():
@@ -73,16 +69,64 @@ def test_process():
     testee.process(hops, freqs)
 
     expected_freqs = np.array(
-        [[+0.101 + 0.000j, -0.065 + 0.101j, -0.112 - 0.148j, +0.245 - 0.158j, +0.259 + 0.331j, -0.367 + 0.411j, -0.579 - 0.320j, +0.188 - 0.712j, +0.763 + 0.000j],
-         [+1.187 + 0.000j, +0.190 + 1.150j, -1.042 + 0.351j, -0.459 - 0.881j, +0.691 - 0.496j, +0.459 + 0.501j, -0.340 + 0.351j, -0.190 - 0.232j, +0.195 + 0.000j]], dtype=np.complex64)
+        [
+            [
+                +0.101 + 0.000j,
+                -0.065 + 0.101j,
+                -0.112 - 0.148j,
+                +0.245 - 0.158j,
+                +0.259 + 0.331j,
+                -0.367 + 0.411j,
+                -0.579 - 0.320j,
+                +0.188 - 0.712j,
+                +0.763 + 0.000j,
+            ],
+            [
+                +1.187 + 0.000j,
+                +0.190 + 1.150j,
+                -1.042 + 0.351j,
+                -0.459 - 0.881j,
+                +0.691 - 0.496j,
+                +0.459 + 0.501j,
+                -0.340 + 0.351j,
+                -0.190 - 0.232j,
+                +0.195 + 0.000j,
+            ],
+        ],
+        dtype=np.complex64,
+    )
     assert np.allclose(freqs.to_numpy(), expected_freqs, atol=1e-3)
 
     hops.load_numpy(np.array([[-1.0, -3.0, +0.0, -3.0], [-3.0, -1.0, +1.0, -1.0]], dtype=np.float32))
     testee.process(hops, freqs)
 
     expected_freqs = np.array(
-        [[+0.391 + 0.000j, -0.780 + 0.075j, +0.016 - 0.962j, +1.733 - 0.287j, -0.856 + 2.858j, -1.589 - 3.099j, +2.653 + 2.038j, -3.320 - 1.356j, +3.897 + 0.000j],
-         [+2.981 + 0.000j, -4.307 - 0.631j, +5.441 - 1.602j, -3.405 + 3.849j, +0.898 - 3.100j, -0.613 + 1.715j, +0.588 - 1.688j, +0.411 + 1.381j, -1.011 + 0.000j]], dtype=np.complex64)
+        [
+            [
+                +0.391 + 0.000j,
+                -0.780 + 0.075j,
+                +0.016 - 0.962j,
+                +1.733 - 0.287j,
+                -0.856 + 2.858j,
+                -1.589 - 3.099j,
+                +2.653 + 2.038j,
+                -3.320 - 1.356j,
+                +3.897 + 0.000j,
+            ],
+            [
+                +2.981 + 0.000j,
+                -4.307 - 0.631j,
+                +5.441 - 1.602j,
+                -3.405 + 3.849j,
+                +0.898 - 3.100j,
+                -0.613 + 1.715j,
+                +0.588 - 1.688j,
+                +0.411 + 1.381j,
+                -1.011 + 0.000j,
+            ],
+        ],
+        dtype=np.complex64,
+    )
     assert np.allclose(freqs.to_numpy(), expected_freqs, atol=1e-3)
 
 

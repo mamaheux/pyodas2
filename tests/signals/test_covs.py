@@ -10,6 +10,7 @@ def test_init_too_long_label():
     with pytest.raises(ValueError, match='The label is too long. The maximum length is 63.'):
         Covs('1' * 64, 4, 512)
 
+
 def test_init():
     testee = Covs('XXs', 4, 512)
 
@@ -37,12 +38,17 @@ def test_numpy_xcorrs_invalid_shape(dtype):
 def test_xcorrs_numpy(dtype):
     testee = Covs('XXs', 4, 2)
 
-    input_data = np.array([[1.0 + 2.0j, 2.0 + 3.0j],
-                           [4.0 + 5.0j, 6.0 + 7.0j],
-                           [7.0 + 6.0j, 5.0 + 4.0j],
-                           [3.0 + 2.0j, 1.0 + 0.0j],
-                           [8.0 + 9.0j, 9.0 + 8.0j],
-                           [3.0 + 7.0j, 1.0 + 6.0j]], dtype=dtype)
+    input_data = np.array(
+        [
+            [1.0 + 2.0j, 2.0 + 3.0j],
+            [4.0 + 5.0j, 6.0 + 7.0j],
+            [7.0 + 6.0j, 5.0 + 4.0j],
+            [3.0 + 2.0j, 1.0 + 0.0j],
+            [8.0 + 9.0j, 9.0 + 8.0j],
+            [3.0 + 7.0j, 1.0 + 6.0j],
+        ],
+        dtype=dtype,
+    )
     testee.xcorrs_load_numpy(input_data)
     output_data = testee.xcorrs_to_numpy()
     assert output_data.dtype == np.complex64
@@ -69,8 +75,7 @@ def test_numpy_acorrs_invalid_shape(dtype):
 def test_acorrs_numpy(dtype):
     testee = Covs('XXs', 2, 4)
 
-    input_data = np.array([[1.0, 2.0, 3.0, 4.0],
-                           [5.0, 6.0, 7.0, 8.0]], dtype=dtype)
+    input_data = np.array([[1.0, 2.0, 3.0, 4.0], [5.0, 6.0, 7.0, 8.0]], dtype=dtype)
     testee.acorrs_load_numpy(input_data)
     output_data = testee.acorrs_to_numpy()
     assert output_data.dtype == np.float32

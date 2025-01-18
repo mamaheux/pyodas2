@@ -11,12 +11,15 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
     """
     A PyQtGraph widget to display the elevation and azimuth of sources over time.
     """
-    def __init__(self,
-                 sample_rate: float = 16000,
-                 hop_length: int = 128,
-                 history_duration_s: float = 5,
-                 frame_rate: float = 30,
-                 parent=None):
+
+    def __init__(
+        self,
+        sample_rate: float = 16000,
+        hop_length: int = 128,
+        history_duration_s: float = 5,
+        frame_rate: float = 30,
+        parent=None,
+    ):
         """
         Creates a new ElevationAzimuthWidget.
 
@@ -27,11 +30,13 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
         :param parent:
         """
         super().__init__(parent)
-        self.setWindowTitle("Source Elevation and Azimuth")
+        self.setWindowTitle('Source Elevation and Azimuth')
         self.resize(1000, 600)
 
         self._max_point_count = int((history_duration_s * sample_rate) / hop_length)
-        self._times = -np.array([i * history_duration_s / self._max_point_count for i in reversed(range(self._max_point_count))])
+        self._times = -np.array(
+            [i * history_duration_s / self._max_point_count for i in reversed(range(self._max_point_count))]
+        )
 
         self._elevation_potential_sources = [[] for _ in range(self._max_point_count)]
         self._elevation_tracked_sources = [[] for _ in range(self._max_point_count)]
@@ -90,16 +95,19 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
         for t in range(self._max_point_count):
             c = len(self._elevation_potential_sources[t])
 
-            all_elevations[i:i+c, 0] = self._times[t]
-            all_elevations[i:i+c, 1] = self._elevation_potential_sources[t]
-            all_azimuths[i:i+c, 0] = self._times[t]
-            all_azimuths[i:i+c, 1] = self._azimuth_potential_sources[t]
+            all_elevations[i : i + c, 0] = self._times[t]
+            all_elevations[i : i + c, 1] = self._elevation_potential_sources[t]
+            all_azimuths[i : i + c, 0] = self._times[t]
+            all_azimuths[i : i + c, 1] = self._azimuth_potential_sources[t]
 
             i += c
 
-        self._elevation_potential_source_item.setData(all_elevations[:, 0], all_elevations[:, 1], pen=(0, 0, 255), name='Potential Sources')
-        self._azimuth_potential_source_item.setData(all_azimuths[:, 0], all_azimuths[:, 1], pen=(0, 0, 255), name='Potential Sources')
-
+        self._elevation_potential_source_item.setData(
+            all_elevations[:, 0], all_elevations[:, 1], pen=(0, 0, 255), name='Potential Sources'
+        )
+        self._azimuth_potential_source_item.setData(
+            all_azimuths[:, 0], all_azimuths[:, 1], pen=(0, 0, 255), name='Potential Sources'
+        )
 
     def _update_tracked_sources(self) -> None:
         c = sum(len(x) for x in self._elevation_tracked_sources)
@@ -110,15 +118,19 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
         for t in range(self._max_point_count):
             c = len(self._elevation_tracked_sources[t])
 
-            all_elevations[i:i+c, 0] = self._times[t]
-            all_elevations[i:i+c, 1] = self._elevation_tracked_sources[t]
-            all_azimuths[i:i+c, 0] = self._times[t]
-            all_azimuths[i:i+c, 1] = self._azimuth_tracked_sources[t]
+            all_elevations[i : i + c, 0] = self._times[t]
+            all_elevations[i : i + c, 1] = self._elevation_tracked_sources[t]
+            all_azimuths[i : i + c, 0] = self._times[t]
+            all_azimuths[i : i + c, 1] = self._azimuth_tracked_sources[t]
 
             i += c
 
-        self._elevation_tracked_source_item.setData(all_elevations[:, 0], all_elevations[:, 1], pen=(255, 0, 0), name='Tracked Sources')
-        self._azimuth_tracked_source_item.setData(all_azimuths[:, 0], all_azimuths[:, 1], pen=(255, 0, 0), name='Tracked Sources')
+        self._elevation_tracked_source_item.setData(
+            all_elevations[:, 0], all_elevations[:, 1], pen=(255, 0, 0), name='Tracked Sources'
+        )
+        self._azimuth_tracked_source_item.setData(
+            all_azimuths[:, 0], all_azimuths[:, 1], pen=(255, 0, 0), name='Tracked Sources'
+        )
 
     def add_potential_sources(self, directions: List[Doas.Dir]) -> None:
         """

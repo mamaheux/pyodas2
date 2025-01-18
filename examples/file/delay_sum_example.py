@@ -15,7 +15,7 @@ OUTPUT_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio',
 HOP_LENGTH = 128
 NUM_SOURCES = 1
 
-OUTPUT_SAMPLE_WIDTH=2
+OUTPUT_SAMPLE_WIDTH = 2
 
 
 def main():
@@ -36,6 +36,7 @@ def main():
             audio = interleaved_pcm_to_numpy(data, wave_reader.getnchannels(), sample_width=wave_reader.getsampwidth())
             result = pipeline.process(audio)
             wave_writer.writeframes(numpy_to_interleaved_pcm(result.audio, sample_width=OUTPUT_SAMPLE_WIDTH))
+
 
 if __name__ == '__main__':
     main()

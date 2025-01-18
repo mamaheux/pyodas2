@@ -13,6 +13,7 @@ class SslPipelineResult:
     """
     This is a class representing the results of the sound source localization
     """
+
     directions: List[Doas.Dir]
 
 
@@ -21,17 +22,19 @@ class SslPipeline:
     This is a class performing sound source localization.
     """
 
-    def __init__(self,
-                 mics: Mics,
-                 sample_rate: float = 16000,
-                 hop_length: int = 128,
-                 num_sources: int = 1,
-                 num_directions: int = 2,
-                 n_fft: int = 512,
-                 fft_window: Window = Window.HANN,
-                 sound_speed: float = 343.0,
-                 ssl_geometry: Points.Geometry = Points.Geometry.HALFSPHERE,
-                 scm_alpha: float = 0.5) -> None:
+    def __init__(
+        self,
+        mics: Mics,
+        sample_rate: float = 16000,
+        hop_length: int = 128,
+        num_sources: int = 1,
+        num_directions: int = 2,
+        n_fft: int = 512,
+        fft_window: Window = Window.HANN,
+        sound_speed: float = 343.0,
+        ssl_geometry: Points.Geometry = Points.Geometry.HALFSPHERE,
+        scm_alpha: float = 0.5,
+    ) -> None:
         """
         Create a new sound source localization pipeline.
 
@@ -54,13 +57,13 @@ class SslPipeline:
         self._num_bins = n_fft // 2 + 1
         self._points = Points(ssl_geometry)
 
-        self._hops = Hops("xs", self._num_channels, hop_length)
-        self._freqs = Freqs("Xs", self._num_channels, self._num_bins)
-        self._masks = Masks("Ms", self._num_channels, self._num_bins)
-        self._covs = Covs("XXs", self._num_channels, self._num_bins)
-        self._covs_phat = Covs("XXps", self._num_channels, self._num_bins)
-        self._tdoas = Tdoas("tdoas", self._num_channels, num_sources)
-        self._doas = Doas("doas", num_directions)
+        self._hops = Hops('xs', self._num_channels, hop_length)
+        self._freqs = Freqs('Xs', self._num_channels, self._num_bins)
+        self._masks = Masks('Ms', self._num_channels, self._num_bins)
+        self._covs = Covs('XXs', self._num_channels, self._num_bins)
+        self._covs_phat = Covs('XXps', self._num_channels, self._num_bins)
+        self._tdoas = Tdoas('tdoas', self._num_channels, num_sources)
+        self._doas = Doas('doas', num_directions)
 
         self._stft = Stft(self._num_channels, n_fft, hop_length, fft_window)
         self._scm = Scm(self._num_channels, self._num_bins, scm_alpha)

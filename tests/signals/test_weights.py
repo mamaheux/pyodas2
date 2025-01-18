@@ -10,6 +10,7 @@ def test_init_too_long_label():
     with pytest.raises(ValueError, match='The label is too long. The maximum length is 63.'):
         Weights('1' * 64, 2, 4, 512)
 
+
 def test_init():
     testee = Weights('Ws', 2, 4, 512)
 

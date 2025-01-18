@@ -5,6 +5,7 @@ import numpy as np
 try:
     from libcamera import controls
     from picamera2 import Picamera2, Preview
+
     PICAMERA2_FOUND = True
 except ImportError:
     PICAMERA2_FOUND = False
@@ -16,10 +17,13 @@ class PiCamera(Camera):
     """
     A class to capture camera images using the picamera2 API. This API only works on Raspberry Pi computers.
     """
-    def __init__(self,
-                 device_index: int = 0,
-                 width: int = 640,
-                 height: int = 480,):
+
+    def __init__(
+        self,
+        device_index: int = 0,
+        width: int = 640,
+        height: int = 480,
+    ):
         """
         Creates a new instance of PiCamera.
 
@@ -32,7 +36,9 @@ class PiCamera(Camera):
             raise NotImplementedError(msg)
 
         self._picam2 = Picamera2(device_index)
-        config = self._picam2.create_preview_configuration(main={'size': (width, height)}) # TODO check 'format': 'RGB888', fps
+        config = self._picam2.create_preview_configuration(
+            main={'size': (width, height)}
+        )  # TODO check 'format': 'RGB888', fps
         self._picam2.configure(config)
 
     def read(self) -> Tuple[bool, np.typing.NDArray[np.uint8]]:

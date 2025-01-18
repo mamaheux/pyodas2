@@ -8,6 +8,7 @@ class Camera(ABC):
     """
     The base class of a camera class.
     """
+
     @abstractmethod
     def read(self) -> Tuple[bool, np.typing.NDArray[np.uint8]]:
         """

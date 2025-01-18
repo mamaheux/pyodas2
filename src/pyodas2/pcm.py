@@ -3,10 +3,9 @@ from typing import Optional
 import numpy as np
 
 
-def interleaved_pcm_to_numpy(data: bytes,
-                             nchannels: int,
-                             sample_width: Optional[int] = None,
-                             dtype : Optional[np.dtype] = None) -> np.ndarray:
+def interleaved_pcm_to_numpy(
+    data: bytes, nchannels: int, sample_width: Optional[int] = None, dtype: Optional[np.dtype] = None
+) -> np.ndarray:
     """
     Converts interleaved pcm bytes to a PyODAS2 compatible numpy array.
     The sample_width or the dtype must be provided.
@@ -41,9 +40,9 @@ def interleaved_pcm_to_numpy(data: bytes,
     raise ValueError(msg)
 
 
-def numpy_to_interleaved_pcm(data: np.ndarray,
-                             sample_width: Optional[int] = None,
-                             dtype : Optional[np.dtype] = None) -> bytes:
+def numpy_to_interleaved_pcm(
+    data: np.ndarray, sample_width: Optional[int] = None, dtype: Optional[np.dtype] = None
+) -> bytes:
     """
     Converts a PyODAS2 compatible numpy array to interleaved pcm bytes.
     The sample_width or the dtype must be provided.

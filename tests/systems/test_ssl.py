@@ -1,4 +1,3 @@
-
 import pytest
 
 from pyodas2.signals import Doas, Tdoas
@@ -40,16 +39,13 @@ def test_process_invalid_inputs():
     testee = Ssl(mics, points, SAMPLE_RATE, SOUND_SPEED, NUM_SOURCES, NUM_DIRECTIONS)
 
     with pytest.raises(ValueError, match='The number of channels of the tdoas must be 4.'):
-        testee.process(Tdoas('tdoas', len(mics) + 1, NUM_SOURCES),
-                       Doas('doas', NUM_DIRECTIONS))
+        testee.process(Tdoas('tdoas', len(mics) + 1, NUM_SOURCES), Doas('doas', NUM_DIRECTIONS))
 
     with pytest.raises(ValueError, match='The number of sources of the tdoas must be 4.'):
-        testee.process(Tdoas('tdoas', len(mics), NUM_SOURCES + 1),
-                       Doas('doas', NUM_DIRECTIONS))
+        testee.process(Tdoas('tdoas', len(mics), NUM_SOURCES + 1), Doas('doas', NUM_DIRECTIONS))
 
     with pytest.raises(ValueError, match='The number of directions of the doas must be 2.'):
-        testee.process(Tdoas('tdoas', len(mics), NUM_SOURCES),
-                       Doas('doas', NUM_DIRECTIONS + 1))
+        testee.process(Tdoas('tdoas', len(mics), NUM_SOURCES), Doas('doas', NUM_DIRECTIONS + 1))
 
 
 def test_process():

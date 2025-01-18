@@ -26,35 +26,34 @@ def test_process_invalid_inputs():
     testee = Scm(NUM_CHANNELS, NUM_BINS, ALPHA)
 
     with pytest.raises(ValueError, match='The number of channels of freqs must be 4.'):
-        testee.process(Freqs('', NUM_CHANNELS + 1, NUM_BINS),
-                       Masks('', NUM_CHANNELS, NUM_BINS),
-                       Covs('', NUM_CHANNELS, NUM_BINS))
+        testee.process(
+            Freqs('', NUM_CHANNELS + 1, NUM_BINS), Masks('', NUM_CHANNELS, NUM_BINS), Covs('', NUM_CHANNELS, NUM_BINS)
+        )
 
     with pytest.raises(ValueError, match='The number of bins of freqs must be 8.'):
-        testee.process(Freqs('', NUM_CHANNELS, NUM_BINS + 1),
-                       Masks('', NUM_CHANNELS, NUM_BINS),
-                       Covs('', NUM_CHANNELS, NUM_BINS))
+        testee.process(
+            Freqs('', NUM_CHANNELS, NUM_BINS + 1), Masks('', NUM_CHANNELS, NUM_BINS), Covs('', NUM_CHANNELS, NUM_BINS)
+        )
 
     with pytest.raises(ValueError, match='The number of channels of masks must be 4.'):
-        testee.process(Freqs('', NUM_CHANNELS, NUM_BINS),
-                       Masks('', NUM_CHANNELS + 1, NUM_BINS),
-                       Covs('', NUM_CHANNELS, NUM_BINS))
+        testee.process(
+            Freqs('', NUM_CHANNELS, NUM_BINS), Masks('', NUM_CHANNELS + 1, NUM_BINS), Covs('', NUM_CHANNELS, NUM_BINS)
+        )
 
     with pytest.raises(ValueError, match='The number of bins of masks must be 8.'):
-        testee.process(Freqs('', NUM_CHANNELS, NUM_BINS),
-                       Masks('', NUM_CHANNELS, NUM_BINS + 1),
-                       Covs('', NUM_CHANNELS, NUM_BINS))
+        testee.process(
+            Freqs('', NUM_CHANNELS, NUM_BINS), Masks('', NUM_CHANNELS, NUM_BINS + 1), Covs('', NUM_CHANNELS, NUM_BINS)
+        )
 
     with pytest.raises(ValueError, match='The number of channels of covs must be 4.'):
-        testee.process(Freqs('', NUM_CHANNELS, NUM_BINS),
-                       Masks('', NUM_CHANNELS, NUM_BINS),
-                       Covs('', NUM_CHANNELS + 1, NUM_BINS))
+        testee.process(
+            Freqs('', NUM_CHANNELS, NUM_BINS), Masks('', NUM_CHANNELS, NUM_BINS), Covs('', NUM_CHANNELS + 1, NUM_BINS)
+        )
 
     with pytest.raises(ValueError, match='The number of bins of covs must be 8.'):
-        testee.process(Freqs('', NUM_CHANNELS, NUM_BINS),
-                       Masks('', NUM_CHANNELS, NUM_BINS),
-                       Covs('', NUM_CHANNELS, NUM_BINS + 1))
-
+        testee.process(
+            Freqs('', NUM_CHANNELS, NUM_BINS), Masks('', NUM_CHANNELS, NUM_BINS), Covs('', NUM_CHANNELS, NUM_BINS + 1)
+        )
 
 
 def test_process():
@@ -70,23 +69,28 @@ def test_process():
 
     masks.set_ones()
 
-    freqs.load_numpy(np.array(
-        [[+1.0 + 2.0j, -1.0 + 0.0j, +3.0 - 2.0j, +0.0 + 1.0j],
-         [+0.0 - 2.0j, +2.0 + 2.0j, +1.0 + 1.0j, -2.0 - 1.0j],
-         [+2.0 + 0.0j, +3.0 + 2.0j, +1.0 + 1.0j, -1.0 - 2.0j]], dtype=np.complex64))
+    freqs.load_numpy(
+        np.array(
+            [
+                [+1.0 + 2.0j, -1.0 + 0.0j, +3.0 - 2.0j, +0.0 + 1.0j],
+                [+0.0 - 2.0j, +2.0 + 2.0j, +1.0 + 1.0j, -2.0 - 1.0j],
+                [+2.0 + 0.0j, +3.0 + 2.0j, +1.0 + 1.0j, -1.0 - 2.0j],
+            ],
+            dtype=np.complex64,
+        )
+    )
     testee.process(freqs, masks, covs)
 
-
     expected_xcorrs = np.array(
-        [[-0.4 + 0.2j, +0.2 + 0.4j, +0.0 - 0.4j],
-         [-0.2 + 0.2j, -0.3 + 0.2j, +1.0 + 0.2j],
-         [+0.1 - 0.5j, +0.1 - 0.5j, +0.2 + 0.0j],
-         [-0.1 - 0.2j, -0.2 - 0.1j, +0.4 - 0.3j]], dtype=np.complex64).T
-    expected_acorrs = np.array(
-        [[0.5, 0.4, 0.4],
-         [0.1, 0.8, 1.3],
-         [1.3, 0.2, 0.2],
-         [0.1, 0.5, 0.5]], dtype=np.float32).T
+        [
+            [-0.4 + 0.2j, +0.2 + 0.4j, +0.0 - 0.4j],
+            [-0.2 + 0.2j, -0.3 + 0.2j, +1.0 + 0.2j],
+            [+0.1 - 0.5j, +0.1 - 0.5j, +0.2 + 0.0j],
+            [-0.1 - 0.2j, -0.2 - 0.1j, +0.4 - 0.3j],
+        ],
+        dtype=np.complex64,
+    ).T
+    expected_acorrs = np.array([[0.5, 0.4, 0.4], [0.1, 0.8, 1.3], [1.3, 0.2, 0.2], [0.1, 0.5, 0.5]], dtype=np.float32).T
 
     assert np.allclose(covs.xcorrs_to_numpy(), expected_xcorrs)
     assert np.allclose(covs.acorrs_to_numpy(), expected_acorrs)

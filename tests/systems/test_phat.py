@@ -23,20 +23,16 @@ def test_process_invalid_inputs():
     testee = Phat(NUM_CHANNELS, NUM_BINS)
 
     with pytest.raises(ValueError, match='The number of channels of the input must be 4.'):
-        testee.process(Covs('', NUM_CHANNELS + 1, NUM_BINS),
-                       Covs('', NUM_CHANNELS, NUM_BINS))
+        testee.process(Covs('', NUM_CHANNELS + 1, NUM_BINS), Covs('', NUM_CHANNELS, NUM_BINS))
 
     with pytest.raises(ValueError, match='The number of bins of the input must be 8.'):
-        testee.process(Covs('', NUM_CHANNELS, NUM_BINS + 1),
-                       Covs('', NUM_CHANNELS, NUM_BINS))
+        testee.process(Covs('', NUM_CHANNELS, NUM_BINS + 1), Covs('', NUM_CHANNELS, NUM_BINS))
 
     with pytest.raises(ValueError, match='The number of channels of the output must be 4.'):
-        testee.process(Covs('', NUM_CHANNELS, NUM_BINS),
-                       Covs('', NUM_CHANNELS + 1, NUM_BINS))
+        testee.process(Covs('', NUM_CHANNELS, NUM_BINS), Covs('', NUM_CHANNELS + 1, NUM_BINS))
 
     with pytest.raises(ValueError, match='The number of bins of the output must be 8.'):
-        testee.process(Covs('', NUM_CHANNELS, NUM_BINS),
-                       Covs('', NUM_CHANNELS, NUM_BINS + 1))
+        testee.process(Covs('', NUM_CHANNELS, NUM_BINS), Covs('', NUM_CHANNELS, NUM_BINS + 1))
 
 
 def test_process():
@@ -48,21 +44,27 @@ def test_process():
     covs_in = Covs('XXs', NUM_CHANNELS, NUM_BINS)
     covs_out = Covs('XXps', NUM_CHANNELS, NUM_BINS)
 
-    covs_in.xcorrs_load_numpy(np.array(
-        [[+2.0 + 1.0j, -3.0 + 2.0j, +1.0 - 2.0j, +2.0 - 1.0j],
-         [+1.0 - 3.0j, -2.0 + 1.0j, +4.0 + 2.0j, -1.0 + 1.0j],
-         [-2.0 + 2.0j, +0.0 + 0.0j, -1.0 + 2.0j, -3.0 + 1.0j]], dtype=np.complex64)),
-    covs_in.acorrs_load_numpy(np.array(
-        [[+2.0, +1.0, +3.0, +2.0],
-         [+1.0, +2.0, +1.0, +3.0],
-         [+2.0, +2.0, +2.0, +4.0]], dtype=np.float32)),
+    (
+        covs_in.xcorrs_load_numpy(
+            np.array(
+                [
+                    [+2.0 + 1.0j, -3.0 + 2.0j, +1.0 - 2.0j, +2.0 - 1.0j],
+                    [+1.0 - 3.0j, -2.0 + 1.0j, +4.0 + 2.0j, -1.0 + 1.0j],
+                    [-2.0 + 2.0j, +0.0 + 0.0j, -1.0 + 2.0j, -3.0 + 1.0j],
+                ],
+                dtype=np.complex64,
+            )
+        ),
+    )
+    (
+        covs_in.acorrs_load_numpy(
+            np.array([[+2.0, +1.0, +3.0, +2.0], [+1.0, +2.0, +1.0, +3.0], [+2.0, +2.0, +2.0, +4.0]], dtype=np.float32)
+        ),
+    )
 
     testee.process(covs_in, covs_out)
 
-    expected_xcorrs = np.array(
-        [[1.0, 1.0, 1.0, 1.0],
-         [1.0, 1.0, 1.0, 1.0],
-         [1.0, 0.0, 1.0, 1.0]], dtype=np.float32)
+    expected_xcorrs = np.array([[1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0], [1.0, 0.0, 1.0, 1.0]], dtype=np.float32)
 
     print(np.abs(covs_out.xcorrs_to_numpy()))
     print(np.ones((3, 4), dtype=np.float32))

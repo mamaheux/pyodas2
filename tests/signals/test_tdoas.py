@@ -9,6 +9,7 @@ def test_init_too_long_label():
     with pytest.raises(ValueError, match='The label is too long. The maximum length is 63.'):
         Tdoas('1' * 64, 4, 2)
 
+
 def test_init():
     testee = Tdoas('tdoas', 4, 2)
 

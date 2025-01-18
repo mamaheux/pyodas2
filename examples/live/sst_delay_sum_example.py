@@ -14,16 +14,31 @@ RATE = 16000
 NUM_SOURCES = 1
 PERIODS = 10
 
+
 def main():
     mics = Mics(Mics.Hardware.SC16_DEMO_ARRAY)
     pipeline = SstDelaySumPipeline(mics, hop_length=HOP_LENGTH, num_sources=NUM_SOURCES)
 
-    input_pcm = alsaaudio.PCM(alsaaudio.PCM_CAPTURE, alsaaudio.PCM_NORMAL,
-                              channels=len(mics), rate=RATE, format=alsaaudio.PCM_FORMAT_S32_LE,
-                              periodsize=HOP_LENGTH, periods=PERIODS, device='hw:CARD=SC16,DEV=0')
-    output_pcm = alsaaudio.PCM(alsaaudio.PCM_PLAYBACK, alsaaudio.PCM_NORMAL,
-                               channels=NUM_SOURCES, rate=RATE, format=alsaaudio.PCM_FORMAT_S32_LE,
-                               periodsize=HOP_LENGTH, periods=PERIODS, device='default')
+    input_pcm = alsaaudio.PCM(
+        alsaaudio.PCM_CAPTURE,
+        alsaaudio.PCM_NORMAL,
+        channels=len(mics),
+        rate=RATE,
+        format=alsaaudio.PCM_FORMAT_S32_LE,
+        periodsize=HOP_LENGTH,
+        periods=PERIODS,
+        device='hw:CARD=SC16,DEV=0',
+    )
+    output_pcm = alsaaudio.PCM(
+        alsaaudio.PCM_PLAYBACK,
+        alsaaudio.PCM_NORMAL,
+        channels=NUM_SOURCES,
+        rate=RATE,
+        format=alsaaudio.PCM_FORMAT_S32_LE,
+        periodsize=HOP_LENGTH,
+        periods=PERIODS,
+        device='default',
+    )
 
     # Buffer the output PCM
     for _ in range(PERIODS):
@@ -48,7 +63,7 @@ def get_most_energy_tracked_audio(result: SstDelaySumPipelineResult) -> np.ndarr
         return result.audio[0]
 
     i, _ = max(result.tracked_directions_by_index.items(), key=lambda x: x[1].energy)
-    return result.audio[i:i+1]
+    return result.audio[i : i + 1]
 
 
 if __name__ == '__main__':

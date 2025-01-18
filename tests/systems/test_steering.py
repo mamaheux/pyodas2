@@ -34,16 +34,13 @@ def test_process_invalid_inputs():
     testee = Steering(mics, SAMPLE_RATE, SOUND_SPEED, NUM_SOURCES)
 
     with pytest.raises(ValueError, match='The number of directions of the doas must be 3.'):
-        testee.process(Doas('doas', NUM_SOURCES + 1),
-                       Tdoas('tdoas', len(mics), NUM_SOURCES))
+        testee.process(Doas('doas', NUM_SOURCES + 1), Tdoas('tdoas', len(mics), NUM_SOURCES))
 
     with pytest.raises(ValueError, match='The number of channels of the tdoas must be 4.'):
-        testee.process(Doas('doas', NUM_SOURCES),
-                       Tdoas('tdoas', len(mics) + 1, NUM_SOURCES))
+        testee.process(Doas('doas', NUM_SOURCES), Tdoas('tdoas', len(mics) + 1, NUM_SOURCES))
 
     with pytest.raises(ValueError, match='The number of sources of the tdoas must be 3.'):
-        testee.process(Doas('doas', NUM_SOURCES),
-                       Tdoas('tdoas', len(mics), NUM_SOURCES + 1))
+        testee.process(Doas('doas', NUM_SOURCES), Tdoas('tdoas', len(mics), NUM_SOURCES + 1))
 
     doas = Doas('doas', NUM_SOURCES)
     doas[0].coord = Xyz(-1.0, 0.0, 0.0)
@@ -74,9 +71,11 @@ def test_process():
 
     testee.process(doas, tdoas)
 
-    expected_tdoas = [[-1.4927, -2.9854, -1.4927, -1.4927, +0.0000, +1.4927],
-                      [+1.4927, +0.0000, -1.4927, -1.4927, -2.9854, -1.4927],
-                      [+0.0000, +2.1107, +2.1107, +2.1107, +2.1107, +0.0000]]
+    expected_tdoas = [
+        [-1.4927, -2.9854, -1.4927, -1.4927, +0.0000, +1.4927],
+        [+1.4927, +0.0000, -1.4927, -1.4927, -2.9854, -1.4927],
+        [+0.0000, +2.1107, +2.1107, +2.1107, +2.1107, +0.0000],
+    ]
 
     for s in range(NUM_SOURCES):
         for p in range(NUM_PAIRS):

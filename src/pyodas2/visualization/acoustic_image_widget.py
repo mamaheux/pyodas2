@@ -25,7 +25,7 @@ COLOR_MAPS = {
     'Twilight': cv2.COLORMAP_TWILIGHT,
     'Swilight Shifted': cv2.COLORMAP_TWILIGHT_SHIFTED,
     'Turbo': cv2.COLORMAP_TURBO,
-    'Deepgreen': cv2.COLORMAP_DEEPGREEN
+    'Deepgreen': cv2.COLORMAP_DEEPGREEN,
 }
 
 
@@ -33,6 +33,7 @@ class AcousticImageWidget(QtWidgets.QWidget):
     """
     A widget to display an acoustic image.
     """
+
     def __init__(self, parent=None) -> None:
         """
         Creates a new AcousticImageWidget.
@@ -73,6 +74,7 @@ class AcousticImageWidget(QtWidgets.QWidget):
         :param rgb_image: A RGB image.
         :param acoustic_image: An acoustic image.
         """
+
         def update():
             alpha = self._alpha_slider.value() / 100
             beta = 1 - alpha

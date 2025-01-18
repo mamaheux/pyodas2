@@ -12,6 +12,7 @@ class DelaySumPipelineResult:
     """
     This is a class representing the results of the delay and sum beamforming
     """
+
     audio: np.ndarray
 
 
@@ -20,13 +21,15 @@ class DelaySumPipeline:
     This is a class performing delay and sum beamforming.
     """
 
-    def __init__(self,
-                 mics: Mics,
-                 hop_length: int = 128,
-                 num_sources: int = 1,
-                 n_fft: int = 512,
-                 fft_window: Window = Window.HANN,
-                 scm_alpha: float = 0.5) -> None:
+    def __init__(
+        self,
+        mics: Mics,
+        hop_length: int = 128,
+        num_sources: int = 1,
+        n_fft: int = 512,
+        fft_window: Window = Window.HANN,
+        scm_alpha: float = 0.5,
+    ) -> None:
         """
         Create a new delay and sum pipeline.
 
@@ -44,15 +47,15 @@ class DelaySumPipeline:
         self._num_channels = len(mics)
         self._num_bins = n_fft // 2 + 1
 
-        self._hops_in = Hops("xs", self._num_channels, hop_length)
-        self._freqs_in = Freqs("Xs", self._num_channels, self._num_bins)
-        self._masks = Masks("Ms", self._num_channels, self._num_bins)
-        self._covs = Covs("XXs", self._num_channels, self._num_bins)
-        self._covs_phat = Covs("XXps", self._num_channels, self._num_bins)
-        self._tdoas = Tdoas("tdoas", self._num_channels, num_sources)
-        self._weights = Weights("Ws", num_sources, self._num_channels, self._num_bins)
-        self._freqs_out = Freqs("Ys", num_sources, self._num_bins)
-        self._hops_out = Hops("ys", num_sources, hop_length)
+        self._hops_in = Hops('xs', self._num_channels, hop_length)
+        self._freqs_in = Freqs('Xs', self._num_channels, self._num_bins)
+        self._masks = Masks('Ms', self._num_channels, self._num_bins)
+        self._covs = Covs('XXs', self._num_channels, self._num_bins)
+        self._covs_phat = Covs('XXps', self._num_channels, self._num_bins)
+        self._tdoas = Tdoas('tdoas', self._num_channels, num_sources)
+        self._weights = Weights('Ws', num_sources, self._num_channels, self._num_bins)
+        self._freqs_out = Freqs('Ys', num_sources, self._num_bins)
+        self._hops_out = Hops('ys', num_sources, hop_length)
 
         self._stft = Stft(self._num_channels, n_fft, hop_length, fft_window)
         self._scm = Scm(self._num_channels, self._num_bins, scm_alpha)

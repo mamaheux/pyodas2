@@ -15,20 +15,22 @@ class AcousticImageCalibrationPipeline:
     This is a class performing acoustic image calibration.
     """
 
-    def __init__(self,
-                 mics: Mics,
-                 calibration_path: Union[str, PathLike],
-                 image_width: int,
-                 image_height: int,
-                 hop_length: int = 128,
-                 n_fft: int = 512,
-                 fft_window: Window = Window.HANN,
-                 scm_alpha: float = 0.5,
-                 target_count: int = 5,
-                 target_margin: int = 20,
-                 polynomial_order: int = 3,
-                 svd_phat_batch_size: int = 1000,
-                 svd_phat_delta: float = 1e-3) -> None:
+    def __init__(
+        self,
+        mics: Mics,
+        calibration_path: Union[str, PathLike],
+        image_width: int,
+        image_height: int,
+        hop_length: int = 128,
+        n_fft: int = 512,
+        fft_window: Window = Window.HANN,
+        scm_alpha: float = 0.5,
+        target_count: int = 5,
+        target_margin: int = 20,
+        polynomial_order: int = 3,
+        svd_phat_batch_size: int = 1000,
+        svd_phat_delta: float = 1e-3,
+    ) -> None:
         """
         Create a new acoustic image calibration pipeline.
 
@@ -52,7 +54,7 @@ class AcousticImageCalibrationPipeline:
         if image_width < 2 * target_margin or image_height < 2 * target_margin:
             msg = f'The image width and image height must be greater than {2 * target_margin}.'
             raise ValueError(msg)
-        if target_count**2 < (polynomial_order + 1)**2:
+        if target_count**2 < (polynomial_order + 1) ** 2:
             msg = 'There are not enough target for the polynomial_order.'
             raise ValueError(msg)
 
@@ -61,12 +63,12 @@ class AcousticImageCalibrationPipeline:
         self._num_bins = n_fft // 2 + 1
         self._num_sources = 1
 
-        self._hops = Hops("xs", self._num_channels, hop_length)
-        self._freqs = Freqs("Xs", self._num_channels, self._num_bins)
-        self._masks = Masks("Ms", self._num_channels, self._num_bins)
-        self._covs = Covs("XXs", self._num_channels, self._num_bins)
-        self._covs_phat = Covs("XXps", self._num_channels, self._num_bins)
-        self._tdoas = Tdoas("tdoas", self._num_channels, self._num_sources)
+        self._hops = Hops('xs', self._num_channels, hop_length)
+        self._freqs = Freqs('Xs', self._num_channels, self._num_bins)
+        self._masks = Masks('Ms', self._num_channels, self._num_bins)
+        self._covs = Covs('XXs', self._num_channels, self._num_bins)
+        self._covs_phat = Covs('XXps', self._num_channels, self._num_bins)
+        self._tdoas = Tdoas('tdoas', self._num_channels, self._num_sources)
 
         self._stft = Stft(self._num_channels, n_fft, hop_length, fft_window)
         self._scm = Scm(self._num_channels, self._num_bins, scm_alpha)
@@ -90,8 +92,12 @@ class AcousticImageCalibrationPipeline:
         self._target_tdoas = np.zeros((self._targets.shape[0], self._tdoas.num_pairs), dtype=float)
 
     def _generate_targets(self) -> np.typing.NDArray[int]:
-        x_values = np.linspace(self._target_margin, self._image_width - self._target_margin, self._target_count, dtype=int)
-        y_values = np.linspace(self._target_margin, self._image_height - self._target_margin, self._target_count, dtype=int)
+        x_values = np.linspace(
+            self._target_margin, self._image_width - self._target_margin, self._target_count, dtype=int
+        )
+        y_values = np.linspace(
+            self._target_margin, self._image_height - self._target_margin, self._target_count, dtype=int
+        )
         return cast(np.typing.NDArray[int], np.array(np.meshgrid(x_values, y_values)).T.reshape(-1, 2))
 
     @property
@@ -156,7 +162,7 @@ class AcousticImageCalibrationPipeline:
             'c': c,
             'image_delays': image_delays,
             'd': d,
-            'vh': vh
+            'vh': vh,
         }
         with open(self._calibration_path, 'wb') as f:
             pickle.dump(calibration, f)
@@ -183,9 +189,7 @@ class AcousticImageCalibrationPipeline:
 
     def _compute_svd_phat(self, delays: np.ndarray, progress_callback: Callable[[int, int], None]):
         n_points, n_pairs = delays.shape
-        bins_indices = np.tile(
-            np.arange(0, self._num_bins) / self._n_fft, (n_pairs, 1)
-        )
+        bins_indices = np.tile(np.arange(0, self._num_bins) / self._n_fft, (n_pairs, 1))
         Ws = np.zeros((self._svd_phat_batch_size, self._num_bins * n_pairs), dtype=np.complex64)
 
         # From https://github.com/introlab/pyodas/blob/main/library/pyodas/src/pyodas/core/svd_phat.py#L160
@@ -198,12 +202,14 @@ class AcousticImageCalibrationPipeline:
                 points_index_range = n_points - point_index
 
             batch_delays = delays[point_index : point_index + points_index_range, :]
-            delays_multiplied_by_bins = np.einsum('ij, jk->ijk', batch_delays, bins_indices).reshape(points_index_range, -1)
+            delays_multiplied_by_bins = np.einsum('ij, jk->ijk', batch_delays, bins_indices).reshape(
+                points_index_range, -1
+            )
             Ws[K : K + points_index_range, :] = np.exp(2j * np.pi * delays_multiplied_by_bins)
 
             _, S, VH = np.linalg.svd(Ws, full_matrices=False)
 
-            r = np.cumsum(S ** 2, axis=0) / np.sum(S ** 2)
+            r = np.cumsum(S**2, axis=0) / np.sum(S**2)
             K = max([np.argmax((r > (1.0 - self._svd_phat_delta)).astype(float)), K])
 
             S = S[:K].astype(np.complex64)
@@ -220,24 +226,17 @@ class AcousticImageCalibrationPipeline:
         D = np.zeros((n_points, K), dtype=np.complex64)
         point_index = 0
         while point_index != n_points:
-
             points_index_range = self._svd_phat_batch_size
             if n_points < points_index_range + point_index:
                 points_index_range = n_points - point_index
 
-            batch_delays = delays[
-                           point_index : point_index + points_index_range, :
-                           ]
-            delays_multiplied_by_bins = np.einsum(
-                "ij, jk->ijk", batch_delays, bins_indices
-            ).reshape(points_index_range, -1)
-            Ws[:points_index_range, :] = np.exp(
-                2j * np.pi * delays_multiplied_by_bins
+            batch_delays = delays[point_index : point_index + points_index_range, :]
+            delays_multiplied_by_bins = np.einsum('ij, jk->ijk', batch_delays, bins_indices).reshape(
+                points_index_range, -1
             )
+            Ws[:points_index_range, :] = np.exp(2j * np.pi * delays_multiplied_by_bins)
 
-            D[point_index : point_index + points_index_range, :] = (
-                    Ws[:points_index_range, :] @ np.conj(VH).T
-            )
+            D[point_index : point_index + points_index_range, :] = Ws[:points_index_range, :] @ np.conj(VH).T
 
             point_index += points_index_range
 

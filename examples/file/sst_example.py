@@ -40,5 +40,6 @@ def display_result(result: SstPipelineResult):
 
     print()
 
+
 if __name__ == '__main__':
     main()

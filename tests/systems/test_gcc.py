@@ -39,20 +39,16 @@ def test_process_invalid_inputs():
     testee = Gcc(NUM_SOURCES, NUM_CHANNELS, NUM_BINS)
 
     with pytest.raises(ValueError, match='The number of channels of the covs must be 4.'):
-        testee.process(Covs('', NUM_CHANNELS + 1, NUM_BINS),
-                       Tdoas('', NUM_CHANNELS, NUM_SOURCES))
+        testee.process(Covs('', NUM_CHANNELS + 1, NUM_BINS), Tdoas('', NUM_CHANNELS, NUM_SOURCES))
 
     with pytest.raises(ValueError, match='The number of bins of the covs must be 9.'):
-        testee.process(Covs('', NUM_CHANNELS, NUM_BINS + 1),
-                       Tdoas('', NUM_CHANNELS, NUM_SOURCES))
+        testee.process(Covs('', NUM_CHANNELS, NUM_BINS + 1), Tdoas('', NUM_CHANNELS, NUM_SOURCES))
 
     with pytest.raises(ValueError, match='The number of channels of the tdoas must be 4.'):
-        testee.process(Covs('', NUM_CHANNELS, NUM_BINS),
-                       Tdoas('', NUM_CHANNELS + 1, NUM_SOURCES))
+        testee.process(Covs('', NUM_CHANNELS, NUM_BINS), Tdoas('', NUM_CHANNELS + 1, NUM_SOURCES))
 
     with pytest.raises(ValueError, match='The number of sources of the tdoas must be 2.'):
-        testee.process(Covs('', NUM_CHANNELS, NUM_BINS),
-                       Tdoas('', NUM_CHANNELS, NUM_SOURCES + 1))
+        testee.process(Covs('', NUM_CHANNELS, NUM_BINS), Tdoas('', NUM_CHANNELS, NUM_SOURCES + 1))
 
 
 def test_process():

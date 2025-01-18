@@ -13,12 +13,10 @@ class CvCamera(Camera):
     """
     A class to capture camera images using the OpenCV API.
     """
-    def __init__(self,
-                 device_index: int = 0,
-                 width: int = 640,
-                 height: int = 480,
-                 fourcc: int = CV_YUV_FOURCC,
-                 fps: float = 30.0):
+
+    def __init__(
+        self, device_index: int = 0, width: int = 640, height: int = 480, fourcc: int = CV_YUV_FOURCC, fps: float = 30.0
+    ):
         """
 
 

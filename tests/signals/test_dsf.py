@@ -11,6 +11,7 @@ def test_init_too_long_label():
     with pytest.raises(ValueError, match='The label is too long. The maximum length is 63.'):
         Dsf('1' * 64)
 
+
 def test_init():
     testee = Dsf('dsf')
 

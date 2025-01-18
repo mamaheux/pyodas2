@@ -27,14 +27,10 @@ def test_process_invalid_inputs():
     testee = Sst(NUM_TRACKS, NUM_DIRECTIONS, NUM_PASTS)
 
     with pytest.raises(ValueError, match='The number of directions of the input must be 4.'):
-        testee.process(Dsf(''),
-                       Doas('', NUM_DIRECTIONS + 1),
-                       Doas('', NUM_TRACKS))
+        testee.process(Dsf(''), Doas('', NUM_DIRECTIONS + 1), Doas('', NUM_TRACKS))
 
     with pytest.raises(ValueError, match='The number of directions of the output must be 3.'):
-        testee.process(Dsf(''),
-                       Doas('', NUM_DIRECTIONS),
-                       Doas('', NUM_TRACKS + 1))
+        testee.process(Dsf(''), Doas('', NUM_DIRECTIONS), Doas('', NUM_TRACKS + 1))
 
 
 def test_process():

@@ -25,16 +25,22 @@ def audio_thread_run(elevation_azimuth_widget: ElevationAzimuthWidget, source_lo
     mics = Mics(Mics.Hardware.SC16_DEMO_ARRAY)
     pipeline = SslPipeline(mics, sample_rate=RATE, hop_length=HOP_LENGTH)
 
-    pcm = alsaaudio.PCM(alsaaudio.PCM_CAPTURE, alsaaudio.PCM_NORMAL,
-                        channels=len(mics), rate=RATE, format=alsaaudio.PCM_FORMAT_S32_LE,
-                        periodsize=HOP_LENGTH, device='hw:CARD=SC16,DEV=0')
+    pcm = alsaaudio.PCM(
+        alsaaudio.PCM_CAPTURE,
+        alsaaudio.PCM_NORMAL,
+        channels=len(mics),
+        rate=RATE,
+        format=alsaaudio.PCM_FORMAT_S32_LE,
+        periodsize=HOP_LENGTH,
+        device='hw:CARD=SC16,DEV=0',
+    )
 
     while not stop_requested:
         length, data = pcm.read()
         if length < 0:
             continue
 
-        audio = interleaved_pcm_to_numpy(data, len(mics), dtype=np.int32) # The dtype must match the alsa format.
+        audio = interleaved_pcm_to_numpy(data, len(mics), dtype=np.int32)  # The dtype must match the alsa format.
         result = pipeline.process(audio)
 
         elevation_azimuth_widget.add_potential_sources(result.directions)
@@ -42,7 +48,7 @@ def audio_thread_run(elevation_azimuth_widget: ElevationAzimuthWidget, source_lo
 
 
 def main():
-    _app = pg.mkQApp("PyODAS2 - SSL Example")
+    _app = pg.mkQApp('PyODAS2 - SSL Example')
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
     elevation_azimuth_widget = ElevationAzimuthWidget(sample_rate=RATE, hop_length=HOP_LENGTH)

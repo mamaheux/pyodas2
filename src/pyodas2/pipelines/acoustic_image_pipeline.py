@@ -15,15 +15,17 @@ class AcousticImagePipeline:
     This is a class performing acoustic image generation.
     """
 
-    def __init__(self,
-                 mics: Mics,
-                 calibration_path: Union[str, PathLike],
-                 image_width: int,
-                 image_height: int,
-                 hop_length: int = 128,
-                 n_fft: int = 512,
-                 fft_window: Window = Window.HANN,
-                 scm_alpha: float = 0.5) -> None:
+    def __init__(
+        self,
+        mics: Mics,
+        calibration_path: Union[str, PathLike],
+        image_width: int,
+        image_height: int,
+        hop_length: int = 128,
+        n_fft: int = 512,
+        fft_window: Window = Window.HANN,
+        scm_alpha: float = 0.5,
+    ) -> None:
         """
         Create a new acoustic image pipeline.
 
@@ -41,10 +43,10 @@ class AcousticImagePipeline:
         self._num_channels = len(mics)
         self._num_bins = n_fft // 2 + 1
 
-        self._hops_in = Hops("xs", self._num_channels, hop_length)
-        self._freqs_in = Freqs("Xs", self._num_channels, self._num_bins)
-        self._masks = Masks("Ms", self._num_channels, self._num_bins)
-        self._covs = Covs("XXs", self._num_channels, self._num_bins)
+        self._hops_in = Hops('xs', self._num_channels, hop_length)
+        self._freqs_in = Freqs('Xs', self._num_channels, self._num_bins)
+        self._masks = Masks('Ms', self._num_channels, self._num_bins)
+        self._covs = Covs('XXs', self._num_channels, self._num_bins)
 
         self._stft = Stft(self._num_channels, n_fft, hop_length, fft_window)
         self._scm = Scm(self._num_channels, self._num_bins, scm_alpha)
@@ -88,8 +90,9 @@ class AcousticImagePipeline:
         self._scm.process(self._freqs_in, self._masks, self._covs)
 
         with self._averaged_scm_lock:
-            self._averaged_scm = ((1.0 - self._scm_alpha) * self._averaged_scm +
-                                  self._scm_alpha * self._covs.xcorrs_to_numpy().flatten())
+            self._averaged_scm = (
+                1.0 - self._scm_alpha
+            ) * self._averaged_scm + self._scm_alpha * self._covs.xcorrs_to_numpy().flatten()
 
     def generate_acoustic_image(self) -> np.typing.NDArray[np.uint8]:
         with self._averaged_scm_lock:

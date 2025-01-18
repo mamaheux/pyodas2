@@ -21,5 +21,5 @@ __all__ = [
     'SstPipeline',
     'SstPipelineResult',
     'SteeringDelaySumPipeline',
-    'SteeringDelaySumPipelineResult'
+    'SteeringDelaySumPipelineResult',
 ]
