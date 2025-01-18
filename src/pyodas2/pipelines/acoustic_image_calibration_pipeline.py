@@ -46,6 +46,9 @@ class AcousticImageCalibrationPipeline:
         :param svd_phat_batch_size: TODO a
         :param svd_phat_delta: TODO a
         """
+        if hop_length > n_fft // 2:
+            msg = 'hop_length must be at most n_fft // 2.'
+            raise ValueError(msg)
         if image_width < 2 * target_margin or image_height < 2 * target_margin:
             msg = f'The image width and image height must be greater than {2 * target_margin}.'
             raise ValueError(msg)

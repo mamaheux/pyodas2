@@ -37,6 +37,9 @@ class DelaySumPipeline:
         :param fft_window: The window type to compute the FFT for the STFT.
         :param scm_alpha: TODO
         """
+        if hop_length > n_fft // 2:
+            msg = 'hop_length must be at most n_fft // 2.'
+            raise ValueError(msg)
 
         self._num_channels = len(mics)
         self._num_bins = n_fft // 2 + 1

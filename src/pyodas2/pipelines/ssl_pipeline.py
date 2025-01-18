@@ -46,6 +46,9 @@ class SslPipeline:
         :param ssl_geometry: The geometry to perform the sound source localisation.
         :param scm_alpha: TODO
         """
+        if hop_length > n_fft // 2:
+            msg = 'hop_length must be at most n_fft // 2.'
+            raise ValueError(msg)
 
         self._num_channels = len(mics)
         self._num_bins = n_fft // 2 + 1

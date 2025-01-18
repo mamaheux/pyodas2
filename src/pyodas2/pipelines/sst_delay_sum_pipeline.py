@@ -64,6 +64,9 @@ class SstDelaySumPipeline:
         :param scm_alpha: TODO
         :param sst_num_pasts: TODO
         """
+        if hop_length > n_fft // 2:
+            msg = 'hop_length must be at most n_fft // 2.'
+            raise ValueError(msg)
 
         self._num_bins = n_fft // 2 + 1
         self._num_channels = len(mics)
