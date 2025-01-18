@@ -62,6 +62,7 @@ build-frontend = {name = "build", args = ["--exports", "whole_archive"]}
 
 [tool.ruff]
 line-length = 120
+exclude = ["src/odas2"]
 
 [tool.ruff.lint]
 extend-select = [
