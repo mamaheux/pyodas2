@@ -1,5 +1,7 @@
 # PyODAS2: Python Open embedded Audition System 2
 
+![example workflow](https://github.com/mamaheux/pyodas2/actions/workflows/release.yml/badge.svg)
+
 **PyODAS2** is an advanced Python library designed for embedded audio processing applications. Its primary focus is to 
 enable developers and researchers to achieve sound source localization, tracking, separation, and acoustic imaging  with
 ease and efficiency. The library is built with simplicity, flexibility, and scalability in mind, making it a versatile 
