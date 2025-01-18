@@ -1,5 +1,5 @@
 """
-This is an example to illustrate how to perform sound source localization using a file.
+This is an example to illustrate how to perform sound source localization using a file as input.
 """
 
 import os

@@ -93,10 +93,17 @@ class AcousticImageCalibrationPipeline:
 
     @property
     def targets(self) -> np.typing.NDArray[int]:
+        """
+        :return: The target coordonates.
+        """
+
         return self._targets
 
     @property
     def current_target_index(self) -> int:
+        """
+        :return: The current target index.
+        """
         return self._current_target_index
 
     @property
@@ -108,7 +115,7 @@ class AcousticImageCalibrationPipeline:
         Process the current audio frame
 
         :param audio: The audio data having the shape (len(mics), hop_length)
-        :return: The result for the current audio frame
+        :return: The result for the current audio frame.
         """
         self._hops.load_numpy(audio)
 
@@ -118,6 +125,10 @@ class AcousticImageCalibrationPipeline:
         self._gcc.process(self._covs_phat, self._tdoas)
 
     def record_tdoas(self) -> None:
+        """
+        Records the current tdoas for the current target and select the next one.
+        """
+
         for i in range(self._tdoas.num_pairs):
             self._target_tdoas[self._current_target_index, i] = self._tdoas[0, i].delay
 
@@ -126,6 +137,7 @@ class AcousticImageCalibrationPipeline:
     def calibrate(self, progress_callback: Callable[[int, int], None]) -> None:
         """
         Performs the calibration process.
+
         :param progress_callback: A process callback
         """
         a_inv = self._compute_a_inv()

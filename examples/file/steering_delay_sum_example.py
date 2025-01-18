@@ -1,5 +1,5 @@
 """
-This is an example to illustrate how to perform delay and sum beamforming at given directions using a file.
+This is an example to illustrate how to perform delay and sum beamforming at given directions using a file as input.
 """
 
 import os
@@ -11,7 +11,7 @@ from pyodas2.types import Xyz
 from pyodas2.utils import Mics
 
 INPUT_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio', 'mix.wav')
-OUTPUT_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'output.wav')
+OUTPUT_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio', 'output.wav')
 
 HOP_LENGTH = 128
 NUM_SOURCES = 1

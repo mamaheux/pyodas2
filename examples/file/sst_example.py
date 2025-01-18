@@ -1,5 +1,5 @@
 """
-This is an example to illustrate how to perform sound source tracking.
+This is an example to illustrate how to perform sound source tracking using a file as input.
 """
 
 import os

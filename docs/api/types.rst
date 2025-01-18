@@ -1,8 +1,8 @@
 pyodas2.types
-===============
+##############
 
 Classes
-----------------
+********
 
 .. autoclass:: pyodas2.types.Xyz
 

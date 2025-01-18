@@ -1,8 +1,9 @@
 pyodas2.visualization
-======================
+######################
 
 Classes
-----------------
+********
+
 .. autoclass:: pyodas2.visualization.AcousticImageCalibrationWidget
 
    .. automethod:: __init__

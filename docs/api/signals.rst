@@ -1,8 +1,9 @@
 pyodas2.signals
-===============
+################
 
 Classes
-----------------
+********
+
 .. autoclass:: pyodas2.signals.Covs
 
    .. automethod:: __init__

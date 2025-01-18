@@ -1,8 +1,9 @@
 pyodas2.pipelines
-==================
+##################
 
 Classes
-----------------
+********
+
 .. autoclass:: pyodas2.pipelines.SslPipeline
 
    .. automethod:: __init__

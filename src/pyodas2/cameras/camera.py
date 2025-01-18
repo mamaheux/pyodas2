@@ -12,6 +12,7 @@ class Camera(ABC):
     def read(self) -> Tuple[bool, np.typing.NDArray[np.uint8]]:
         """
         Read the next video frame.
+
         :return: The read RGB video frame
         """
 

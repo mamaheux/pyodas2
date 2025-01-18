@@ -11,6 +11,7 @@ class AcousticImageCalibrationWidget(QtWidgets.QWidget):
     def __init__(self, point_radius: int = 8, hflip: bool = True, parent=None) -> None:
         """
         Creates a new AcousticImageWidget.
+
         :param point_radius: The point radius.
         :param hflip: TODO.
         :param parent: The parent widget
@@ -59,6 +60,7 @@ class AcousticImageCalibrationWidget(QtWidgets.QWidget):
     def set_camera_image(self, image: np.typing.NDArray[np.uint8]) -> None:
         """
         Updates the displayed camera image
+
         :param image: A RGB image.
         """
         def update():
@@ -78,6 +80,7 @@ class AcousticImageCalibrationWidget(QtWidgets.QWidget):
     def set_targets(self, targets: np.typing.NDArray[int], current_target_index: int) -> None:
         """
         Updates the targets.
+
         :param targets: The targets of shape (target count, 2)
         :param current_target_index: The current target index
         """
@@ -103,6 +106,7 @@ class AcousticImageCalibrationWidget(QtWidgets.QWidget):
     def update_process_dialog(self, value: int, maximum: int):
         """
         Update the progress dialog values
+
         :param value: The current value.
         :param maximum: The maximum value.
         :return:

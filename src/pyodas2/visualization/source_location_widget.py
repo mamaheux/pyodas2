@@ -116,6 +116,7 @@ class SourceLocationWidget(gl.GLViewWidget):
     def set_tracked_sources(self, tracked_directions_by_index: Dict[int, Doas.Dir]) -> None:
         """
         Update the tracked sources.
+
         :param tracked_directions_by_index: The tracked sources directions.
         :return:
         """

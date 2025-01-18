@@ -36,6 +36,7 @@ class AcousticImageWidget(QtWidgets.QWidget):
     def __init__(self, parent=None) -> None:
         """
         Creates a new AcousticImageWidget.
+
         :param parent: The parent widget
         """
         super().__init__(parent)
@@ -68,6 +69,7 @@ class AcousticImageWidget(QtWidgets.QWidget):
     def set_images(self, rgb_image: np.typing.NDArray[np.uint8], acoustic_image: np.typing.NDArray[np.uint8]) -> None:
         """
         Updates the displayed camera image
+
         :param rgb_image: A RGB image.
         :param acoustic_image: An acoustic image.
         """

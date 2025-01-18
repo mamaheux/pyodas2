@@ -1,8 +1,9 @@
 pyodas2.systems
-===============
+################
 
 Classes
-----------------
+********
+
 .. autoclass:: pyodas2.systems.Beamformer
 
    .. automethod:: __init__

@@ -19,6 +19,7 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
                  parent=None):
         """
         Creates a new ElevationAzimuthWidget.
+
         :param sample_rate: The sample rate of the sound.
         :param hop_length: The number of samples in each processed audio frame, also named num_shifts.
         :param history_duration_s: The duration of the history in seconds
@@ -140,6 +141,7 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
     def add_tracked_sources(self, tracked_directions_by_index: Dict[int, Doas.Dir]) -> None:
         """
         Add the tracked sources.
+
         :param tracked_directions_by_index: The tracked sources directions.
         :return:
         """
