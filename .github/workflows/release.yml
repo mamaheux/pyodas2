@@ -88,7 +88,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create v${{ steps.semantic_version.outputs.version }} -t pyodas2_v${{ steps.semantic_version.outputs.version }} -n "github.event.head_commit.message"
+          echo "${{ github.event.head_commit.message }}" >> notes.txt
+          gh release create v${{ steps.semantic_version.outputs.version }} -t pyodas2_v${{ steps.semantic_version.outputs.version }} -F notes.txt
           gh release upload v${{ steps.semantic_version.outputs.version }} dist/*
 
       - name: Publish to PyPI
