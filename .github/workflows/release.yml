@@ -57,8 +57,6 @@ jobs:
           tag_prefix: "v"
           major_pattern: "(MAJOR)"
           minor_pattern: "(MINOR)"
-          format: "${major}.${minor}.${patch}"
-          short_tags: false
           bump_each_commit: true
 
       - name: Display Version
