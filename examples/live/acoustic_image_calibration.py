@@ -29,9 +29,9 @@ def video_thread_run(
 ):
     with CvCamera(width=IMAGE_WIDTH, height=IMAGE_HEIGHT) as camera:
         while not stop_requested and not pipeline.is_finished:
-            ok, bgr_image = camera.read()
+            ok, rgb_image = camera.read()
             if ok:
-                acoustic_image_calibration_widget.set_camera_image(bgr_image)
+                acoustic_image_calibration_widget.set_camera_image(rgb_image)
 
 
 def audio_thread_run(
