@@ -84,12 +84,17 @@ Installation
 
 .. code-block:: bash
 
-    pip install pyodas2[pi]
+    sudo apt install libcap-dev python3-libcamera python3-picamera2
+    python3 -m venv --system-site-packages venv
+    source venv/bin/activate
+    pip install pyodas2
 
 * Other Computers:
 
 .. code-block:: bash
 
+    python -m venv venv
+    source venv/bin/activate venv
     pip install pyodas2
 
 Tutorials

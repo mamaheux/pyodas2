@@ -8,9 +8,10 @@ Raspberry Pi Computers
 
 .. code-block:: bash
 
-    python -m venv venv
+    sudo apt install libcap-dev python3-libcamera python3-picamera2
+    python3 -m venv --system-site-packages venv
     source venv/bin/activate
-    pip install pyodas2[pi] pyalsaaudio
+    pip install pyodas2 pyalsaaudio
 
 Other Computers:
 *****************

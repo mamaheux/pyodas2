@@ -32,7 +32,6 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["ruff", "pytest", "build", "furo"]
-pi = ["picamera2 >= 0.3, < 0.4"]
 
 
 [tool.scikit-build]
