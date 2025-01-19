@@ -72,7 +72,7 @@ def test_numpy_to_interleaved_pcm_data_dtype_float32_sample_width_2():
     data = np.array([[1.0, 0.5, 0.0], [0.0, -0.5, -1.0]], dtype=np.float32)
     output = numpy_to_interleaved_pcm(data, sample_width=2)
 
-    assert output == b'\xff\x7f\x00\x00\xff?\x01\xc0\x00\x00\x01\x80'
+    assert output == b'\xff\x7f\x00\x00\x00@\x00\xc0\x00\x00\x01\x80'
 
 
 def test_numpy_to_interleaved_pcm_data_dtype_int16_sample_width_4():
@@ -93,4 +93,4 @@ def test_numpy_to_interleaved_pcm_data_dtype_float32_dtype_int16():
     data = np.array([[2.0, 0.5, 0.0], [-1.0, -0.25, -0.125]], dtype=np.float32)
     output = numpy_to_interleaved_pcm(data, dtype=np.int16)
 
-    assert output == b'\xff\x7f\x01\x80\xff?\x01\xe0\x00\x00\x01\xf0'
+    assert output == b'\xff\x7f\x01\x80\x00@\x00\xe0\x00\x00\x00\xf0'

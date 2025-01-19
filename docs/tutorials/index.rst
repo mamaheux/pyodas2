@@ -30,7 +30,8 @@ Below is a list of available tutorials.
 :doc:`Live Processing Tutorials <live/index>`
 **********************************************
 
-For the live processing tutorials, you must have a microphone array. Below is a list of recommended microphone arrays:
+For the live processing tutorials, you must use a Linux computer because the code uses PyAlsaAudio.
+Also, you must have a microphone array. Below is a list of recommended microphone arrays:
 
 * SC16 with the printed demo array (TODO add link)
 * SC16F (TODO add link)
