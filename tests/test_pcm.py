@@ -86,7 +86,7 @@ def test_numpy_to_interleaved_pcm_data_dtype_uint8_dtype_float32():
     data = np.array([[0, 64, 128], [255, 128, 64]], dtype=np.uint8)
     output = numpy_to_interleaved_pcm(data, dtype=np.float32)
 
-    assert output == b'\x00\x00\x00\xbf\x00\x00\x00?\xfe\xfe~\xbe\x00\x81\x00;\x00\x81\x00;\xfe\xfe~\xbe'
+    assert output == b'\x00\x00\x80\xbf\x00\x00\x80?\xfe\xfe\xfe\xbe\x00\x81\x80;\x00\x81\x80;\xfe\xfe\xfe\xbe'
 
 
 def test_numpy_to_interleaved_pcm_data_dtype_float32_dtype_int16():

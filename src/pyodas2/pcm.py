@@ -62,22 +62,22 @@ def numpy_to_interleaved_pcm(
     if np.issubdtype(data.dtype, np.signedinteger):
         data = -data.astype(np.float32) / np.iinfo(data.dtype).min
     elif np.issubdtype(data.dtype, np.unsignedinteger):
-        data = data.astype(np.float32) / np.iinfo(data.dtype).max - 0.5
+        data = 2 * (data.astype(np.float32) / np.iinfo(data.dtype).max - 0.5)
     else:
         data = np.clip(data, a_min=-1.0, a_max=1.0)
 
     if sample_width is not None:
         if sample_width == 2:
-            return (data * np.iinfo(np.int16).max).astype(np.int16).T.tobytes()
+            return np.round(data * np.iinfo(np.int16).max).astype(np.int16).T.tobytes()
         if sample_width == 4:
-            return (data * np.iinfo(np.int32).max).astype(np.int32).T.tobytes()
+            return np.round(data * np.iinfo(np.int32).max).astype(np.int32).T.tobytes()
 
         msg = 'Not supported sample_width.'
         raise ValueError(msg)
 
     if dtype is not None:
         if np.issubdtype(dtype, np.integer):
-            return (data * np.iinfo(dtype).max).astype(dtype).T.tobytes()
+            return np.round(data * np.iinfo(dtype).max).astype(dtype).T.tobytes()
         if np.issubdtype(dtype, np.floating):
             return data.astype(dtype).T.tobytes()
 
