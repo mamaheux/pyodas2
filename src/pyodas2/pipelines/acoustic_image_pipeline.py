@@ -94,12 +94,25 @@ class AcousticImagePipeline:
                 1.0 - self._scm_alpha
             ) * self._averaged_scm + self._scm_alpha * self._covs.xcorrs_to_numpy().flatten()
 
-    def generate_acoustic_image(self) -> np.typing.NDArray[np.uint8]:
+    def generate_acoustic_image(self, relative: bool = False) -> np.typing.NDArray[np.uint8]:
+        """
+        Generates an acoustic image using the last processed audio frame.
+
+        :param relative: If True, return an acoustic image relative to minimum and maximum energy levels
+        :return: The generated acoustic image.
+        """
         with self._averaged_scm_lock:
             normalized_scm_array = self._averaged_scm / (np.abs(self._averaged_scm) + 1e-9)
 
         z = self._vh @ normalized_scm_array
         acoustic_image = np.real(self._d @ z) / self._vh.shape[1]
         acoustic_image = acoustic_image.reshape(self._image_width, self._image_height).T
-        acoustic_image = np.clip(acoustic_image, a_min=0.0, a_max=1.0)
+
+        if relative:
+            min_value = np.min(acoustic_image)
+            max_value = np.max(acoustic_image)
+            acoustic_image = (acoustic_image - min_value) / (max_value - min_value)
+        else:
+            acoustic_image = np.clip(acoustic_image, a_min=0.0, a_max=1.0)
+
         return (acoustic_image * 255).astype(np.uint8)

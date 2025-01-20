@@ -34,13 +34,16 @@ class AcousticImageWidget(QtWidgets.QWidget):
     A widget to display an acoustic image.
     """
 
-    def __init__(self, parent=None) -> None:
+    def __init__(self, hflip: bool = True, parent=None) -> None:
         """
         Creates a new AcousticImageWidget.
 
+        :param hflip: TODO.
         :param parent: The parent widget
         """
         super().__init__(parent)
+
+        self._hflip = hflip
 
         self._graphic_layout_widget = pg.GraphicsLayoutWidget()
         self._image_plot = self._graphic_layout_widget.addPlot()
@@ -81,6 +84,10 @@ class AcousticImageWidget(QtWidgets.QWidget):
 
             color_map = COLOR_MAPS[self._color_map_combo_box.currentText()]
             mapped_acoustic_image = cv2.applyColorMap(acoustic_image, color_map)
-            self._image_item.setImage(cv2.addWeighted(rgb_image, beta, mapped_acoustic_image, alpha, 0.0))
+            mixed_image = cv2.addWeighted(rgb_image, beta, mapped_acoustic_image, alpha, 0.0)
+
+            if self._hflip:
+                mixed_image = cv2.flip(mixed_image, 1)
+            self._image_item.setImage(mixed_image)
 
         QtCore.QTimer.singleShot(0, self, update)

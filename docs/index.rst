@@ -64,9 +64,9 @@ or manipulation of the audio signals.
 SSS is essential in situations where multiple sound sources coexist, such as a crowded room, a music track with multiple
 instruments, or a surveillance scenario with overlapping conversations.
 
-Acoustic Image Capture
+Acoustic Imaging
 =======================
-Acoustic Image Capture is the process of creating a spatial representation of sound sources within an environment by
+**Acoustic imaging** is the process of creating a spatial representation of sound sources within an environment by
 visualizing the distribution and location of acoustic energy. It involves using specialized sensors and algorithms to
 map sound intensity or direction onto a visual display, similar to how cameras capture light to create visual images.
 
