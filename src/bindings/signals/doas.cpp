@@ -45,8 +45,8 @@ std::string doas_repr(const doas_t& self) {
     return ss.str();
 }
 
-dir_t dir_init(src_t type, xyz_t coord, float energy) {
-    return {type, coord, energy};
+dir_t dir_init(src_t type, xyz_t coord, float energy, unsigned int tracking_id) {
+    return {type, coord, energy, tracking_id};
 }
 
 dir_t dir_copy(const dir_t& self) {
@@ -72,10 +72,11 @@ void init_doas(pybind11::module& m) {
         .value("TARGET", TARGET);
 
     py::class_<dir_t>(doas, "Dir", R"pbdoc(A class representing a direction of arrival.)pbdoc")
-        .def(py::init(&dir_init), R"pbdoc(Create a direction of arrival.)pbdoc", py::arg("type"), py::arg("coord"), py::arg("energy"))
+        .def(py::init(&dir_init), R"pbdoc(Create a direction of arrival.)pbdoc", py::arg("type"), py::arg("coord"), py::arg("energy"), py::arg("tracking_id") = 0)
         .def_readwrite("type", &dir_t::type, R"pbdoc(Get/set the type of the direction of arrival.)pbdoc")
         .def_readwrite("coord", &dir_t::coord, R"pbdoc(Get/set the coord of the direction of arrival.)pbdoc")
         .def_readwrite("energy", &dir_t::energy, R"pbdoc(Get/set the energy of the direction of arrival.)pbdoc")
+        .def_readwrite("tracking_id", &dir_t::tracking_id, R"pbdoc(Get/set the tracking id.)pbdoc")
         .def("copy", &dir_copy, R"pbdoc(Copy the direction of arrival.)pbdoc")
         .def("__repr__", &dir_repr);
 

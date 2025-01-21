@@ -150,7 +150,7 @@ So, it is required to define the function that display the result.
 
         print('Tracked directions')
         for i, d in result.tracked_directions_by_index.items():
-            print('\t', i, '\tenergy:', d.energy, '\tdirection:', d.coord)
+            print('\tindex:', i, '\tid:', d.tracking_id, '\tenergy:', d.energy, '\tdirection:', d.coord)
 
         print()
 

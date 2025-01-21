@@ -75,6 +75,7 @@ def test_process():
 
     assert doas_dst[0].type == Doas.Src.TRACKED
     assert (doas_dst[0].coord - targets[0].coord).mag() < 0.01
+    assert doas_dst[0].tracking_id == 1
 
     assert doas_dst[1].type == Doas.Src.UNDEFINED
     assert doas_dst[2].type == Doas.Src.UNDEFINED

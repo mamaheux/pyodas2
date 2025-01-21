@@ -59,7 +59,7 @@ def test_repr():
 
 
 def test_dir_copy():
-    testee = Doas.Dir(Doas.Src.POTENTIAL, Xyz(1.0, 2.0, 3.0), 5.0)
+    testee = Doas.Dir(Doas.Src.POTENTIAL, Xyz(1.0, 2.0, 3.0), 5.0, 6)
     testee_copy = testee.copy()
 
     testee.type = Doas.Src.UNDEFINED
@@ -67,9 +67,11 @@ def test_dir_copy():
     testee.coord.y = -2.0
     testee.coord.z = -3.0
     testee.energy = 10.0
+    testee.tracking_id = 7
 
     assert testee_copy.type == Doas.Src.POTENTIAL
     assert testee_copy.coord.x == 1.0
     assert testee_copy.coord.y == 2.0
     assert testee_copy.coord.z == 3.0
     assert testee_copy.energy == 5.0
+    assert testee_copy.tracking_id == 6
