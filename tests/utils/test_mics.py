@@ -86,17 +86,17 @@ def test_init_list():
     assert testee[0].position.x == 1.0
     assert testee[0].position.y == 2.0
     assert testee[0].position.z == 3.0
-    assert testee[0].direction.x == 4.0
-    assert testee[0].direction.y == 5.0
-    assert testee[0].direction.z == 6.0
+    assert testee[0].direction.x == pytest.approx(0.4558423161506653)
+    assert testee[0].direction.y == pytest.approx(0.5698028802871704)
+    assert testee[0].direction.z == pytest.approx(0.6837634444236755)
     assert testee[0].pattern == Mic.Pattern.OMNIDIRECTIONAL
 
     assert testee[1].position.x == 7.0
     assert testee[1].position.y == 8.0
     assert testee[1].position.z == 9.0
-    assert testee[1].direction.x == 10.0
-    assert testee[1].direction.y == 11.0
-    assert testee[1].direction.z == 12.0
+    assert testee[1].direction.x == pytest.approx(0.5234239101409912)
+    assert testee[1].direction.y == pytest.approx(0.5757663249969482)
+    assert testee[1].direction.z == pytest.approx(0.6281087398529053)
     assert testee[1].pattern == Mic.Pattern.CARDIOID
 
 
@@ -128,7 +128,7 @@ def test_set_item():
     testee[0] = Mic(Xyz(10.0, 0.0, 0.0), Xyz(11.0, 0.0, 0.0), Mic.Pattern.CARDIOID)
 
     assert testee[0].position.x == 10.0
-    assert testee[0].direction.x == 11.0
+    assert testee[0].direction.x == 1.0
     assert testee[0].pattern == Mic.Pattern.CARDIOID
 
 

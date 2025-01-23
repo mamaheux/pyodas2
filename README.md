@@ -7,6 +7,8 @@ enable developers and researchers to achieve sound source localization, tracking
 ease and efficiency. The library is built with simplicity, flexibility, and scalability in mind, making it a versatile 
 tool for a wide range of real-world audio processing tasks.
 
+TODO reference pour ODAS2 en C
+
 ---
 
 ## Overview
@@ -116,3 +118,8 @@ ruff check
 ## Licence 
 This project is licensed under the MIT License. You’re free to use, modify, and distribute PyODAS2 in your projects with
 attribution.
+
+
+## Authors
+****************
+TODO

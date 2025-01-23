@@ -88,10 +88,24 @@ public:
 };
 
 void init_ssl(py::module& m) {
-    py::class_<Ssl, std::shared_ptr<Ssl>>(m, "Ssl", R"pbdoc(A class representing the ssl process.)pbdoc")
+    py::class_<Ssl, std::shared_ptr<Ssl>>(m, "Ssl", R"pbdoc(A class performing sound source localization (SSL).)pbdoc")
         .def(py::init<std::shared_ptr<const mics_t>, std::shared_ptr<const points_t>, float, float, size_t, size_t>(),
-            R"pbdoc(Create a ssl process.)pbdoc",
-            py::arg("mics"), py::arg("points"), py::arg("sample_rate"), py::arg("sound_speed"), py::arg("num_sources"), py::arg("num_directions"))
+            R"pbdoc(
+            Create a ssl process.
+
+            :param mics: The instance representing the microphone array configuration.
+            :param points: The predefined geometry to transform time differences of arrival (TDOAs) into directions of arrival (DOAs).
+            :param sample_rate: The sample rate in Hz.
+            :param sound_speed: The speed of sound in m/s.
+            :param num_sources: The number of audio source, the number of time differences of arrival.
+            :param num_directions: The number of directions of arrival.
+            )pbdoc",
+            py::arg("mics"),
+            py::arg("points"),
+            py::arg("sample_rate"),
+            py::arg("sound_speed"),
+            py::arg("num_sources"),
+            py::arg("num_directions"))
         .def_property_readonly("num_channels", &Ssl::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_property_readonly("num_pairs", &Ssl::num_pairs, R"pbdoc(Get the number of pairs.)pbdoc")
         .def_property_readonly("num_sources", &Ssl::num_sources, R"pbdoc(Get the number of sources.)pbdoc")
@@ -101,6 +115,14 @@ void init_ssl(py::module& m) {
         .def_property_readonly("sound_speed", &Ssl::sound_speed, R"pbdoc(Get the sound speed.)pbdoc")
         .def_property_readonly("mics", &Ssl::mics, R"pbdoc(Get the mics.)pbdoc")
         .def_property_readonly("points", &Ssl::points, R"pbdoc(Get the points.)pbdoc")
-        .def("process", &Ssl::process, R"pbdoc(Perform the ssl process.)pbdoc", py::arg("tdoas"), py::arg("doas"))
+        .def("process",
+            &Ssl::process,
+            R"pbdoc(
+            Perform sound source localization.
+
+            :param tdoas: The time differences of arrival.
+            :param tdoas: The computed directions of arrival.)pbdoc",
+            py::arg("tdoas"),
+            py::arg("doas"))
         .def("__repr__", &Ssl::to_repr);
 }

@@ -14,9 +14,9 @@ enum class Pattern {
 mic_t mic_init(const xyz_t position, const xyz_t direction, Pattern pattern) {
     switch (pattern) {
         case Pattern::OMNIDIRECTIONAL:
-            return mic_cst(position, direction, "omnidirectional");
+            return mic_cst(position, xyz_unit(direction), "omnidirectional");
         case Pattern::CARDIOID:
-            return mic_cst(position, direction, "cardioid");
+            return mic_cst(position, xyz_unit(direction), "cardioid");
         default:
             throw py::value_error("Not supported pattern");
     }
@@ -59,16 +59,32 @@ std::string mic_to_repr(const mic_t& self) {
 void init_mic(py::module &m) {
     py::class_<mic_t> mic(m, "Mic", R"pbdoc(A class representing a microphone.)pbdoc");
 
-    py::enum_<Pattern>(mic, "Pattern")
+    py::enum_<Pattern>(mic, "Pattern", R"pbdoc(An enum representing microphone patterns.)pbdoc")
         .value("OMNIDIRECTIONAL", Pattern::OMNIDIRECTIONAL)
         .value("CARDIOID", Pattern::CARDIOID);
 
-    mic.def(py::init(&mic_init), R"pbdoc(Create a new mic containing a position, a direction and a pattern.)pbdoc",
-            py::arg("position"), py::arg("direction"), py::arg("pattern"))
+    mic.def(py::init(&mic_init),
+            R"pbdoc(
+            Create a new mic containing a position, a direction and a pattern.
+
+            :param position: The microphone position in meters.
+            :param position: The microphone direction.
+            :param pattern: The microphone pattern.)pbdoc",
+            py::arg("position"),
+            py::arg("direction"),
+            py::arg("pattern"))
         .def_readwrite("position", &mic_t::position, R"pbdoc(Get/set the position of the microphone in meters.)pbdoc")
         .def_readwrite("direction", &mic_t::direction, R"pbdoc(Get/set the direction of the microphone.)pbdoc")
-        .def_property("pattern", &mic_get_pattern, &mic_set_pattern, R"pbdoc(Get/set the pattern of the microphone (omnidirectional or cardioid).)pbdoc")
-        .def("gain", &mic_gain, R"pbdoc(Return the microphone gain for the given direction.)pbdoc",
+        .def_property("pattern",
+            &mic_get_pattern,
+            &mic_set_pattern,
+            R"pbdoc(Get/set the pattern of the microphone (omnidirectional or cardioid).)pbdoc")
+        .def("gain",
+            &mic_gain,
+            R"pbdoc(
+            Return the microphone gain for the given direction.
+
+            :param direction: The direction in which to get the gain.)pbdoc",
             py::arg("direction"))
         .def("__repr__", &mic_to_repr);
 }

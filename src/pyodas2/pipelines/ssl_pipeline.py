@@ -75,7 +75,7 @@ class SslPipeline:
 
     def process(self, audio: np.ndarray) -> SslPipelineResult:
         """
-        Process the current audio frame
+        Process the current audio frame.
 
         :param audio: The audio data having the shape (len(mics), hop_length)
         :return: The result for the current audio frame

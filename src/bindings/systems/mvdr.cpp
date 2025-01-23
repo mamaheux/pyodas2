@@ -47,10 +47,27 @@ std::string mvdr_to_repr(const mvdr_t& self) {
 }
 
 void init_mvdr(py::module& m) {
-    py::class_<mvdr_t, std::shared_ptr<mvdr_t>>(m, "Mvdr", R"pbdoc(A class representing the mvdr process.)pbdoc")
-        .def(py::init(&mvdr_init), R"pbdoc(Create a mvdr process.)pbdoc", py::arg("num_sources"), py::arg("num_bins"))
+    py::class_<mvdr_t, std::shared_ptr<mvdr_t>>(m,
+            "Mvdr",
+            R"pbdoc(A class for the minimum variance distortionless response (MVDR) beamformer.)pbdoc")
+        .def(py::init(&mvdr_init),
+            R"pbdoc(
+            Create a mvdr process.
+
+            :param num_channels: The number of channels.
+            :param num_bins: The number of frequency bins.)pbdoc",
+            py::arg("num_sources"),
+            py::arg("num_bins"))
         .def_readonly("num_channels", &mvdr_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_readonly("num_bins", &mvdr_t::num_bins, R"pbdoc(Get the number of bins.)pbdoc")
-        .def("process", &mvdr_process_python, R"pbdoc(Perform the mvdr process.)pbdoc", py::arg("covs"), py::arg("coeffs"))
+        .def("process",
+            &mvdr_process_python,
+            R"pbdoc(
+            Perform the minimum variance distortionless response (MVDR) beamformer process.
+
+            :param covs: The input covariance matrix.
+            :param coeffs: The computed beamformer coefficients.)pbdoc",
+            py::arg("covs"),
+            py::arg("coeffs"))
         .def("__repr__", &mvdr_to_repr);
 }

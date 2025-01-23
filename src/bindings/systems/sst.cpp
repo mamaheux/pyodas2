@@ -40,11 +40,30 @@ std::string sst_to_repr(const sst_t& self) {
 }
 
 void init_sst(py::module& m) {
-    py::class_<sst_t, std::shared_ptr<sst_t>>(m, "Sst", R"pbdoc(A class representing the sst process.)pbdoc")
-        .def(py::init(&sst_init), R"pbdoc(Create a sst process.)pbdoc", py::arg("num_tracks"), py::arg("num_directions"), py::arg("num_pasts"))
+    py::class_<sst_t, std::shared_ptr<sst_t>>(m, "Sst", R"pbdoc(A class performing sound source tracking (SST).)pbdoc")
+        .def(py::init(&sst_init),
+            R"pbdoc(
+            Create a sst process.
+
+            :param num_tracks: The number of tracked directions of arrival.
+            :param num_directions: The number of directions of arrival of the sound source localisation (SSL) process.
+            :param num_pasts: The number of tracked directions of arrival to keep that happen in the past.)pbdoc",
+            py::arg("num_tracks"),
+            py::arg("num_directions"),
+            py::arg("num_pasts"))
         .def_readonly("num_tracks", &sst_t::num_tracks, R"pbdoc(Get the number of tracks.)pbdoc")
         .def_readonly("num_directions", &sst_t::num_directions, R"pbdoc(Get the number of directions.)pbdoc")
         .def_readonly("num_pasts", &sst_t::num_pasts, R"pbdoc(Get the delta time.)pbdoc")
-        .def("process", &sst_process_python, R"pbdoc(Perform the sst process.)pbdoc", py::arg("dsf"), py::arg("in"), py::arg("out"))
+        .def("process",
+            &sst_process_python,
+            R"pbdoc(
+            Perform sound source tracking.
+
+            :param dsf: The dynamic state filter parameters.
+            :param in: The directions of arrival that come from the sound source localisation process.
+            :param out: The tracked directions of arrival.)pbdoc",
+            py::arg("dsf"),
+            py::arg("in"),
+            py::arg("out"))
         .def("__repr__", &sst_to_repr);
 }

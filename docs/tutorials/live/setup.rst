@@ -3,8 +3,8 @@
 
 Below are the instructions to config your computer for live processing depending of your computer.
 
-Raspberry Pi Computers
-************************
+64-bitsRaspberry Pi Computers
+******************************
 
 .. code-block:: bash
 

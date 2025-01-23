@@ -20,7 +20,7 @@ Here's how it works in PyODAS2:
    directions by leveraging the physical arrangement of the microphone array and the modeled grid of possible
    directions.
 
-By default, PyODAS2 determines a single TDOAs for each microphone pairs and two DOAs. This can be increased, but .
+By default, PyODAS2 determines a single TDOAs for each microphone pairs and two DOAs. This can be increased, but TODO.
 
 Below is a breakdown of the code.
 
@@ -118,6 +118,7 @@ Then, the audio is processed chunk by chunk.
 
 * :code:`data = wave_reader.readframes(HOP_LENGTH)`: Reads audio data a chunk of audio data from the file. If the chunk
   size is smaller than expected, it means that the end of file is reached, so the loop is terminated.
+  TODO traite pas le dernier chunk
 
 * :code:`interleaved_pcm_to_numpy`: Converts interleaved PCM data (bytes) to a NumPy array for easier manipulation.
 
@@ -130,6 +131,7 @@ Then, the audio is processed chunk by chunk.
 E. Display Result Function
 ***************************
 
+TODO f-string
 So, it is required to define the function that display the result.
 
 .. code-block:: python
@@ -149,6 +151,11 @@ The last step is to call the main function.
 
     if __name__ == '__main__':
         main()
+
+
+Results
+********
+TODO
 
 
 Summary

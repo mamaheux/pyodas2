@@ -63,7 +63,9 @@ std::string dir_repr(const dir_t& self) {
 }
 
 void init_doas(pybind11::module& m) {
-    py::class_<doas_t, std::shared_ptr<doas_t>> doas(m, "Doas", R"pbdoc(A class representing an array of directions of arrival.)pbdoc");
+    py::class_<doas_t, std::shared_ptr<doas_t>> doas(m,
+        "Doas",
+        R"pbdoc(A class representing an array of directions of arrival.)pbdoc");
 
     py::enum_<src_t>(doas, "Src", R"pbdoc(A enum representing the type of direction of arrival.)pbdoc")
         .value("UNDEFINED", UNDEFINED)
@@ -72,7 +74,18 @@ void init_doas(pybind11::module& m) {
         .value("TARGET", TARGET);
 
     py::class_<dir_t>(doas, "Dir", R"pbdoc(A class representing a direction of arrival.)pbdoc")
-        .def(py::init(&dir_init), R"pbdoc(Create a direction of arrival.)pbdoc", py::arg("type"), py::arg("coord"), py::arg("energy"), py::arg("tracking_id") = 0)
+        .def(py::init(&dir_init),
+            R"pbdoc(
+            Create a direction of arrival.
+
+            :param type: The type of direction of arrival.
+            :param coord: The direction of arrival represented by a 3D vector.
+            :param energy: The energy of the direction of arrival.
+            :param tracking_id: The tracking id of the direction of arrival (default is 0). )pbdoc",
+            py::arg("type"),
+            py::arg("coord"),
+            py::arg("energy"),
+            py::arg("tracking_id") = 0)
         .def_readwrite("type", &dir_t::type, R"pbdoc(Get/set the type of the direction of arrival.)pbdoc")
         .def_readwrite("coord", &dir_t::coord, R"pbdoc(Get/set the coord of the direction of arrival.)pbdoc")
         .def_readwrite("energy", &dir_t::energy, R"pbdoc(Get/set the energy of the direction of arrival.)pbdoc")
@@ -80,11 +93,33 @@ void init_doas(pybind11::module& m) {
         .def("copy", &dir_copy, R"pbdoc(Copy the direction of arrival.)pbdoc")
         .def("__repr__", &dir_repr);
 
-    doas.def(py::init(&doas_init), R"pbdoc(Create doas.)pbdoc", py::arg("label"), py::arg("num_directions"))
+    doas.def(py::init(&doas_init),
+            R"pbdoc(
+            Creates doas.
+
+            :param label: The label associated with the direction of arrival.
+            :param num_directions: The number of directions of arrival in the array.
+            )pbdoc",
+            py::arg("label"),
+            py::arg("num_directions"))
         .def_readonly("label", &doas_t::label, R"pbdoc(Get the label.)pbdoc")
         .def("__len__", &doas_len,  R"pbdoc(Get the number of directions of arrival.)pbdoc")
-        .def("__getitem__", &doas_get_item, R"pbdoc(Get the mutable direction of arrival at the given index.)pbdoc", py::arg("index"), py::return_value_policy::reference)
-        .def("__setitem__", &doas_set_item, R"pbdoc(Set the direction of arrival at the given index.)pbdoc", py::arg("index"), py::arg("direction"))
+        .def("__getitem__",
+            &doas_get_item,
+            R"pbdoc(Get the mutable direction of arrival at the given index.
+
+            :param index: The index at which to return the direction of arrival. )pbdoc",
+            py::arg("index"),
+            py::return_value_policy::reference)
+        .def("__setitem__",
+            &doas_set_item,
+            R"pbdoc(
+            Set the direction of arrival at the given index.
+
+            :param index: The index at which the direction is assigned.
+            :param direction: The direction of arrival to assign at the given index.)pbdoc",
+            py::arg("index"),
+            py::arg("direction"))
         .def("__repr__", &doas_repr);
 }
 

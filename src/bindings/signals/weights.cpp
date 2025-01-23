@@ -62,6 +62,8 @@ std::string weights_to_repr(const weights_t& self) {
     return ss.str();
 }
 
+// TODO compléter les docstring avec les arguments et une description de l'acronyme
+
 void init_weights(py::module& m) {
     py::class_<weights_t, std::shared_ptr<weights_t>>(m, "Weights", R"pbdoc(A class representing a weights signal.)pbdoc")
         .def(py::init(&weights_init), R"pbdoc(Create a weights signal.)pbdoc", py::arg("label"), py::arg("num_sources"), py::arg("num_channels"), py::arg("num_bins"))

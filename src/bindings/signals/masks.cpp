@@ -52,6 +52,8 @@ std::string masks_to_repr(const masks_t& self) {
     return ss.str();
 }
 
+// TODO compléter les docstring avec les arguments et une description de l'acronyme
+
 void init_masks(py::module& m) {
     py::class_<masks_t, std::shared_ptr<masks_t>>(m, "Masks", R"pbdoc(A class representing a masks signal.)pbdoc")
         .def(py::init(&masks_init), R"pbdoc(Create a masks signal.)pbdoc", py::arg("label"), py::arg("num_channels"), py::arg("num_bins"))

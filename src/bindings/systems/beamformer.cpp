@@ -54,11 +54,32 @@ std::string beamformer_to_repr(const beamformer_t& self) {
 }
 
 void init_beamformer(py::module& m) {
-    py::class_<beamformer_t, std::shared_ptr<beamformer_t>>(m, "Beamformer", R"pbdoc(A class representing the beamformer process.)pbdoc")
-        .def(py::init(&beamformer_init), R"pbdoc(Create a beamformer process.)pbdoc", py::arg("num_sources"), py::arg("num_channels"), py::arg("num_bins"))
+    py::class_<beamformer_t, std::shared_ptr<beamformer_t>>(m,
+            "Beamformer",
+            R"pbdoc(A class applying beamformer coefficients.)pbdoc")
+        .def(py::init(&beamformer_init),
+            R"pbdoc(
+            Create a beamformer process.
+
+            :param num_sources: The number of sources, the number of output channels.
+            :param num_channels: The number of input channels.
+            :param num_bins: The number of frequency bins.)pbdoc",
+            py::arg("num_sources"),
+            py::arg("num_channels"),
+            py::arg("num_bins"))
         .def_readonly("num_sources", &beamformer_t::num_sources, R"pbdoc(Get the number of sources.)pbdoc")
         .def_readonly("num_channels", &beamformer_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_readonly("num_bins", &beamformer_t::num_bins, R"pbdoc(Get the number of bins.)pbdoc")
-        .def("process", &beamformer_process_python, R"pbdoc(Perform the beamformer process.)pbdoc", py::arg("in"), py::arg("weights"), py::arg("out"))
+        .def("process",
+            &beamformer_process_python,
+            R"pbdoc(
+            Perform the beamformer process.
+
+            :param in: The input signal in frequency domain.
+            :param weights: The beamformer coefficients.
+            :param out: The output signal in frequency domain.)pbdoc",
+            py::arg("in"),
+            py::arg("weights"),
+            py::arg("out"))
         .def("__repr__", &beamformer_to_repr);
 }

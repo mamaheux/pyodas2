@@ -44,11 +44,28 @@ std::string phat_to_repr(const phat_t& self) {
 }
 
 void init_phat(py::module& m) {
-    py::class_<phat_t, std::shared_ptr<phat_t>>(m, "Phat", R"pbdoc(A class representing the phat process.)pbdoc")
-        .def(py::init(&phat_init), R"pbdoc(Create a phat process.)pbdoc", py::arg("num_channels"), py::arg("num_bins"))
+    py::class_<phat_t, std::shared_ptr<phat_t>>(m,
+            "Phat",
+            R"pbdoc(A class computing the phase transforme of GGC-PHAT.)pbdoc")
+        .def(py::init(&phat_init),
+            R"pbdoc(
+            Create a phat process.
+
+            :param num_channels: The number of channels.
+            :param num_bins: The number of frequency bins.)pbdoc",
+            py::arg("num_channels"),
+            py::arg("num_bins"))
         .def_readonly("num_channels", &phat_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_readonly("num_pairs", &phat_t::num_pairs, R"pbdoc(Get the number of pairs.)pbdoc")
         .def_readonly("num_bins", &phat_t::num_bins, R"pbdoc(Get the number of bins.)pbdoc")
-        .def("process", &phat_process_python, R"pbdoc(Perform the phat process.)pbdoc", py::arg("covs_in"), py::arg("covs_out"))
+        .def("process",
+            &phat_process_python,
+            R"pbdoc(
+            Perform the phase transforme.
+
+            :param covs_in: The input spatial covariance matrix.
+            :param covs_out: The output spatial covariance matrix.)pbdoc",
+            py::arg("covs_in"),
+            py::arg("covs_out"))
         .def("__repr__", &phat_to_repr);
 }

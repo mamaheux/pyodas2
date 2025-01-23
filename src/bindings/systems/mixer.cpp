@@ -48,9 +48,24 @@ std::string mixer_to_repr(const mixer_t& self) {
 }
 
 void init_mixer(py::module& m) {
-    py::class_<mixer_t, std::shared_ptr<mixer_t>>(m, "Mixer", R"pbdoc(A class representing the mixer process.)pbdoc")
-        .def(py::init(&mixer_init), R"pbdoc(Create a mixer process.)pbdoc", py::arg("mapping"))
+    py::class_<mixer_t, std::shared_ptr<mixer_t>>(m,
+            "Mixer",
+            R"pbdoc(A class to ignore some audio channels.)pbdoc")
+        .def(py::init(&mixer_init),
+            R"pbdoc(
+            Create a mixer process.
+
+            :param mapping: The channel indexes to keep.)pbdoc",
+            py::arg("mapping"))
         .def_readonly("num_channels", &mixer_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
-        .def("process", &mixer_process_python, R"pbdoc(Perform the mixer process.)pbdoc", py::arg("hops_in"), py::arg("hops_out"))
+        .def("process",
+            &mixer_process_python,
+            R"pbdoc(
+            Keep the selected channels.
+
+            :param hops_in: The input signal in the time domain.
+            :param hops_out: The output signal in the time domain.)pbdoc",
+            py::arg("hops_in"),
+            py::arg("hops_out"))
         .def("__repr__", &mixer_to_repr);
 }

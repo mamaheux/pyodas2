@@ -50,12 +50,33 @@ std::string scm_to_repr(const scm_t& self) {
 }
 
 void init_scm(py::module& m) {
-    py::class_<scm_t, std::shared_ptr<scm_t>>(m, "Scm", R"pbdoc(A class representing the scm process.)pbdoc")
-        .def(py::init(&scm_init), R"pbdoc(Create a scm process.)pbdoc", py::arg("num_channels"), py::arg("num_bins"), py::arg("alpha"))
+    py::class_<scm_t, std::shared_ptr<scm_t>>(m,
+            "Scm",
+            R"pbdoc(A class computing the spatial covariance matrix (SCM).)pbdoc")
+        .def(py::init(&scm_init),
+            R"pbdoc(
+            Create a scm process.
+
+            :param num_channels: The number of channels.
+            :param num_bins: The number of frequency bins.
+            :param alpha: The alpha value to compute the spatial covariance matrix.)pbdoc",
+            py::arg("num_channels"),
+            py::arg("num_bins"),
+            py::arg("alpha"))
         .def_readonly("num_channels", &scm_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_readonly("num_pairs", &scm_t::num_pairs, R"pbdoc(Get the number of pairs.)pbdoc")
         .def_readonly("num_bins", &scm_t::num_bins, R"pbdoc(Get the number of bins.)pbdoc")
         .def_readonly("alpha", &scm_t::alpha, R"pbdoc(Get the value of alpha.)pbdoc")
-        .def("process", &scm_process_python, R"pbdoc(Perform the scm process.)pbdoc", py::arg("freqs"), py::arg("masks"), py::arg("covs"))
+        .def("process",
+            &scm_process_python,
+            R"pbdoc(
+            Perform the scm process.
+
+            :param freqs: The frequency values.
+            :param masks: The frequency masks.
+            :param covs: The computed spatial covariance matrix. )pbdoc",
+            py::arg("freqs"),
+            py::arg("masks"),
+            py::arg("covs"))
         .def("__repr__", &scm_to_repr);
 }

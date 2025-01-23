@@ -29,6 +29,8 @@ std::string dsf_to_repr(const dsf_t& self) {
     return ss.str();
 }
 
+// TODO compléter les docstring avec les arguments et une description de l'acronyme
+
 void init_dsf(py::module& m) {
     py::class_<dsf_t, std::shared_ptr<dsf_t>>(m, "Dsf", R"pbdoc(A class representing a dsf signal.)pbdoc")
         .def(py::init(&dsf_init), R"pbdoc(Create a dsf signal.)pbdoc", py::arg("label"))

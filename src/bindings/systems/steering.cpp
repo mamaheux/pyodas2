@@ -76,14 +76,35 @@ public:
 };
 
 void init_steering(py::module& m) {
-    py::class_<Steering, std::shared_ptr<Steering>>(m, "Steering", R"pbdoc(A class representing the steering process.)pbdoc")
-        .def(py::init<std::shared_ptr<const mics_t>, float, float, size_t>(), R"pbdoc(Create a steering process.)pbdoc", py::arg("mics"), py::arg("sample_rate"), py::arg("sound_speed"), py::arg("num_sources"))
+    py::class_<Steering, std::shared_ptr<Steering>>(m,
+            "Steering",
+            R"pbdoc(A class to convert directions of arrival into theorical time differences of arrival.)pbdoc")
+        .def(py::init<std::shared_ptr<const mics_t>, float, float, size_t>(),
+            R"pbdoc(
+            Create a steering process.
+
+            :param mics: The instance representing the microphone array configuration.
+            :param sample_rate: The sample rate in Hz.
+            :param sound_speed: The speed of sound in m/s.
+            :param num_sources: The number of audio source, the number of directions of arrival.)pbdoc",
+            py::arg("mics"),
+            py::arg("sample_rate"),
+            py::arg("sound_speed"),
+            py::arg("num_sources"))
         .def_property_readonly("num_channels", &Steering::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_property_readonly("num_pairs", &Steering::num_pairs, R"pbdoc(Get the number of pairs.)pbdoc")
         .def_property_readonly("num_sources", &Steering::num_sources, R"pbdoc(Get the number of sources.)pbdoc")
         .def_property_readonly("mics", &Steering::mics, R"pbdoc(Get the mics.)pbdoc")
         .def_property_readonly("sample_rate", &Steering::sample_rate, R"pbdoc(Get the sample rate.)pbdoc")
         .def_property_readonly("sound_speed", &Steering::sound_speed, R"pbdoc(Get the sound speed.)pbdoc")
-        .def("process", &Steering::process, R"pbdoc(Perform the steering process.)pbdoc", py::arg("doas"), py::arg("tdoas"))
+        .def("process",
+            &Steering::process,
+            R"pbdoc(
+            Convert directions of arrival into theorical time differences of arrival.
+
+            :param doas: The directions of arrival to convert.
+            :param tdoas: The computed theorical time differences of arrival.)pbdoc",
+            py::arg("doas"),
+            py::arg("tdoas"))
         .def("__repr__", &Steering::to_repr);
 }

@@ -1,10 +1,14 @@
 PyODAS2 Documentation
 ######################
 
+TODO logo
+
 **PyODAS2** is an advanced Python library designed for embedded audio processing applications. Its primary focus is to
 enable developers and researchers to achieve sound source localization, tracking, separation, and acoustic imaging with
 ease and efficiency. The library is built with simplicity, flexibility, and scalability in mind, making it a versatile
 tool for a wide range of real-world audio processing tasks.
+
+TODO reférence pour ODAS2 en C
 
 
 Overview
@@ -49,11 +53,15 @@ audio signals captured by many microphones. It involves analyzing the acoustic s
 which the sound is originating. SSL is a fundamental technique in various fields such as robotics, audio engineering,
 surveillance, and human-computer interaction.
 
+TODO image or video
+
 Sound Source Tracking (SST)
 ============================
 **Sound Source Tracking (SST)** is the process of continuously monitoring and estimating the direction of one or more
 sound sources as they move through an environment. It extends Sound Source Localization (SSL) by adding a temporal
 dimension, allowing systems to dynamically follow the trajectory of sound sources over time.
+
+TODO image or video
 
 Sound Source Separation (SSS)
 ==============================
@@ -64,6 +72,8 @@ or manipulation of the audio signals.
 SSS is essential in situations where multiple sound sources coexist, such as a crowded room, a music track with multiple
 instruments, or a surveillance scenario with overlapping conversations.
 
+TODO image or video
+
 Acoustic Imaging
 =======================
 **Acoustic imaging** is the process of creating a spatial representation of sound sources within an environment by
@@ -73,6 +83,8 @@ map sound intensity or direction onto a visual display, similar to how cameras c
 This technology is often used in fields like acoustics, robotics, surveillance, and industrial diagnostics to understand
 and analyze the spatial properties of sound in real-world environments.
 
+TODO image or video
+
 
 Getting Started
 ****************
@@ -80,7 +92,7 @@ Getting Started
 Installation
 =============
 
-* Raspberry Pi Computers:
+* 64-bits Raspberry Pi Computers:
 
 .. code-block:: bash
 
@@ -94,7 +106,7 @@ Installation
 .. code-block:: bash
 
     python -m venv venv
-    source venv/bin/activate venv
+    source venv/bin/activate
     pip install pyodas2
 
 Tutorials
@@ -122,3 +134,8 @@ with attribution.
 
    tutorials/index
    api/index
+
+
+Authors
+****************
+TODO

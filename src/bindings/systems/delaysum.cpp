@@ -48,11 +48,30 @@ std::string delaysum_to_repr(const delaysum_t& self) {
 }
 
 void init_delaysum(py::module& m) {
-    py::class_<delaysum_t, std::shared_ptr<delaysum_t>>(m, "DelaySum", R"pbdoc(A class representing the delaysum process.)pbdoc")
-        .def(py::init(&delaysum_init), R"pbdoc(Create a delaysum process.)pbdoc", py::arg("num_sources"), py::arg("num_channels"), py::arg("num_bins"))
+    py::class_<delaysum_t, std::shared_ptr<delaysum_t>>(m,
+            "DelaySum",
+            R"pbdoc(A class for the delay and sum beamformer..)pbdoc")
+        .def(py::init(&delaysum_init),
+            R"pbdoc(
+            Create a delaysum process.
+
+            :param num_sources: The number of audio sources, the number of time differences of arrival.
+            :param num_channels: The number of channels.
+            :param num_bins: The number of frequency bins.)pbdoc",
+            py::arg("num_sources"),
+            py::arg("num_channels"),
+            py::arg("num_bins"))
         .def_readonly("num_sources", &delaysum_t::num_sources, R"pbdoc(Get the number of sources.)pbdoc")
         .def_readonly("num_channels", &delaysum_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_readonly("num_bins", &delaysum_t::num_bins, R"pbdoc(Get the number of bins.)pbdoc")
-        .def("process", &delaysum_process_python, R"pbdoc(Perform the delaysum process.)pbdoc", py::arg("tdoas"), py::arg("coeffs"))
+        .def("process",
+            &delaysum_process_python,
+            R"pbdoc(
+            Perform the delay and sum beamformer process.
+
+            :param tdoas: The input time differences of arrival.
+            :param coeffs: The computed beamformer coefficients.)pbdoc",
+            py::arg("tdoas"),
+            py::arg("coeffs"))
         .def("__repr__", &delaysum_to_repr);
 }

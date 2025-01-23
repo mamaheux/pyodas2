@@ -42,15 +42,36 @@ std::string xyz_to_string(const xyz_t& xyz) {
 
 void init_xyz(py::module &m) {
     py::class_<xyz_t>(m, "Xyz", R"pbdoc(A class representing a 3D vector.)pbdoc")
-        .def(py::init(&xyz_cst), R"pbdoc(Create a new xyz vector.)pbdoc", py::arg("x"), py::arg("y"), py::arg("z"))
+        .def(py::init(&xyz_cst),
+            R"pbdoc(
+            Create a new xyz vector.
+
+            :param x: The x value.
+            :param y: The y value.
+            :param z: The z value.)pbdoc",
+            py::arg("x"),
+            py::arg("y"),
+            py::arg("z"))
         .def_readwrite("x", &xyz_t::x, R"pbdoc(Get/set X value of the vector.)pbdoc")
         .def_readwrite("y", &xyz_t::y, R"pbdoc(Get/set Y value of the vector.)pbdoc")
         .def_readwrite("z", &xyz_t::z, R"pbdoc(Get/set Z value of the vector.)pbdoc")
         .def("unit", &xyz_unit, R"pbdoc(Return the unit vector with the same direction of self.)pbdoc")
         .def("mag", &xyz_mag, R"pbdoc(Return the magnitude of the vector.)pbdoc")
         .def("l2", &xyz_l2, R"pbdoc(Return the square of the magnitude of the vector.)pbdoc")
-        .def("dot", &xyz_dot, R"pbdoc(Return the dot product of the vectors.)pbdoc", py::arg("other"))
-        .def("cross", &xyz_vec, R"pbdoc(Return the cross product of the vectors.)pbdoc", py::arg("other"))
+        .def("dot",
+            &xyz_dot,
+            R"pbdoc(
+            Return the dot product of the vectors.
+
+            :param other: The other vector.)pbdoc",
+            py::arg("other"))
+        .def("cross",
+            &xyz_vec,
+            R"pbdoc(
+            Return the cross product of the vectors.
+
+            :param other: The other vector.)pbdoc",
+            py::arg("other"))
         .def(py::self + py::self, R"pbdoc(Add two vectors.)pbdoc")
         .def(py::self - py::self, R"pbdoc(Add subtract two vectors.)pbdoc")
         .def(py::self * float(), R"pbdoc(Scale a vector.)pbdoc")

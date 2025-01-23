@@ -6,11 +6,6 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-# TODO remove
-import sys
-
-sys.path.insert(0, '/home/marc-antoine/Bureau/pyodas2/venv/lib/python3.12/site-packages')
-
 project = 'PyODAS2'
 copyright = '2024, Marc-Antoine Maheux'
 author = 'Marc-Antoine Maheux'

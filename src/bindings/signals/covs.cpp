@@ -76,8 +76,10 @@ std::string covs_to_repr(const covs_t& self) {
     return ss.str();
 }
 
+// TODO compléter les docstring avec les arguments et une description de l'acronyme
+
 void init_covs(py::module& m) {
-    py::class_<covs_t, std::shared_ptr<covs_t>>(m, "Covs", R"pbdoc(A class representing a freqs signal.)pbdoc")
+    py::class_<covs_t, std::shared_ptr<covs_t>>(m, "Covs", R"pbdoc(A class representing a covs signal.)pbdoc")
         .def(py::init(&covs_init), R"pbdoc(Create a covs signal.)pbdoc", py::arg("label"), py::arg("num_channels"), py::arg("num_bins"))
         .def_readonly("label", &covs_t::label, R"pbdoc(Get the label.)pbdoc")
         .def_readonly("num_channels", &covs_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")

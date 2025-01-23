@@ -29,7 +29,7 @@ their direction. Here's how it works in PyODAS2:
    and status in real time, accommodating movement.
 
 By default, PyODAS2 determines a single TDOAs for each microphone pairs, two DOAs and three tracked DOAs. This can be
-increased, but .
+increased, but TODO.
 
 Below is a breakdown of the code.
 
@@ -73,7 +73,7 @@ Then, it is required to define some constants.
   script. This path can be modified to point to a different file as needed.
 
 * :code:`HOP_LENGTH`: Defines the number of audio samples processed per iteration. A lower value gives higher temporal
-  resolution but requires more processing power.
+  resolution but requires more processing power. TODO power of 2?
 
 
 C. Main Function - Initialization
@@ -99,7 +99,7 @@ computed.
   configurations are listed in :py:class:`pyodas2.utils.Mics.Hardware`. Also, it is possible to pass a list of
   :py:class:`pyodas2.utils.Mic`.
 
-* :code:`pipeline = SsTPipeline(...)`: Creates the SST pipeline with the microphone array configuration, the audio file
+* :code:`pipeline = SstPipeline(...)`: Creates the SST pipeline with the microphone array configuration, the audio file
   sample rate and the hop length. The number of TDOAs, the number of potential DOAs and the number of tracked DOAs can
   be adjusted by the argument :code:`num_sources`, :code:`num_directions` and :code:`num_tracks`, respectively. The
   predefined grid of potential sound source directions can be adjusted using the argument :code:`ssl_geometry`.
@@ -127,6 +127,7 @@ Then, the audio is processed chunk by chunk.
 
 * :code:`data = wave_reader.readframes(HOP_LENGTH)`: Reads audio data a chunk of audio data from the file. If the chunk
   size is smaller than expected, it means that the end of file is reached, so the loop is terminated.
+  TODO traite pas le dernier chunk
 
 * :code:`interleaved_pcm_to_numpy`: Converts interleaved PCM data (bytes) to a NumPy array for easier manipulation.
 
@@ -139,6 +140,7 @@ Then, the audio is processed chunk by chunk.
 E. Display Result Function
 ***************************
 
+TODO f-string
 So, it is required to define the function that display the result.
 
 .. code-block:: python
@@ -164,6 +166,11 @@ The last step is to call the main function.
 
     if __name__ == '__main__':
         main()
+
+
+Results
+********
+TODO
 
 
 Summary

@@ -118,25 +118,70 @@ std::string istft_to_repr(const istft_t& self) {
 }
 
 void init_stft_istft(pybind11::module& m) {
-    py::enum_<Window>(m, "Window")
+    py::enum_<Window>(m,
+            "Window",
+            R"pbdoc(An enum representing windows to compute the Short-time Fourier transform.)pbdoc")
         .value("HANN", Window::HANN)
         .value("SINE", Window::SINE);
 
-    py::class_<stft_t, std::shared_ptr<stft_t>>(m, "Stft", R"pbdoc(A class representing the stft process.)pbdoc")
-        .def(py::init(&stft_init), R"pbdoc(Create a stft process.)pbdoc", py::arg("num_channels"), py::arg("num_samples"), py::arg("num_shifts"), py::arg("window"))
+    py::class_<stft_t, std::shared_ptr<stft_t>>(m,
+            "Stft",
+            R"pbdoc(A class representing the Short-time Fourier transform (STFT) process.)pbdoc")
+        .def(py::init(&stft_init),
+            R"pbdoc(
+            Create a Short-time Fourier transform (STFT) process.
+
+            :param num_channels: The number of channels.
+            :param num_samples: The number of samples in the FFT which must be a power of 2.
+            :param num_shifts: The shift size in samples to compute the STFT which must be at most to num_samples / 2 for perfect recoonstruction.
+            :param window: The window to compute the FFT.)pbdoc",
+            py::arg("num_channels"),
+            py::arg("num_samples"),
+            py::arg("num_shifts"),
+            py::arg("window"))
         .def_readonly("num_channels", &stft_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_readonly("num_samples", &stft_t::num_samples, R"pbdoc(Get the number of samples.)pbdoc")
         .def_readonly("num_shifts", &stft_t::num_shifts, R"pbdoc(Get the number of shifts.)pbdoc")
         .def_readonly("num_bins", &stft_t::num_bins, R"pbdoc(Get the number of bins.)pbdoc")
-        .def("process", &stft_process_python, R"pbdoc(Perform the stft process.)pbdoc", py::arg("hops"), py::arg("freqs"))
+        .def("process",
+            &stft_process_python,
+            R"pbdoc(
+            Perform the Short-time Fourier transform.
+
+            :param hops: The next audio sample in the time domain to process.
+            :param freqs: The result of the Short-time Fourier transform in the frequency domain.
+            )pbdoc",
+            py::arg("hops"),
+            py::arg("freqs"))
     .def("__repr__", &stft_to_repr);
 
-    py::class_<istft_t, std::shared_ptr<istft_t>>(m, "Istft", R"pbdoc(A class representing the istft process.)pbdoc")
-        .def(py::init(&istft_init), R"pbdoc(Create a istft process.)pbdoc", py::arg("num_channels"), py::arg("num_samples"), py::arg("num_shifts"), py::arg("window"))
+    py::class_<istft_t, std::shared_ptr<istft_t>>(m,
+            "Istft",
+            R"pbdoc(A class representing the inverse Short-time Fourier transform (ISTFT) process.)pbdoc")
+        .def(py::init(&istft_init),
+            R"pbdoc(
+            Create a inverse Short-time Fourier transform (ISTFT) process.
+
+            :param num_channels: The number of channels.
+            :param num_samples: The number of samples in the IFFT which must be a power of 2.
+            :param num_shifts: The shift size in samples to compute the ISTFT which must be at most to num_samples / 2 for perfect recoonstruction.
+            :param window: The window to compute the IFFT.)pbdoc",
+            py::arg("num_channels"),
+            py::arg("num_samples"),
+            py::arg("num_shifts"),
+            py::arg("window"))
         .def_readonly("num_channels", &istft_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_readonly("num_samples", &istft_t::num_samples, R"pbdoc(Get the number of samples.)pbdoc")
         .def_readonly("num_shifts", &istft_t::num_shifts, R"pbdoc(Get the number of shifts.)pbdoc")
         .def_readonly("num_bins", &istft_t::num_bins, R"pbdoc(Get the number of bins.)pbdoc")
-        .def("process", &istft_process_python, R"pbdoc(Perform the istft process.)pbdoc", py::arg("freqs"), py::arg("hops"))
+        .def("process",
+            &istft_process_python,
+            R"pbdoc(
+            Perform the inverse Short-time Fourier transform.
+
+            :param freqs: The input of the inverse Short-time Fourier transform in the frequency domain.
+            :param hops: The result of the inverse Short-time Fourier transform in the time domain.)pbdoc",
+            py::arg("freqs"),
+            py::arg("hops"))
         .def("__repr__", &istft_to_repr);
 }

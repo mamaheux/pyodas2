@@ -90,6 +90,8 @@ std::string hops_to_repr(const hops_t& self) {
     return ss.str();
 }
 
+// TODO compléter les docstring avec les arguments et une description de l'acronyme
+
 void init_hops(py::module& m) {
     py::class_<hops_t, std::shared_ptr<hops_t>>(m, "Hops", R"pbdoc(A class representing a hops signal.)pbdoc")
         .def(py::init(&hops_init), R"pbdoc(Create a hops signal.)pbdoc", py::arg("label"), py::arg("num_channels"), py::arg("num_shifts"))

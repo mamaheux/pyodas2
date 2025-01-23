@@ -63,6 +63,8 @@ std::string tau_repr(const tau_t& self) {
     return ss.str();
 }
 
+// TODO compléter les docstring avec les arguments et une description de l'acronyme
+
 void init_tdoas(pybind11::module& m) {
     py::class_<tdoas_t, std::shared_ptr<tdoas_t>> tdoas(m, "Tdoas", R"pbdoc(A class representing time differences of arrival.)pbdoc");
 

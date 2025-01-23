@@ -55,6 +55,8 @@ std::string freqs_to_repr(const freqs_t& self) {
     return ss.str();
 }
 
+// TODO compléter les docstring avec les arguments et une description de l'acronyme
+
 void init_freqs(py::module& m) {
     py::class_<freqs_t, std::shared_ptr<freqs_t>>(m, "Freqs", R"pbdoc(A class representing a freqs signal.)pbdoc")
         .def(py::init(&freqs_init), R"pbdoc(Create a freqs signal.)pbdoc", py::arg("label"), py::arg("num_channels"), py::arg("num_bins"))
