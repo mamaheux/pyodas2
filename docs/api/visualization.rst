@@ -1,6 +1,14 @@
 pyodas2.visualization
 ######################
 
+To use the following classes, PyODAS2 must be installed with the visualization optional dependencies. They contain
+PySide6 which has a LGPL licence.
+
+.. code-block:: bash
+
+    pip install pyodas2[visualization]
+
+
 Classes
 ********
 

@@ -69,6 +69,12 @@ To start using PyODAS2, you can execute the following command to install PyODAS2
 pip install pyodas2
 ```
 
+If you want to use the class in the visualization package, PyODAS2 must be installed with the visualization optional
+dependencies. They contain PySide6 which has a LGPL licence.
+```bash
+pip install pyodas2[visualization]
+```
+
 For examples, check out the [examples](examples) directory in the repository.
 
 ## Documentation
