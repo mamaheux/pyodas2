@@ -21,8 +21,8 @@ std::shared_ptr<stft_t> stft_init(size_t num_channels, size_t num_samples, size_
     if (ceilf(log2f(static_cast<float>(num_samples))) != floorf(log2f(static_cast<float>(num_samples)))) {
         throw py::value_error("The number of samples must be a power of 2 and the number of bins must be (num_samples / 2) + 1.");
     }
-    if (num_shifts > num_samples) {
-        throw py::value_error("The number of samples must be higher than number of shifts.");
+    if (num_shifts > num_samples / 2) {
+        throw py::value_error("The number of samples must be at most equal to num_samples / 2.");
     }
     size_t num_bins = (num_samples / 2) + 1;
 
@@ -74,8 +74,8 @@ std::shared_ptr<istft_t> istft_init(size_t num_channels, size_t num_samples, siz
     if (ceilf(log2f(static_cast<float>(num_samples))) != floorf(log2f(static_cast<float>(num_samples)))) {
         throw py::value_error("The number of samples must be a power of 2 and the number of bins must be (num_samples / 2) + 1.");
     }
-    if (num_shifts > num_samples) {
-        throw py::value_error("The number of samples must be higher than number of shifts.");
+    if (num_shifts > num_samples / 2) {
+        throw py::value_error("The number of samples must be at most equal to num_samples / 2.");
     }
     size_t num_bins = (num_samples / 2) + 1;
 
@@ -129,11 +129,11 @@ void init_stft_istft(pybind11::module& m) {
             R"pbdoc(A class representing the Short-time Fourier transform (STFT) process.)pbdoc")
         .def(py::init(&stft_init),
             R"pbdoc(
-            Create a Short-time Fourier transform (STFT) process.
+            Create a Stft instance.
 
             :param num_channels: The number of channels.
             :param num_samples: The number of samples in the FFT which must be a power of 2.
-            :param num_shifts: The shift size in samples to compute the STFT which must be at most to num_samples / 2 for perfect recoonstruction.
+            :param num_shifts: The shift size in samples to compute the STFT which must be at most to num_samples / 2 for perfect reconstruction.
             :param window: The window to compute the FFT.)pbdoc",
             py::arg("num_channels"),
             py::arg("num_samples"),
@@ -146,7 +146,7 @@ void init_stft_istft(pybind11::module& m) {
         .def("process",
             &stft_process_python,
             R"pbdoc(
-            Perform the Short-time Fourier transform.
+            Perform the Short-time Fourier transform. The argument parameters must match those of the instance.
 
             :param hops: The next audio sample in the time domain to process.
             :param freqs: The result of the Short-time Fourier transform in the frequency domain.

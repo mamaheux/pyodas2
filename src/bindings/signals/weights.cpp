@@ -62,16 +62,35 @@ std::string weights_to_repr(const weights_t& self) {
     return ss.str();
 }
 
-// TODO compléter les docstring avec les arguments et une description de l'acronyme
-
 void init_weights(py::module& m) {
-    py::class_<weights_t, std::shared_ptr<weights_t>>(m, "Weights", R"pbdoc(A class representing a weights signal.)pbdoc")
-        .def(py::init(&weights_init), R"pbdoc(Create a weights signal.)pbdoc", py::arg("label"), py::arg("num_sources"), py::arg("num_channels"), py::arg("num_bins"))
+    py::class_<weights_t, std::shared_ptr<weights_t>>(m,
+            "Weights",
+            R"pbdoc(A class representing beamformer weights.)pbdoc")
+        .def(py::init(&weights_init),
+            R"pbdoc(
+            Create a Weights isntance.
+
+            :param label: The label associated with the beamformer weights.
+            :param num_sources: The number of audio sources.
+            :param num_channels: The number of channels.
+            :param num_bins: The number of frequency bins.)pbdoc",
+            py::arg("label"),
+            py::arg("num_sources"),
+            py::arg("num_channels"),
+            py::arg("num_bins"))
         .def_readonly("label", &weights_t::label, R"pbdoc(Get the label.)pbdoc")
         .def_readonly("num_sources", &weights_t::num_sources, R"pbdoc(Get the number of sources.)pbdoc")
         .def_readonly("num_channels", &weights_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_readonly("num_bins", &weights_t::num_bins, R"pbdoc(Get the number of bins.)pbdoc")
-        .def("load_numpy", &weights_load_numpy, R"pbdoc(Load the weights signal from a numpy array.)pbdoc", py::arg("array"))
-        .def("to_numpy", &weights_to_numpy, R"pbdoc(Get the weights signal as a numpy array.)pbdoc")
+        .def("load_numpy",
+            &weights_load_numpy,
+            R"pbdoc(
+            Load the weights signal from a numpy array.
+
+            :param array: beamformer weights as a numpy array of shape (num_sources, num_channels, num_bins).)pbdoc",
+            py::arg("array"))
+        .def("to_numpy",
+            &weights_to_numpy,
+            R"pbdoc(Get the weights signal as a numpy array of shape (num_sources, num_channels, num_bins).)pbdoc")
         .def("__repr__", &weights_to_repr);
 }

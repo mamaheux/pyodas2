@@ -52,7 +52,7 @@ void init_mvdr(py::module& m) {
             R"pbdoc(A class for the minimum variance distortionless response (MVDR) beamformer.)pbdoc")
         .def(py::init(&mvdr_init),
             R"pbdoc(
-            Create a mvdr process.
+            Create a Mvdr instance.
 
             :param num_channels: The number of channels.
             :param num_bins: The number of frequency bins.)pbdoc",
@@ -64,6 +64,7 @@ void init_mvdr(py::module& m) {
             &mvdr_process_python,
             R"pbdoc(
             Perform the minimum variance distortionless response (MVDR) beamformer process.
+            The argument parameters must match those of the instance.
 
             :param covs: The input covariance matrix.
             :param coeffs: The computed beamformer coefficients.)pbdoc",

@@ -95,7 +95,7 @@ void init_doas(pybind11::module& m) {
 
     doas.def(py::init(&doas_init),
             R"pbdoc(
-            Creates doas.
+            Creates an array of directions of arrival.
 
             :param label: The label associated with the direction of arrival.
             :param num_directions: The number of directions of arrival in the array.

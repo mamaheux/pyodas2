@@ -33,20 +33,21 @@ class AcousticImageCalibrationPipeline:
     ) -> None:
         """
         Create a new acoustic image calibration pipeline.
+        See this `paper <https://arxiv.org/pdf/2002.01440>`_ for more detail.
 
         :param mics: The microphone positions and directions of the microphone array.
         :param calibration_path: The calibration output path.
         :param image_width: The camera image width.
         :param image_height: The camera image height.
-        :param hop_length: The number of samples in each processed audio frame, also named num_shifts.
+        :param hop_length: The number of samples in each processed audio frame, also named num_shifts. It must be at most equal to n_fft / 2.
         :param n_fft: The size of the FFT for the STFT. It must be a power of 2.
         :param fft_window: The window type to compute the FFT for the STFT.
-        :param scm_alpha: TODO The
+        :param scm_alpha: The alpha value to compute the spatial covariance matrix.
         :param target_count: The number of target per axis.
         :param target_margin: The target margin in pixels.
-        :param polynomial_order: TODO a
-        :param svd_phat_batch_size: TODO a
-        :param svd_phat_delta: TODO a
+        :param polynomial_order: The polynomial order of the function estimating the time differences of arrival for each pixel.
+        :param svd_phat_batch_size: The batch size for SVD-PHAT calculation.
+        :param svd_phat_delta: The reconstruction error of SVD-PHAT. A lower value reduces the accuracy and resource usage of acoustic image generation.
         """
         if hop_length > n_fft // 2:
             msg = 'hop_length must be at most n_fft // 2.'

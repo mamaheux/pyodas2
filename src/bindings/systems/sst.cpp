@@ -43,7 +43,7 @@ void init_sst(py::module& m) {
     py::class_<sst_t, std::shared_ptr<sst_t>>(m, "Sst", R"pbdoc(A class performing sound source tracking (SST).)pbdoc")
         .def(py::init(&sst_init),
             R"pbdoc(
-            Create a sst process.
+            Create a Sst instance.
 
             :param num_tracks: The number of tracked directions of arrival.
             :param num_directions: The number of directions of arrival of the sound source localisation (SSL) process.
@@ -57,7 +57,7 @@ void init_sst(py::module& m) {
         .def("process",
             &sst_process_python,
             R"pbdoc(
-            Perform sound source tracking.
+            Perform sound source tracking. The argument parameters must match those of the instance.
 
             :param dsf: The dynamic state filter parameters.
             :param in: The directions of arrival that come from the sound source localisation process.

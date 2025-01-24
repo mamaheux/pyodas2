@@ -55,15 +55,32 @@ std::string freqs_to_repr(const freqs_t& self) {
     return ss.str();
 }
 
-// TODO compléter les docstring avec les arguments et une description de l'acronyme
-
 void init_freqs(py::module& m) {
-    py::class_<freqs_t, std::shared_ptr<freqs_t>>(m, "Freqs", R"pbdoc(A class representing a freqs signal.)pbdoc")
-        .def(py::init(&freqs_init), R"pbdoc(Create a freqs signal.)pbdoc", py::arg("label"), py::arg("num_channels"), py::arg("num_bins"))
+    py::class_<freqs_t, std::shared_ptr<freqs_t>>(m,
+            "Freqs",
+             R"pbdoc(A class representing an audio signal in the frequency domain.)pbdoc")
+        .def(py::init(&freqs_init),
+            R"pbdoc(
+            Create a Freqs instance.
+
+            :param label: The label associated with the freqs.
+            :param num_channels: The number of channels.
+            :param num_bins: The number of frequency bins.)pbdoc",
+            py::arg("label"),
+            py::arg("num_channels"),
+            py::arg("num_bins"))
         .def_readonly("label", &freqs_t::label, R"pbdoc(Get the label.)pbdoc")
         .def_readonly("num_channels", &freqs_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_readonly("num_bins", &freqs_t::num_bins, R"pbdoc(Get the number of bins.)pbdoc")
-        .def("load_numpy", &freqs_load_numpy, R"pbdoc(Load the freqs signal from a numpy array.)pbdoc", py::arg("array"))
-        .def("to_numpy", &freqs_to_numpy, R"pbdoc(Get the freqs signal as a numpy array.)pbdoc")
+        .def("load_numpy",
+            &freqs_load_numpy,
+            R"pbdoc(
+            Load the freqs signal from a numpy array.
+
+            :param array: The freqs signal as a numpy array of shape (num_channels, num_bins).)pbdoc",
+            py::arg("array"))
+        .def("to_numpy",
+            &freqs_to_numpy,
+            R"pbdoc(Get the freqs signal as a numpy array of shape (num_channels, num_bins).)pbdoc")
         .def("__repr__", &freqs_to_repr);
 }

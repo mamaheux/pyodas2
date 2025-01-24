@@ -14,8 +14,8 @@ def test_init_invalid_values():
         Stft(NUM_CHANNELS, NUM_SAMPLES, NUM_SHIFTS, Window.HANN)
 
     NUM_SAMPLES = 16
-    NUM_SHIFTS = 17
-    with pytest.raises(ValueError, match='The number of samples must be higher than number of shifts.'):
+    NUM_SHIFTS = 9
+    with pytest.raises(ValueError, match='The number of samples must be at most equal to num_samples / 2.'):
         Stft(NUM_CHANNELS, NUM_SAMPLES, NUM_SHIFTS, Window.HANN)
 
 

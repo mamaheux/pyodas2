@@ -29,11 +29,16 @@ std::string dsf_to_repr(const dsf_t& self) {
     return ss.str();
 }
 
-// TODO compléter les docstring avec les arguments et une description de l'acronyme
-
 void init_dsf(py::module& m) {
-    py::class_<dsf_t, std::shared_ptr<dsf_t>>(m, "Dsf", R"pbdoc(A class representing a dsf signal.)pbdoc")
-        .def(py::init(&dsf_init), R"pbdoc(Create a dsf signal.)pbdoc", py::arg("label"))
+    py::class_<dsf_t, std::shared_ptr<dsf_t>>(m,
+            "Dsf",
+             R"pbdoc(A class containing the dynamic state filter parameters for sound source tracking.)pbdoc")
+        .def(py::init(&dsf_init),
+            R"pbdoc(
+            Create a dsf instance with default values.
+
+            :param label: The label associated with dynamic state filter parameters.)pbdoc",
+            py::arg("label"))
         .def_readonly("label", &dsf_t::label, R"pbdoc(Get the label.)pbdoc")
         .def_readwrite("sigmoid_mean", &dsf_t::sigmoid_mean, R"pbdoc(Get the sigmoid mean.)pbdoc")
         .def_readwrite("sigmoid_slope", &dsf_t::sigmoid_slope, R"pbdoc(Get the sigmoid slope.)pbdoc")

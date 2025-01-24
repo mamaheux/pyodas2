@@ -59,7 +59,7 @@ void init_beamformer(py::module& m) {
             R"pbdoc(A class applying beamformer coefficients.)pbdoc")
         .def(py::init(&beamformer_init),
             R"pbdoc(
-            Create a beamformer process.
+            Create a Beamformer instance.
 
             :param num_sources: The number of sources, the number of output channels.
             :param num_channels: The number of input channels.
@@ -73,7 +73,7 @@ void init_beamformer(py::module& m) {
         .def("process",
             &beamformer_process_python,
             R"pbdoc(
-            Perform the beamformer process.
+            Perform the beamformer process. The argument parameters must match those of the instance.
 
             :param in: The input signal in frequency domain.
             :param weights: The beamformer coefficients.

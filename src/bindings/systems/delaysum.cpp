@@ -53,7 +53,7 @@ void init_delaysum(py::module& m) {
             R"pbdoc(A class for the delay and sum beamformer..)pbdoc")
         .def(py::init(&delaysum_init),
             R"pbdoc(
-            Create a delaysum process.
+            Create a DelaySum instance.
 
             :param num_sources: The number of audio sources, the number of time differences of arrival.
             :param num_channels: The number of channels.
@@ -67,7 +67,7 @@ void init_delaysum(py::module& m) {
         .def("process",
             &delaysum_process_python,
             R"pbdoc(
-            Perform the delay and sum beamformer process.
+            Perform the delay and sum beamformer process. The argument parameters must match those of the instance.
 
             :param tdoas: The input time differences of arrival.
             :param coeffs: The computed beamformer coefficients.)pbdoc",

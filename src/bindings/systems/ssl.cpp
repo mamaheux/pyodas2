@@ -91,7 +91,7 @@ void init_ssl(py::module& m) {
     py::class_<Ssl, std::shared_ptr<Ssl>>(m, "Ssl", R"pbdoc(A class performing sound source localization (SSL).)pbdoc")
         .def(py::init<std::shared_ptr<const mics_t>, std::shared_ptr<const points_t>, float, float, size_t, size_t>(),
             R"pbdoc(
-            Create a ssl process.
+            Create a Ssl isntance.
 
             :param mics: The instance representing the microphone array configuration.
             :param points: The predefined geometry to transform time differences of arrival (TDOAs) into directions of arrival (DOAs).
@@ -118,7 +118,7 @@ void init_ssl(py::module& m) {
         .def("process",
             &Ssl::process,
             R"pbdoc(
-            Perform sound source localization.
+            Perform sound source localization. The argument parameters must match those of the instance.
 
             :param tdoas: The time differences of arrival.
             :param tdoas: The computed directions of arrival.)pbdoc",

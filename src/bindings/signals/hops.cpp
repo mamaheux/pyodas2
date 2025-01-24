@@ -90,25 +90,96 @@ std::string hops_to_repr(const hops_t& self) {
     return ss.str();
 }
 
-// TODO compléter les docstring avec les arguments et une description de l'acronyme
-
 void init_hops(py::module& m) {
-    py::class_<hops_t, std::shared_ptr<hops_t>>(m, "Hops", R"pbdoc(A class representing a hops signal.)pbdoc")
-        .def(py::init(&hops_init), R"pbdoc(Create a hops signal.)pbdoc", py::arg("label"), py::arg("num_channels"), py::arg("num_shifts"))
+    py::class_<hops_t, std::shared_ptr<hops_t>>(m,
+            "Hops",
+            R"pbdoc(A class representing a chunk of audio samples to compute the Short-time Fourier transform (STFT).)pbdoc")
+        .def(py::init(&hops_init),
+            R"pbdoc(
+            Create a Hops instance.
+
+            :param label: The label associated with the chunk of audio samples..
+            :param num_channels: The number of channels.
+            :param num_shifts: The shift size in samples to compute the STFT.)pbdoc",
+            py::arg("label"),
+            py::arg("num_channels"),
+            py::arg("num_shifts"))
         .def_readonly("label", &hops_t::label, R"pbdoc(Get the label.)pbdoc")
         .def_readonly("num_channels", &hops_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_readonly("num_shifts", &hops_t::num_shifts, R"pbdoc(Get the number of samples.)pbdoc")
         .def_readonly("num_samples", &hops_t::num_shifts, R"pbdoc(Get the number of samples.)pbdoc")
-        .def("load_numpy", &hops_load_numpy_int<int8_t>, R"pbdoc(Load the hops signal from a numpy array.)pbdoc", py::arg("array"))
-        .def("load_numpy", &hops_load_numpy_int<int16_t>, R"pbdoc(Load the hops signal from a numpy array.)pbdoc", py::arg("array"))
-        .def("load_numpy", &hops_load_numpy_int<int32_t>, R"pbdoc(Load the hops signal from a numpy array.)pbdoc", py::arg("array"))
-        .def("load_numpy", &hops_load_numpy_int<int64_t>, R"pbdoc(Load the hops signal from a numpy array.)pbdoc", py::arg("array"))
-        .def("load_numpy", &hops_load_numpy_uint<uint8_t>, R"pbdoc(Load the hops signal from a numpy array.)pbdoc", py::arg("array"))
-        .def("load_numpy", &hops_load_numpy_uint<uint16_t>, R"pbdoc(Load the hops signal from a numpy array.)pbdoc", py::arg("array"))
-        .def("load_numpy", &hops_load_numpy_uint<uint32_t>, R"pbdoc(Load the hops signal from a numpy array.)pbdoc", py::arg("array"))
-        .def("load_numpy", &hops_load_numpy_uint<uint64_t>, R"pbdoc(Load the hops signal from a numpy array.)pbdoc", py::arg("array"))
-        .def("load_numpy", &hops_load_numpy_float<float>, R"pbdoc(Load the hops signal from a numpy array.)pbdoc", py::arg("array"))
-        .def("load_numpy", &hops_load_numpy_float<double>, R"pbdoc(Load the hops signal from a numpy array.)pbdoc", py::arg("array"))
-        .def("to_numpy", &hops_to_numpy, R"pbdoc(Get the hops signal as a numpy array.)pbdoc")
+        .def("load_numpy",
+            &hops_load_numpy_int<int8_t>,
+            R"pbdoc(
+            Load the hops signal from a numpy array.
+
+            :param array: The audio sample array of shape (num_channels, num_shifts).)pbdoc",
+            py::arg("array"))
+        .def("load_numpy",
+            &hops_load_numpy_int<int16_t>,
+            R"pbdoc(
+            Load the hops signal from a numpy array.
+
+            :param array: The audio sample array of shape (num_channels, num_shifts).)pbdoc",
+            py::arg("array"))
+        .def("load_numpy",
+            &hops_load_numpy_int<int32_t>,
+            R"pbdoc(
+            Load the hops signal from a numpy array.
+
+            :param array: The audio sample array of shape (num_channels, num_shifts).)pbdoc",
+            py::arg("array"))
+        .def("load_numpy",
+            &hops_load_numpy_int<int64_t>,
+            R"pbdoc(
+            Load the hops signal from a numpy array.
+
+            :param array: The audio sample array of shape (num_channels, num_shifts).)pbdoc",
+            py::arg("array"))
+        .def("load_numpy",
+            &hops_load_numpy_uint<uint8_t>,
+            R"pbdoc(
+            Load the hops signal from a numpy array.
+
+            :param array: The audio sample array of shape (num_channels, num_shifts).)pbdoc",
+            py::arg("array"))
+        .def("load_numpy",
+            &hops_load_numpy_uint<uint16_t>,
+            R"pbdoc(
+            Load the hops signal from a numpy array.
+
+            :param array: The audio sample array of shape (num_channels, num_shifts).)pbdoc",
+            py::arg("array"))
+        .def("load_numpy",
+            &hops_load_numpy_uint<uint32_t>,
+            R"pbdoc(
+            Load the hops signal from a numpy array.
+
+            :param array: The audio sample array of shape (num_channels, num_shifts).)pbdoc",
+            py::arg("array"))
+        .def("load_numpy",
+            &hops_load_numpy_uint<uint64_t>,
+            R"pbdoc(
+            Load the hops signal from a numpy array.
+
+            :param array: The audio sample array of shape (num_channels, num_shifts).)pbdoc",
+            py::arg("array"))
+        .def("load_numpy",
+            &hops_load_numpy_float<float>,
+            R"pbdoc(
+            Load the hops signal from a numpy array.
+
+            :param array: The audio sample array of shape (num_channels, num_shifts).)pbdoc",
+            py::arg("array"))
+        .def("load_numpy",
+            &hops_load_numpy_float<double>,
+            R"pbdoc(
+            Load the hops signal from a numpy array.
+
+            :param array: The audio sample array of shape (num_channels, num_shifts).)pbdoc",
+            py::arg("array"))
+        .def("to_numpy",
+            &hops_to_numpy,
+            R"pbdoc(Get the hops signal as a numpy array of shape (num_channels, num_shifts).)pbdoc")
         .def("__repr__", &hops_to_repr);
 }

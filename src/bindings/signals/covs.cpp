@@ -76,18 +76,45 @@ std::string covs_to_repr(const covs_t& self) {
     return ss.str();
 }
 
-// TODO compléter les docstring avec les arguments et une description de l'acronyme
-
 void init_covs(py::module& m) {
-    py::class_<covs_t, std::shared_ptr<covs_t>>(m, "Covs", R"pbdoc(A class representing a covs signal.)pbdoc")
-        .def(py::init(&covs_init), R"pbdoc(Create a covs signal.)pbdoc", py::arg("label"), py::arg("num_channels"), py::arg("num_bins"))
+    py::class_<covs_t, std::shared_ptr<covs_t>>(m,
+            "Covs",
+            R"pbdoc(A class representing a spatial covariance matrix represented by the autocorrelation and cross-correlation.
+            For each microphone pair, the autocorrelation representes diagonal terms of each spatial covariance matrix.
+            For each microphone pair, the cross-correlation for the upper triangle of each spatial covariance matrix.)pbdoc")
+        .def(py::init(&covs_init),
+            R"pbdoc(
+            Create a spatial covariance matrix.
+
+            :param label: The label associated with the spatial covariance matrix.
+            :param num_channels: The number of channels.
+            :param num_bins: The number of frequency bins.)pbdoc",
+            py::arg("label"),
+            py::arg("num_channels"),
+            py::arg("num_bins"))
         .def_readonly("label", &covs_t::label, R"pbdoc(Get the label.)pbdoc")
         .def_readonly("num_channels", &covs_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_readonly("num_pairs", &covs_t::num_pairs, R"pbdoc(Get the number of pairs.)pbdoc")
         .def_readonly("num_bins", &covs_t::num_bins, R"pbdoc(Get the number of bins.)pbdoc")
-        .def("xcorrs_load_numpy", &covs_xcorrs_load_numpy, R"pbdoc(Load the cross-correlation terms from a numpy array.)pbdoc", py::arg("array"))
-        .def("xcorrs_to_numpy", &covs_xcorrs_to_numpy, R"pbdoc(Get the cross-correlation terms as a numpy array.)pbdoc")
-        .def("acorrs_load_numpy", &covs_acorrs_load_numpy, R"pbdoc(Load the auto-correlation terms from a numpy array.)pbdoc", py::arg("array"))
-        .def("acorrs_to_numpy", &covs_acorrs_to_numpy, R"pbdoc(Get the auto-correlation terms as a numpy array.)pbdoc")
+        .def("xcorrs_load_numpy",
+            &covs_xcorrs_load_numpy,
+            R"pbdoc(
+            Load the cross-correlation terms from a numpy array.
+
+            :param xcorrs: The cross-correlation for each microphone pair of shape (num_pairs, num_bins).)pbdoc",
+            py::arg("xcorrs"))
+        .def("xcorrs_to_numpy",
+            &covs_xcorrs_to_numpy,
+            R"pbdoc(Get the cross-correlation terms as a numpy array of shape (num_pairs, num_bins).)pbdoc")
+        .def("acorrs_load_numpy",
+            &covs_acorrs_load_numpy,
+            R"pbdoc(
+            Load the autocorrelation terms from a numpy array.
+
+            :param acorrs: The autocorrelation for each microphone of shape (num_channels, num_bins).)pbdoc",
+            py::arg("acorrs"))
+        .def("acorrs_to_numpy",
+            &covs_acorrs_to_numpy,
+            R"pbdoc(Get the autocorrelation terms as a numpy array of shape (num_channels, num_bins).)pbdoc")
         .def("__repr__", &covs_to_repr);
 }

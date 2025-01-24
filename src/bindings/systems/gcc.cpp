@@ -55,7 +55,7 @@ void init_gcc(py::module& m) {
             R"pbdoc(A class computing the generalized cross-correlation.)pbdoc")
         .def(py::init(&gcc_init),
             R"pbdoc(
-            Create a gcc process.
+            Create a Gcc instance.
 
             :param num_sources: The number of audio source, the number of time differences of arrival candidates.
             :param num_channels: The number of channels.
@@ -72,7 +72,7 @@ void init_gcc(py::module& m) {
         .def("process",
             &gcc_process_python,
             R"pbdoc(
-            Perform the gcc process.
+            Perform the gcc process. The argument parameters must match those of the instance.
 
             :param covs: The spatial covariance matrix.
             :param tdoas: The computed time differences of arrival candidates.)pbdoc",

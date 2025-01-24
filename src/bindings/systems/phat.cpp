@@ -46,10 +46,10 @@ std::string phat_to_repr(const phat_t& self) {
 void init_phat(py::module& m) {
     py::class_<phat_t, std::shared_ptr<phat_t>>(m,
             "Phat",
-            R"pbdoc(A class computing the phase transforme of GGC-PHAT.)pbdoc")
+            R"pbdoc(A class computing the phase transform of GGC-PHAT.)pbdoc")
         .def(py::init(&phat_init),
             R"pbdoc(
-            Create a phat process.
+            Create a Phat instance.
 
             :param num_channels: The number of channels.
             :param num_bins: The number of frequency bins.)pbdoc",
@@ -61,7 +61,7 @@ void init_phat(py::module& m) {
         .def("process",
             &phat_process_python,
             R"pbdoc(
-            Perform the phase transforme.
+            Perform the phase transform. The argument parameters must match those of the instance.
 
             :param covs_in: The input spatial covariance matrix.
             :param covs_out: The output spatial covariance matrix.)pbdoc",

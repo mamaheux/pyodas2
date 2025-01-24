@@ -38,7 +38,7 @@ class AcousticImageWidget(QtWidgets.QWidget):
         """
         Creates a new AcousticImageWidget.
 
-        :param hflip: TODO.
+        :param hflip: If True, the image is flipped horizontally.
         :param parent: The parent widget
         """
         super().__init__(parent)

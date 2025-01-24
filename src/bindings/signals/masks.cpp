@@ -52,16 +52,32 @@ std::string masks_to_repr(const masks_t& self) {
     return ss.str();
 }
 
-// TODO compléter les docstring avec les arguments et une description de l'acronyme
-
 void init_masks(py::module& m) {
-    py::class_<masks_t, std::shared_ptr<masks_t>>(m, "Masks", R"pbdoc(A class representing a masks signal.)pbdoc")
-        .def(py::init(&masks_init), R"pbdoc(Create a masks signal.)pbdoc", py::arg("label"), py::arg("num_channels"), py::arg("num_bins"))
+    py::class_<masks_t, std::shared_ptr<masks_t>>(m,
+            "Masks", R"pbdoc(A class representing frequency masks.)pbdoc")
+        .def(py::init(&masks_init),
+            R"pbdoc(
+            Create a Masks signal.
+
+            :param label: .
+            :param num_channels: The number of channels.
+            :param num_bins: the number of frequency bins.)pbdoc",
+            py::arg("label"),
+            py::arg("num_channels"),
+            py::arg("num_bins"))
         .def_readonly("label", &masks_t::label, R"pbdoc(Get the label.)pbdoc")
         .def_readonly("num_channels", &masks_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_readonly("num_bins", &masks_t::num_bins, R"pbdoc(Get the number of bins.)pbdoc")
-        .def("load_numpy", &masks_load_numpy, R"pbdoc(Load the masks signal from a numpy array.)pbdoc", py::arg("array"))
-        .def("to_numpy", &masks_to_numpy, R"pbdoc(Get the masks signal as a numpy array.)pbdoc")
+        .def("load_numpy",
+            &masks_load_numpy,
+            R"pbdoc(
+            Load the masks signal from a numpy array.
+
+            :param array: The masks as a numpy array of shape (num_channels, num_bins).)pbdoc",
+            py::arg("array"))
+        .def("to_numpy",
+            &masks_to_numpy,
+            R"pbdoc(Get the masks as a numpy array of shape (num_channels, num_bins).)pbdoc")
         .def("set_zeros", &masks_zeros, R"pbdoc(Set the masks to zeros.)pbdoc")
         .def("set_ones", &masks_ones, R"pbdoc(Set the masks to ones.)pbdoc")
         .def("__repr__", &masks_to_repr);

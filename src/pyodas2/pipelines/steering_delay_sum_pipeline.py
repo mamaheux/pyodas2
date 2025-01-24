@@ -37,7 +37,7 @@ class SteeringDelaySumPipeline:
 
         :param mics: The microphone positions and directions of the microphone array
         :param sample_rate: The sample rate of the sound.
-        :param hop_length:
+        :param hop_length: The number of samples in each processed audio frame, also named num_shifts. It must be at most equal to n_fft / 2.
         :param num_sources: The number of samples in each processed audio frame, also named num_shifts.
         :param n_fft: The size of the FFT for the STFT. It must be a power of 2.
         :param fft_window: The window type to compute the FFT for the STFT.

@@ -53,7 +53,7 @@ void init_mixer(py::module& m) {
             R"pbdoc(A class to ignore some audio channels.)pbdoc")
         .def(py::init(&mixer_init),
             R"pbdoc(
-            Create a mixer process.
+            Create a Mixer instance.
 
             :param mapping: The channel indexes to keep.)pbdoc",
             py::arg("mapping"))
@@ -61,7 +61,7 @@ void init_mixer(py::module& m) {
         .def("process",
             &mixer_process_python,
             R"pbdoc(
-            Keep the selected channels.
+            Keep the selected channels. The argument parameters must match those of the instance.
 
             :param hops_in: The input signal in the time domain.
             :param hops_out: The output signal in the time domain.)pbdoc",

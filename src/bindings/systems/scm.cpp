@@ -55,7 +55,7 @@ void init_scm(py::module& m) {
             R"pbdoc(A class computing the spatial covariance matrix (SCM).)pbdoc")
         .def(py::init(&scm_init),
             R"pbdoc(
-            Create a scm process.
+            Create a Scm instance. The argument parameters must match those of the instance.
 
             :param num_channels: The number of channels.
             :param num_bins: The number of frequency bins.

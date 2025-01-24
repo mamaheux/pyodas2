@@ -81,7 +81,7 @@ void init_steering(py::module& m) {
             R"pbdoc(A class to convert directions of arrival into theorical time differences of arrival.)pbdoc")
         .def(py::init<std::shared_ptr<const mics_t>, float, float, size_t>(),
             R"pbdoc(
-            Create a steering process.
+            Create a Steering instance.
 
             :param mics: The instance representing the microphone array configuration.
             :param sample_rate: The sample rate in Hz.
@@ -100,10 +100,11 @@ void init_steering(py::module& m) {
         .def("process",
             &Steering::process,
             R"pbdoc(
-            Convert directions of arrival into theorical time differences of arrival.
+            Convert directions of arrival into theoretical time differences of arrival.
+            The argument parameters must match those of the instance.
 
             :param doas: The directions of arrival to convert.
-            :param tdoas: The computed theorical time differences of arrival.)pbdoc",
+            :param tdoas: The computed theoretical time differences of arrival.)pbdoc",
             py::arg("doas"),
             py::arg("tdoas"))
         .def("__repr__", &Steering::to_repr);

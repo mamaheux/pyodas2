@@ -63,24 +63,52 @@ std::string tau_repr(const tau_t& self) {
     return ss.str();
 }
 
-// TODO compléter les docstring avec les arguments et une description de l'acronyme
-
 void init_tdoas(pybind11::module& m) {
-    py::class_<tdoas_t, std::shared_ptr<tdoas_t>> tdoas(m, "Tdoas", R"pbdoc(A class representing time differences of arrival.)pbdoc");
+    py::class_<tdoas_t, std::shared_ptr<tdoas_t>> tdoas(m,
+        "Tdoas",
+        R"pbdoc(A class representing an array of time differences of arrival.)pbdoc");
 
     py::class_<tau_t>(tdoas, "Tau", R"pbdoc(A class representing a time difference of arrival.)pbdoc")
-        .def(py::init(&tau_init), R"pbdoc(Create a direction of arrival.)pbdoc", py::arg("delay"), py::arg("amplitude"))
-        .def_readwrite("delay", &tau_t::delay, R"pbdoc(Get/set the delay.)pbdoc")
+        .def(py::init(&tau_init),
+            R"pbdoc(
+            Create a time difference of arrival.
+
+            :param delay: The delay in sample.
+            :param amplitude: The amplitude for the delay.)pbdoc",
+            py::arg("delay"),
+            py::arg("amplitude"))
+        .def_readwrite("delay", &tau_t::delay, R"pbdoc(Get/set the delay in sample.)pbdoc")
         .def_readwrite("amplitude", &tau_t::amplitude, R"pbdoc(Get/set the amplitude.)pbdoc")
         .def("__repr__", &tau_repr);
 
-    tdoas.def(py::init(&tdoas_init), R"pbdoc(Create tdoas.)pbdoc", py::arg("label"), py::arg("num_channels"), py::arg("num_sources"))
+    tdoas.def(py::init(&tdoas_init),
+            R"pbdoc(
+            Create an array of time differences of arrival.
+
+            :param label: The label associated with the time differences of arrival.
+            :param num_channels: The number of channels.
+            :param num_sources: The number of audio sources, the number of time differences of arrival.)pbdoc",
+            py::arg("label"),
+            py::arg("num_channels"),
+            py::arg("num_sources"))
         .def_readonly("label", &tdoas_t::label, R"pbdoc(Get the label.)pbdoc")
         .def_property_readonly("shape", &tdoas_shape, R"pbdoc(Get the shape.)pbdoc")
         .def_readonly("num_sources", &tdoas_t::num_sources, R"pbdoc(Get the number of sources.)pbdoc")
         .def_readonly("num_channels", &tdoas_t::num_channels, R"pbdoc(Get the number of channels.)pbdoc")
         .def_readonly("num_pairs", &tdoas_t::num_pairs, R"pbdoc(Get the number of pairs.)pbdoc")
-        .def("__getitem__", &tdoas_get_item, R"pbdoc(Get the mutable time difference of arrival at the given indexes (source_index, pair_index).)pbdoc", py::arg("indexes"), py::return_value_policy::reference)
-        .def("__setitem__", &tdoas_set_item, R"pbdoc(Set the time differences of arrival at the given indexes (source_index, pair_index).)pbdoc", py::arg("indexes"), py::arg("tau"))
+        .def("__getitem__",
+            &tdoas_get_item,
+            R"pbdoc(Get the mutable time difference of arrival at the given indexes (source_index, pair_index).)pbdoc",
+            py::arg("indexes"),
+            py::return_value_policy::reference)
+        .def("__setitem__",
+            &tdoas_set_item,
+            R"pbdoc(
+            Set the time differences of arrival at the given indexes (source_index, pair_index).
+
+            :param indexes: The indexes (source_index, pair_index).
+            :param pair_index: The time difference of arrival.)pbdoc",
+            py::arg("indexes"),
+            py::arg("tau"))
         .def("__repr__", &tdoas_repr);
 }

@@ -14,7 +14,7 @@ class AcousticImageCalibrationWidget(QtWidgets.QWidget):
         Creates a new AcousticImageWidget.
 
         :param point_radius: The point radius.
-        :param hflip: TODO.
+        :param hflip: If True, the images are flipped horizontally.
         :param parent: The parent widget
         """
         super().__init__(parent)

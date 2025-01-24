@@ -33,6 +33,11 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["ruff", "pytest", "build", "furo"]
 
+[project.urls]
+Documentation = "TODO"
+Repository = "TODO"
+Issues = "TODO"
+
 
 [tool.scikit-build]
 wheel.expand-macos-universal-tags = true

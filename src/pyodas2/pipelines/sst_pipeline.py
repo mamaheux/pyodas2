@@ -43,16 +43,16 @@ class SstPipeline:
 
         :param mics: The microphone positions and directions of the microphone array
         :param sample_rate: The sample rate of the sound
-        :param hop_length: The number of samples in each processed audio frame, also named num_shifts.
-        :param num_sources: The number of audio source
-        :param num_directions: TODO num_directions vs num_sources vs num_tracks
-        :param num_tracks: TODO num_directions vs num_sources vs num_tracks
+        :param hop_length: The number of samples in each processed audio frame, also named num_shifts. It must be at most equal to n_fft / 2.
+        :param num_sources: The number of time differences of arrival candidates.
+        :param num_directions: The number of potential directions of arrival.
+        :param num_tracks: The number of tracked directions of arrival.
         :param n_fft: The size of the FFT for the STFT. It must be a power of 2.
         :param fft_window: The window type to compute the FFT for the STFT.
         :param sound_speed: The speed of sound in m/s.
-        :param ssl_geometry: The geometry to perform the sound source localisation
-        :param scm_alpha: TODO
-        :param sst_num_pasts: TODO
+        :param ssl_geometry: The predefined geometry to transform time differences of arrival (TDOAs) into directions of arrival (DOAs).
+        :param scm_alpha: The alpha value to compute the spatial covariance matrix.
+        :param sst_num_pasts: The number of tracked directions of arrival to keep that happen in the past.
         """
         if hop_length > n_fft // 2:
             msg = 'hop_length must be at most n_fft // 2.'
