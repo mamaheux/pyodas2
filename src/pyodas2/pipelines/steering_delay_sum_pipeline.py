@@ -11,7 +11,7 @@ from pyodas2.utils import Mics
 @dataclass
 class SteeringDelaySumPipelineResult:
     """
-    This is a class representing the results of the delay and sum beamforming
+    This is a class representing the results of the delay-and-sum beamforming at given directions.
     """
 
     audio: np.ndarray
@@ -19,7 +19,7 @@ class SteeringDelaySumPipelineResult:
 
 class SteeringDelaySumPipeline:
     """
-    This is a class performing delay and sum beamforming at given directions.
+    This is a class performing delay-and-sum beamforming at given directions.
     """
 
     def __init__(

@@ -10,7 +10,7 @@ from pyodas2.utils import Mics
 @dataclass
 class DelaySumPipelineResult:
     """
-    This is a class representing the results of the delay and sum beamforming
+    This is a class representing the results of the delay-and-sum beamforming
     """
 
     audio: np.ndarray
@@ -18,7 +18,10 @@ class DelaySumPipelineResult:
 
 class DelaySumPipeline:
     """
-    This is a class performing delay and sum beamforming.
+    This is a class performing delay-and-sum beamforming to amplify the dominant sound captured by the microphone array.
+    If there are many dominant sounds, it is likely that the beamformer alternates between them.
+    :py:class:`pyodas2.pipelines.SteeringDelaySumPipeline` and :py:class:`pyodas2.pipelines.SstDelaySumPipeline` are
+    more robust applications of the delay-and-sum beamformer.
     """
 
     def __init__(

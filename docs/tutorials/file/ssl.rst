@@ -20,7 +20,7 @@ Here's how it works in PyODAS2:
    directions by leveraging the physical arrangement of the microphone array and the modeled grid of possible
    directions.
 
-By default, PyODAS2 determines a single TDOAs for each microphone pairs and two DOAs. These numbers can be increased.
+By default, PyODAS2 determines a single TDOA and two DOAs. These numbers can be increased.
 
 Below is a breakdown of the code.
 
@@ -47,7 +47,7 @@ Below is a description of the imports:
 * :code:`pyodas2.pipelines.SslPipeline`, :code:`SslPipelineResult`: The SSL pipeline performs sound source localization, and the
   result object contains detected directions and energies.
 
-* :code:`pyodas2.utils.Mics`: Provides microphone configurations, in this case, for the SC16F microphone array.
+* :code:`pyodas2.utils.Mics`: Provides microphone configurations, in this case, for the SC-16F microphone array.
 
 
 B. Constants
@@ -86,7 +86,7 @@ computed.
 * :code:`with wave.open(AUDIO_PATH, 'rb') as wave_reader:`: Opens the audio file in read-binary ('rb') mode using a
   context manager.
 
-* :code:`mics = Mics(Mics.Hardware.SC16F)`: Create the SC16F microphone array configuration. All the available
+* :code:`mics = Mics(Mics.Hardware.SC16F)`: Create the SC-16F microphone array configuration. All the available
   configurations are listed in :py:class:`pyodas2.utils.Mics.Hardware`. Also, it is possible to pass a list of
   :py:class:`pyodas2.utils.Mic`.
 

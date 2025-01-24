@@ -28,8 +28,7 @@ their direction. Here's how it works in PyODAS2:
    retained as long as the source remains active and detectable. The system continuously updates the source position
    and status in real time, accommodating movement.
 
-By default, PyODAS2 determines a single TDOAs for each microphone pairs, two DOAs and three tracked DOAs. These numbers
-can be increased.
+By default, PyODAS2 determines a single TDOA, two DOAs and three tracked DOAs. These numbers can be increased.
 
 Below is a breakdown of the code.
 
@@ -56,7 +55,7 @@ Below is a description of the imports:
 * :code:`pyodas2.pipelines.SstPipeline`, :code:`SstPipelineResult`: The SST pipeline performs sound source tracking, and
   the result object contains the potential directions and the tracked directions.
 
-* :code:`pyodas2.utils.Mics`: Provides microphone configurations, in this case, for the SC16F microphone array.
+* :code:`pyodas2.utils.Mics`: Provides microphone configurations, in this case, for the SC-16F microphone array.
 
 
 B. Constants
@@ -95,7 +94,7 @@ computed.
 * :code:`with wave.open(AUDIO_PATH, 'rb') as wave_reader:`: Opens the audio file in read-binary ('rb') mode using a
   context manager.
 
-* :code:`mics = Mics(Mics.Hardware.SC16F)`: Create the SC16F microphone array configuration. All the available
+* :code:`mics = Mics(Mics.Hardware.SC16F)`: Create the SC-16F microphone array configuration. All the available
   configurations are listed in :py:class:`pyodas2.utils.Mics.Hardware`. Also, it is possible to pass a list of
   :py:class:`pyodas2.utils.Mic`.
 

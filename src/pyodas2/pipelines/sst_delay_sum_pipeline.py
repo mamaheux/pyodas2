@@ -23,7 +23,8 @@ from pyodas2.utils import Mics, Points
 @dataclass
 class SstDelaySumPipelineResult:
     """
-    This is a class representing the results of the sound source tracking and delay and sum on the tracked directions.
+    This is a class representing the results of the sound source tracking and delay-and-sum beamforming on the tracked
+    directions. The index of the tracked source direction indicates the channel of the source in the audio data.
     """
 
     potential_directions: List[Doas.Dir]
@@ -33,7 +34,7 @@ class SstDelaySumPipelineResult:
 
 class SstDelaySumPipeline:
     """
-    This is a class performing sound source tracking and delay and sum on the tracked directions.
+    This class performs sound source tracking and applies the delay-and-sum beamformer on the tracked directions.
     """
 
     def __init__(
