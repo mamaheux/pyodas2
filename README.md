@@ -1,3 +1,5 @@
+![LOGO](docs/_static/logo.png)
+
 # PyODAS2: Python Open embedded Audition System 2
 
 ![example workflow](https://github.com/mamaheux/pyodas2/actions/workflows/release.yml/badge.svg)

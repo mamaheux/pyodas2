@@ -28,8 +28,8 @@ their direction. Here's how it works in PyODAS2:
    retained as long as the source remains active and detectable. The system continuously updates the source position
    and status in real time, accommodating movement.
 
-By default, PyODAS2 determines a single TDOAs for each microphone pairs, two DOAs and three tracked DOAs. This can be
-increased, but TODO.
+By default, PyODAS2 determines a single TDOAs for each microphone pairs, two DOAs and three tracked DOAs. These numbers
+can be increased.
 
 Below is a breakdown of the code.
 
@@ -73,7 +73,7 @@ Then, it is required to define some constants.
   script. This path can be modified to point to a different file as needed.
 
 * :code:`HOP_LENGTH`: Defines the number of audio samples processed per iteration. A lower value gives higher temporal
-  resolution but requires more processing power. TODO power of 2?
+  resolution but requires more processing power.
 
 
 C. Main Function - Initialization
@@ -126,8 +126,8 @@ Then, the audio is processed chunk by chunk.
             display_result(result)
 
 * :code:`data = wave_reader.readframes(HOP_LENGTH)`: Reads audio data a chunk of audio data from the file. If the chunk
-  size is smaller than expected, it means that the end of file is reached, so the loop is terminated.
-  TODO traite pas le dernier chunk
+  size is smaller than expected, it means that the end of file is reached, so the loop is terminated. Therefore, the end
+  of the audio file is not be processed if the last chunk is less than :code:`data_size`.
 
 * :code:`interleaved_pcm_to_numpy`: Converts interleaved PCM data (bytes) to a NumPy array for easier manipulation.
 
@@ -140,7 +140,6 @@ Then, the audio is processed chunk by chunk.
 E. Display Result Function
 ***************************
 
-TODO f-string
 So, it is required to define the function that display the result.
 
 .. code-block:: python
@@ -148,11 +147,11 @@ So, it is required to define the function that display the result.
     def display_result(result: SstPipelineResult):
         print('Potential directions')
         for d in result.potential_directions:
-            print('\tenergy:', d.energy, '\tdirection:', d.coord)
+            print(f'\tenergy: {d.energy}\tdirection: {d.coord}')
 
         print('Tracked directions')
         for i, d in result.tracked_directions_by_index.items():
-            print('\tindex:', i, '\tid:', d.tracking_id, '\tenergy:', d.energy, '\tdirection:', d.coord)
+            print(f'\tindex: {i}\tid: {d.tracking_id}\tenergy: {d.energy}\tdirection: {d.coord}')
 
         print()
 
@@ -170,7 +169,23 @@ The last step is to call the main function.
 
 Results
 ********
-TODO
+This is an example of the output.
+
+.. code-block::
+
+    ...
+    Potential directions
+            energy: 0.9755510091781616      direction: (0.882837,0.454678,0.117757)
+            energy: 0.0044414205476641655   direction: (0.64684,0.681499,0.342282)
+    Tracked directions
+            index: 1        id: 2   energy: 0.9800000190734863      direction: (0.882162,0.455763,0.11862)
+
+    Potential directions
+            energy: 0.9754829406738281      direction: (0.882837,0.454678,0.117757)
+            energy: 0.004479925148189068    direction: (0.64684,0.681499,0.342282)
+    Tracked directions
+            index: 1        id: 2   energy: 0.9800000190734863      direction: (0.882223,0.455665,0.118541)
+    ...
 
 
 Summary

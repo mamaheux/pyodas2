@@ -85,7 +85,6 @@ class SteeringDelaySumPipeline:
         Update the directions to listen.
 
         :param directions: The list of directions to listen. The length must be equal to the number of source.
-        :return: None
         """
         if len(directions) != len(self._doas):
             msg = f'Expected {len(self._doas)} directions'

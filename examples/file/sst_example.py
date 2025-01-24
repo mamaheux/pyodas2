@@ -32,11 +32,11 @@ def main():
 def display_result(result: SstPipelineResult):
     print('Potential directions')
     for d in result.potential_directions:
-        print('\tenergy:', d.energy, '\tdirection:', d.coord)
+        print(f'\tenergy: {d.energy}\tdirection: {d.coord}')
 
     print('Tracked directions')
     for i, d in result.tracked_directions_by_index.items():
-        print('\tindex:', i, '\tid:', d.tracking_id, '\tenergy:', d.energy, '\tdirection:', d.coord)
+        print(f'\tindex: {i}\tid: {d.tracking_id}\tenergy: {d.energy}\tdirection: {d.coord}')
 
     print()
 

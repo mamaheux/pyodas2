@@ -1,15 +1,14 @@
 PyODAS2 Documentation
 ######################
 
-TODO logo
+.. image:: _static/logo.png
+   :width: 150
 
-**PyODAS2** is an advanced Python library designed for embedded audio processing applications. Its primary focus is to
-enable developers and researchers to achieve sound source localization, tracking, separation, and acoustic imaging with
-ease and efficiency. The library is built with simplicity, flexibility, and scalability in mind, making it a versatile
-tool for a wide range of real-world audio processing tasks.
-
-TODO reférence pour ODAS2 en C
-
+**PyODAS2** is an advanced Python library designed for embedded audio processing applications. This package contains
+Python bindings for `ODAS2 <https://github.com/FrancoisGrondin/odas2>`_. Its primary focus is to enable developers and
+researchers to achieve sound source localization, tracking, separation, and acoustic imaging with ease and efficiency.
+The library is built with simplicity, flexibility, and scalability in mind, making it a versatile tool for a wide range
+of real-world audio processing tasks.
 
 Overview
 *********
@@ -118,7 +117,7 @@ PyODAS2.
 API Documentation
 ==================
 
-Comprehensive :doc:`API documentation <api/index>` is available to guide you through the advanced features and
+A comprehensive :doc:`API documentation <api/index>` is available to guide you through the advanced features and
 functionalities of PyODAS2.
 
 
@@ -137,5 +136,5 @@ with attribution.
 
 
 Authors
-****************
-TODO
+********
+* Marc-Antoine Maheux

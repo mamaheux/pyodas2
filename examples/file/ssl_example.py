@@ -31,7 +31,7 @@ def main():
 
 def display_result(result: SslPipelineResult):
     for d in result.directions:
-        print('energy:', d.energy, '\tdirection:', d.coord)
+        print(f'energy: {d.energy}\tdirection: {d.coord}')
     print()
 
 

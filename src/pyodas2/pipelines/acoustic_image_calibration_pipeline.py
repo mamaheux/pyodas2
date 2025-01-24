@@ -47,7 +47,7 @@ class AcousticImageCalibrationPipeline:
         :param target_margin: The target margin in pixels.
         :param polynomial_order: The polynomial order of the function estimating the time differences of arrival for each pixel.
         :param svd_phat_batch_size: The batch size for SVD-PHAT calculation.
-        :param svd_phat_delta: The reconstruction error of SVD-PHAT. A lower value reduces the accuracy and resource usage of acoustic image generation.
+        :param svd_phat_delta: The reconstruction error of SVD-PHAT. A higher value reduces the accuracy and resource usage of acoustic image generation.
         """
         if hop_length > n_fft // 2:
             msg = 'hop_length must be at most n_fft // 2.'
