@@ -1,5 +1,5 @@
 """
-This is an example to illustrate how to perform delay and sum beamforming using a file as input.
+This is an example to illustrate how to perform delay-and-sum beamforming using a file as input.
 """
 
 import os
@@ -25,6 +25,8 @@ def main():
         wave_writer.setframerate(wave_reader.getframerate())
 
         mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
+        assert wave_reader.getnchannels() == len(mics)
+
         pipeline = DelaySumPipeline(mics, hop_length=HOP_LENGTH, num_sources=NUM_SOURCES)
 
         data_size = HOP_LENGTH * wave_reader.getnchannels() * wave_reader.getsampwidth()

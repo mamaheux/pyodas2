@@ -36,3 +36,12 @@ jobs:
 
       - name: Tests
         run: pytest
+
+      - name: Tests File Examples
+        working-directory: examples/file
+        run: |
+          python ssl_example.py
+          python sst_example.py
+          python delay_sum_example.py 
+          python steering_delay_sum_example.py
+          python sst_delay_sum_example.py

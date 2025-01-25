@@ -1,16 +1,16 @@
 4. Sound Source Separation (SSS) Using the Delay-and-Sum Beamformer
 ####################################################################
 
-This tutorial demonstrates how to perform sound source separation (SSS) using the delay-and-sum beamformer to amplify
-the dominant sound captured by the microphone array. If there are many dominant sounds, it is likely that the beamformer
-alternates between the sounds. Next tutorials will cover more robust applications of the delay-and-sum beamformer.
-
 The delay-and-sum beamformer works by taking signals from multiple microphones (or sensors) and applying time delays to
 each microphone’s signal to align them in such a way that sound from a specific direction is reinforced, while sounds
 from other directions are minimized. This process effectively "focuses" the microphone array on a particular sound
 source, improving the signal-to-noise ratio for sounds from that direction and reducing interference from others.
-It’s commonly used in applications like speech recognition, conference systems, and directional hearing aids. Here's how
-it works in PyODAS2:
+It’s commonly used in applications like speech recognition, conference systems, and directional hearing aids.
+
+This tutorial demonstrates how to perform Sound Source Separation (SSS) using the delay-and-sum beamformer to amplify
+the dominant sound captured by the microphone array. If there are many dominant sounds, it is likely that the beamformer
+alternates between the sounds. Next tutorials will cover more robust applications of the delay-and-sum beamformer.
+Here's how it works in PyODAS2 for the :
 
 1. **Determine TDOAs (Time Differences of Arrival) between microphone pairs.** TDOA represents the time delay between
    the arrival of a sound at two microphones. As sound travels at a constant speed (e.g., the speed of sound in air),
@@ -19,9 +19,9 @@ it works in PyODAS2:
    calculating these delays using methods like cross-correlation, which identifies the time shift where the signals from
    the two microphones are most closely aligned.
 
-2. **Apply the delay-and-sum beamformer.** The audio signals received by each microphone in the array are delayed by a
-   calculated amount calculated in step 1. After the delaying them, the signals are summed together, creating a composite
-   signal that emphasizes the dominant sound.
+2. **Apply the delay-and-sum beamformer.** The audio signals received by each microphone in the array are delayed by the
+   amount determined in step 1. After delaying them, the signals are summed together, creating a composite signal that
+   emphasizes the dominant sound.
 
 Below is a breakdown of the code.
 
@@ -47,15 +47,150 @@ Below is a description of the imports:
 
 * :code:`pyodas2.pcm.numpy_to_interleaved_pcm`: Converts a NumPy array into interleaved PCM audio data.
 
-* :code:`pyodas2.pipelines.DelaySumPipeline`: The delay-and-sound pipeline performs sound source separation of the
-  dominant sound.
+* :code:`pyodas2.pipelines.DelaySumPipeline`: This pipeline performs sound source separation of the dominant sound using
+  the delay-and-sum beamformer.
 
 * :code:`pyodas2.utils.Mics`: Provides microphone configurations, in this case, for the SC-16F microphone array.
 
-TODO
+
+B. Constants
+*************
+
+Then, it is required to define some constants.
+
+.. code-block:: python
+
+    INPUT_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio', 'mix_sc16f.wav')
+    OUTPUT_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio', 'output.wav')
+
+    HOP_LENGTH = 128
+    NUM_SOURCES = 1
+
+    OUTPUT_SAMPLE_WIDTH = 2
+
+* :code:`INPUT_PATH`: Specifies the path to the input audio file, located in the audio folder relative to the script.
+  This path can be modified to point to a different file as needed.
+
+* :code:`OUTPUT_PATH`: Specifies the path to the output audio file, located in the audio folder relative to the
+  script. This path can be modified to point to a different file as needed.
+
+* :code:`HOP_LENGTH`: Defines the number of audio samples processed per iteration. A lower value gives higher temporal
+  resolution but requires more processing power.
+
+* :code:`NUM_SOURCES`: Defines the number of audio source that will be separated by the delay-and-sum beamformer. A
+  value other than 1 is not recommended.
+
+* :code:`OUTPUT_SAMPLE_WIDTH`: Defines the number of bytes per sample for the output file.
+
+
+C. Main Function - Initialization
+**********************************
+
+The next step is to define a :code:`main` function to process the audio file. At the beginning of the function, the
+audio files are opened, the microphone array geometry is selected, a delay-and-sum pipeline is created and some
+constants are computed.
+
+.. code-block:: python
+
+    def main():
+        with wave.open(INPUT_PATH, 'rb') as wave_reader, wave.open(OUTPUT_PATH, 'wb') as wave_writer:
+            wave_writer.setnchannels(NUM_SOURCES)
+            wave_writer.setsampwidth(OUTPUT_SAMPLE_WIDTH)
+            wave_writer.setframerate(wave_reader.getframerate())
+
+            mics = Mics(Mics.Hardware.SC16F)
+            assert wave_reader.getnchannels() == len(mics)
+
+            pipeline = DelaySumPipeline(mics, hop_length=HOP_LENGTH, num_sources=NUM_SOURCES)
+
+            data_size = HOP_LENGTH * wave_reader.getnchannels() * wave_reader.getsampwidth()
+
+* :code:`with wave.open(INPUT_PATH, 'rb') as wave_reader, wave.open(OUTPUT_PATH, 'wb') as wave_writer:`: Using a context
+  manager, opens the input audio file in read-binary ('rb') mode and the output audio file in write-binary ('wb').
+
+* :code:`wave_writer.setnchannels(NUM_SOURCES)`: Configures the number of channels for the output audio file.
+
+* :code:`wave_writer.setsampwidth(NUM_SOURCES)`: Configures the number of bytes per sample for the output audio file.
+
+* :code:`wave_writer.setframerate(NUM_SOURCES)`: Configures the sample rate for the output audio file.
+
+* :code:`mics = Mics(Mics.Hardware.SC16F)`: Creates the SC-16F microphone array configuration. All the available
+  configurations are listed in :py:class:`pyodas2.utils.Mics.Hardware`. Also, it is possible to pass a list of
+  :py:class:`pyodas2.utils.Mic`.
+
+* :code:`assert wave_reader.getnchannels() == len(mics)`: Ensures that the number of microphones in the array is the
+  same as the number of channels in the audio file.
+
+* :code:`pipeline = DelaySumPipeline(...)`: Creates the delay-and-sum pipeline with the microphone array configuration,
+  the hop length and the number of sources (TDOAs). For more information, you can consult
+  :py:class:`pyodas2.pipelines.DelaySumPipeline`.
+
+* :code:`data_size = HOP_LENGTH * wave_reader.getnchannels() * wave_reader.getsampwidth()`: Computes the expected number
+  of bytes for each chunk of data.
+
+
+D. Main Function - Processing
+******************************
+
+Then, the audio is processed chunk by chunk.
+
+.. code-block:: python
+
+            while True:
+                data = wave_reader.readframes(HOP_LENGTH)
+                if len(data) != data_size:
+                    break
+
+                audio = interleaved_pcm_to_numpy(data, wave_reader.getnchannels(), sample_width=wave_reader.getsampwidth())
+                result = pipeline.process(audio)
+                wave_writer.writeframes(numpy_to_interleaved_pcm(result.audio, sample_width=OUTPUT_SAMPLE_WIDTH))
+
+* :code:`data = wave_reader.readframes(HOP_LENGTH)`: Reads audio data a chunk of audio data from the file. If the chunk
+  size is smaller than expected, it means that the end of file is reached, so the loop is terminated. Therefore, the end
+  of the audio file is not be processed if the last chunk is less than :code:`data_size`.
+
+* :code:`interleaved_pcm_to_numpy`: Converts interleaved PCM data (bytes) into a NumPy array for easier manipulation.
+
+* :code:`pipeline.process(audio)`: Processes the audio data through the delay-and-sum pipeline, returning the separated
+  audio data.
+
+* :code:`wave_writer.writeframes(numpy_to_interleaved_pcm(result.audio, sample_width=OUTPUT_SAMPLE_WIDTH))`: Converts
+  the NumPy array into interleaved PCM data (bytes) and writes the data into the output file.
+
+
+E. Script Entry Point
+**********************
+
+The last step is to call the main function.
+
+.. code-block:: python
+
+    if __name__ == '__main__':
+        main()
+
+
+Results
+********
+This is an example of the output comparing the audio before and after applying the delay-and-sum beamformer.
+
+TODO add audio files
+
 
 Summary
 ********
+
+This script:
+
+1. Loads an audio file.
+
+2. Configures the delay-and-sum pipeline for the SC-16F microphone array.
+
+3. Processes the audio in chunks and performs sound source separation on each segment.
+
+4. Writes the separated audio into an audio file.
+
+By running this script, you can perform sound source separation of the dominant sound in the input audio file, making it
+a practical demonstration of PyODAS2's capabilities for offline SSS tasks.
 
 .. include:: ../../../examples/file/delay_sum_example.py
    :literal:

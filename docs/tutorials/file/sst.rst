@@ -68,8 +68,8 @@ Then, it is required to define some constants.
     AUDIO_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio', 'mix_sc16f.wav')
     HOP_LENGTH = 128
 
-* :code:`AUDIO_PATH`: Specifies the path to the input audio file (mix.wav), located in the audio folder relative to the
-  script. This path can be modified to point to a different file as needed.
+* :code:`AUDIO_PATH`: Specifies the path to the input audio file, located in the audio folder relative to the script.
+  This path can be modified to point to a different file as needed.
 
 * :code:`HOP_LENGTH`: Defines the number of audio samples processed per iteration. A lower value gives higher temporal
   resolution but requires more processing power.
@@ -87,6 +87,8 @@ computed.
     def main():
         with wave.open(AUDIO_PATH, 'rb') as wave_reader:
             mics = Mics(Mics.Hardware.SC16F)
+            assert wave_reader.getnchannels() == len(mics)
+
             pipeline = SstPipeline(mics, sample_rate=wave_reader.getframerate(), hop_length=HOP_LENGTH)
 
             data_size = HOP_LENGTH * wave_reader.getnchannels() * wave_reader.getsampwidth()
@@ -94,9 +96,12 @@ computed.
 * :code:`with wave.open(AUDIO_PATH, 'rb') as wave_reader:`: Opens the audio file in read-binary ('rb') mode using a
   context manager.
 
-* :code:`mics = Mics(Mics.Hardware.SC16F)`: Create the SC-16F microphone array configuration. All the available
+* :code:`mics = Mics(Mics.Hardware.SC16F)`: Creates the SC-16F microphone array configuration. All the available
   configurations are listed in :py:class:`pyodas2.utils.Mics.Hardware`. Also, it is possible to pass a list of
   :py:class:`pyodas2.utils.Mic`.
+
+* :code:`assert wave_reader.getnchannels() == len(mics)`: Ensures that the number of microphones in the array is the
+  same as the number of channels in the audio file.
 
 * :code:`pipeline = SstPipeline(...)`: Creates the SST pipeline with the microphone array configuration, the audio file
   sample rate and the hop length. The number of TDOAs, the number of potential DOAs and the number of tracked DOAs can
@@ -104,8 +109,8 @@ computed.
   predefined grid of potential sound source directions can be adjusted using the argument :code:`ssl_geometry`.
   For more information, you can consult :py:class:`pyodas2.pipelines.SstPipeline`.
 
-* :code:`data_size = HOP_LENGTH * wave_reader.getnchannels() * wave_reader.getsampwidth()`: Compute the expected number
-  of bytes of each chunk of data.constants
+* :code:`data_size = HOP_LENGTH * wave_reader.getnchannels() * wave_reader.getsampwidth()`: Computes the expected number
+  of bytes for each chunk of data.
 
 
 D. Main Function - Processing
@@ -115,20 +120,20 @@ Then, the audio is processed chunk by chunk.
 
 .. code-block:: python
 
-        while True:
-            data = wave_reader.readframes(HOP_LENGTH)
-            if len(data) != data_size:
-                break
+            while True:
+                data = wave_reader.readframes(HOP_LENGTH)
+                if len(data) != data_size:
+                    break
 
-            audio = interleaved_pcm_to_numpy(data, wave_reader.getnchannels(), sample_width=wave_reader.getsampwidth())
-            result = pipeline.process(audio)
-            display_result(result)
+                audio = interleaved_pcm_to_numpy(data, wave_reader.getnchannels(), sample_width=wave_reader.getsampwidth())
+                result = pipeline.process(audio)
+                display_result(result)
 
 * :code:`data = wave_reader.readframes(HOP_LENGTH)`: Reads audio data a chunk of audio data from the file. If the chunk
   size is smaller than expected, it means that the end of file is reached, so the loop is terminated. Therefore, the end
   of the audio file is not be processed if the last chunk is less than :code:`data_size`.
 
-* :code:`interleaved_pcm_to_numpy`: Converts interleaved PCM data (bytes) to a NumPy array for easier manipulation.
+* :code:`interleaved_pcm_to_numpy`: Converts interleaved PCM data (bytes) into a NumPy array for easier manipulation.
 
 * :code:`pipeline.process(audio)`: Processes the audio data through the SST pipeline, returning the sound source
   tracking result.
@@ -139,7 +144,7 @@ Then, the audio is processed chunk by chunk.
 E. Display Result Function
 ***************************
 
-So, it is required to define the function that display the result.
+So, it is required to define the function that displays the result.
 
 .. code-block:: python
 
@@ -194,11 +199,14 @@ This script:
 
 1. Loads an audio file.
 
-2. Configures the SST pipeline for the SC16F microphone array.
+2. Configures the SST pipeline for the SC-16F microphone array.
 
-3. Processes the audio in chunks, performing sound source tracking on each segment.
+3. Processes the audio in chunks and performs sound source tracking on each segment.
 
 4. Displays the potential and tracked directions along with their corresponding energy levels.
+
+By running this script, you can detect, localize and track sound sources in the input audio file, making it a practical
+demonstration of PyODAS2's capabilities for offline SST tasks.
 
 .. include:: ../../../examples/file/sst_example.py
    :literal:

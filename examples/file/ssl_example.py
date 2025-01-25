@@ -16,6 +16,8 @@ HOP_LENGTH = 128
 def main():
     with wave.open(AUDIO_PATH, 'rb') as wave_reader:
         mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
+        assert wave_reader.getnchannels() == len(mics)
+
         pipeline = SslPipeline(mics, sample_rate=wave_reader.getframerate(), hop_length=HOP_LENGTH)
 
         data_size = HOP_LENGTH * wave_reader.getnchannels() * wave_reader.getsampwidth()

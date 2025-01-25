@@ -1,5 +1,5 @@
 """
-This is an example to illustrate how to perform delay and sum beamforming at given directions using a file as input.
+This is an example to illustrate how to perform delay-and-sum beamforming at given directions using a file as input.
 """
 
 import os
@@ -26,6 +26,8 @@ def main():
         wave_writer.setframerate(wave_reader.getframerate())
 
         mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
+        assert wave_reader.getnchannels() == len(mics)
+
         pipeline = SteeringDelaySumPipeline(mics, hop_length=HOP_LENGTH, num_sources=NUM_SOURCES)
         pipeline.set_directions([Xyz(0.0, 0.0, 1.0)])  # Can be updated while processing
 

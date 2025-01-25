@@ -1,5 +1,5 @@
 """
-This is an example to illustrate how to perform sound source tracking and delay and sum beamforming using a file as input.
+This is an example to illustrate how to perform sound source tracking and delay-and-sum beamforming using a file as input.
 """
 
 import os
@@ -13,7 +13,9 @@ INPUT_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio', 
 OUTPUT_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio', 'output.wav')
 
 HOP_LENGTH = 128
+
 NUM_SOURCES = 1
+NUM_DIRECTIONS = 2
 NUM_TRACKS = 3
 
 OUTPUT_SAMPLE_WIDTH = 2
@@ -26,7 +28,11 @@ def main():
         wave_writer.setframerate(wave_reader.getframerate())
 
         mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
-        pipeline = SstDelaySumPipeline(mics, hop_length=HOP_LENGTH, num_sources=NUM_SOURCES, num_tracks=NUM_TRACKS)
+        assert wave_reader.getnchannels() == len(mics)
+
+        pipeline = SstDelaySumPipeline(
+            mics, hop_length=HOP_LENGTH, num_sources=NUM_SOURCES, num_directions=NUM_DIRECTIONS, num_tracks=NUM_TRACKS
+        )
 
         data_size = HOP_LENGTH * wave_reader.getnchannels() * wave_reader.getsampwidth()
         while True:
@@ -44,11 +50,11 @@ def main():
 def display_result(result: SstDelaySumPipelineResult):
     print('Potential directions')
     for d in result.potential_directions:
-        print('\tenergy:', d.energy, '\tdirection:', d.coord)
+        print(f'\tenergy: {d.energy}\tdirection: {d.coord}')
 
     print('Tracked directions')
     for i, d in result.tracked_directions_by_index.items():
-        print('\t', i, '\tenergy:', d.energy, '\tdirection:', d.coord)
+        print(f'\tindex: {i}\tid: {d.tracking_id}\tenergy: {d.energy}\tdirection: {d.coord}')
 
     print()
 
