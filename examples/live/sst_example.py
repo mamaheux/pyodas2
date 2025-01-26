@@ -52,7 +52,7 @@ def audio_thread_run(elevation_azimuth_widget: ElevationAzimuthWidget, source_lo
 
 
 def main():
-    _app = pg.mkQApp('PyODAS2 - SSL Example')
+    _app = pg.mkQApp('PyODAS2 - SST Example')
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
     elevation_azimuth_widget = ElevationAzimuthWidget(sample_rate=RATE, hop_length=HOP_LENGTH)

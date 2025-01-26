@@ -52,7 +52,7 @@ audio signals captured by many microphones. It involves analyzing the acoustic s
 which the sound is originating. SSL is a fundamental technique in various fields such as robotics, audio engineering,
 surveillance, and human-computer interaction.
 
-TODO image or video
+.. image:: _static/tutorials/live/ssl.png
 
 Sound Source Tracking (SST)
 ============================
@@ -60,7 +60,7 @@ Sound Source Tracking (SST)
 sound sources as they move through an environment. It extends Sound Source Localization (SSL) by adding a temporal
 dimension, allowing systems to dynamically follow the trajectory of sound sources over time.
 
-TODO image or video
+.. image:: _static/tutorials/live/sst.png
 
 Sound Source Separation (SSS)
 ==============================

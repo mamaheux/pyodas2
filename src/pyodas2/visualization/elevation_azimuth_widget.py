@@ -61,7 +61,7 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
         self._source_elevation_plot = self.addPlot(title='Source Elevation', row=0, col=0)
         self._source_elevation_plot.setLabel('left', 'Elevation', units='°')
         self._source_elevation_plot.setLabel('bottom', 'Time', units='s')
-        self._source_elevation_plot.addLegend()
+        self._source_elevation_plot.addLegend(brush='k')
         self._source_elevation_plot.setXRange(-history_duration_s, 0, padding=0)
         self._source_elevation_plot.setYRange(-90, 90, padding=0)
 
@@ -71,7 +71,7 @@ class ElevationAzimuthWidget(pg.GraphicsLayoutWidget):
         self._source_azimuth_plot = self.addPlot(title='Source Azimuth', row=1, col=0)
         self._source_azimuth_plot.setLabel('left', 'Azimuth', units='°')
         self._source_azimuth_plot.setLabel('bottom', 'Time', units='s')
-        self._source_azimuth_plot.addLegend()
+        self._source_azimuth_plot.addLegend(brush='k')
         self._source_azimuth_plot.setXRange(-history_duration_s, 0, padding=0)
         self._source_azimuth_plot.setYRange(-180, 180, padding=0)
 

@@ -190,7 +190,7 @@ This script:
 4. Writes the separated audio into an audio file.
 
 By running this script, you can perform sound source separation of the dominant sound in the input audio file, making it
-a practical demonstration of PyODAS2's capabilities for offline SSS tasks.
+a practical demonstration of PyODAS2 capabilities for offline SSS tasks.
 
 .. include:: ../../../examples/file/delay_sum_example.py
    :literal:

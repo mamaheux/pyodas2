@@ -186,7 +186,7 @@ This script:
 4. Displays the estimated sound directions and energies.
 
 By running this script, you can detect and localize sound sources in the input audio file, making it a practical
-demonstration of PyODAS2's capabilities for offline SSL tasks.
+demonstration of PyODAS2 capabilities for offline SSL tasks.
 
 .. include:: ../../../examples/file/ssl_example.py
    :literal:

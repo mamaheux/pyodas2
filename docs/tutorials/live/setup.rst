@@ -5,7 +5,7 @@ Below are the instructions to config your computer for live processing depending
 Some tutorials use the visualization classes, so PyODAS2 must be installed with the visualization optional dependencies.
 They contain PySide6 which has a LGPL licence.
 
-64-bitsRaspberry Pi Computers
+64-bits Raspberry Pi Computers
 ******************************
 
 .. code-block:: bash
