@@ -136,7 +136,7 @@ Then, the audio is processed chunk by chunk.
 E. Display Result Function
 ***************************
 
-So, it is required to define the function that displays the result.
+It is required to define the function that displays the result.
 
 .. code-block:: python
 

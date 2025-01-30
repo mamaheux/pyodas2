@@ -60,7 +60,7 @@ def main():
 
 def get_most_energy_tracked_audio(result: SstDelaySumPipelineResult) -> np.ndarray:
     if len(result.tracked_directions_by_index.items()) == 0:
-        return result.audio[0]
+        return result.audio[0:1]
 
     i, _ = max(result.tracked_directions_by_index.items(), key=lambda x: x[1].energy)
     return result.audio[i : i + 1]

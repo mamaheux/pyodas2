@@ -68,8 +68,8 @@ Sound Source Separation (SSS)
 audio signals. The goal is to separate each source into distinct components, enabling independent analysis, enhancement,
 or manipulation of the audio signals.
 
-SSS is essential in situations where multiple sound sources coexist, such as a crowded room, a music track with multiple
-instruments, or a surveillance scenario with overlapping conversations.
+SSS is essential in situations where multiple sound sources coexist, such as a crowded room or a surveillance scenario
+with overlapping conversations.
 
 TODO image or video
 

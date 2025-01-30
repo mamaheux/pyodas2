@@ -39,7 +39,7 @@ on a robot navigating through noisy environments or designing a surveillance sys
 The library supports real-time tracking of moving sound sources. It ensures robust and continuous monitoring, even in 
 dynamic environments.
 
-### 3. **Sound Separation**
+### 3. **Sound Source Separation**
 PyODAS2 includes tools to isolate individual sound sources from complex audio mixtures, enabling clean signal extraction
 and detailed analysis.
 

@@ -47,6 +47,8 @@ Then, it is required to define some constants.
 C. Main Function
 *****************
 
+Then, the main function initialize the sound cards and pipeline. Then, it performs sound source separation.
+
 .. code-block:: python
 
     def main():
@@ -121,7 +123,7 @@ This script:
 
 2. Processes the audio in chunks and performs sound source separation on each segment.
 
-By running this script, you can perform sound source separation of the dominant sound in real time, making it a
+By running this script, you can perform real-time sound source separation of the dominant sound, making it a
 practical demonstration of PyODAS2 capabilities for online SSS tasks.
 
 .. include:: ../../../examples/live/delay_sum_example.py
