@@ -82,7 +82,7 @@ map sound intensity or direction onto a visual display, similar to how cameras c
 This technology is often used in fields like acoustics, robotics, surveillance, and industrial diagnostics to understand
 and analyze the spatial properties of sound in real-world environments.
 
-TODO image or video
+.. image:: _static/tutorials/live/acoustic_image.png
 
 
 Getting Started
