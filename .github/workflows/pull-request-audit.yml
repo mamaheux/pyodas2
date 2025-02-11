@@ -6,8 +6,8 @@ on:
 name: Pull Request Audit
 
 jobs:
-  format-linter-tests:
-    name: Formatting, Linter and Tests
+  format-linter-testing:
+    name: Formatting, Linter and Testing
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false

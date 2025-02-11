@@ -6,8 +6,8 @@ on:
 name: Release
 
 jobs:
-  format-linter-tests:
-    name: Tests
+  format-linter-testing:
+    name: Formatting, Linter and Testing
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: true
@@ -39,7 +39,7 @@ jobs:
 
   tag-release:
     name: Create Tag
-    needs: format-linter-tests
+    needs: format-linter-testing
     runs-on: ubuntu-latest
     permissions:
       contents: write
