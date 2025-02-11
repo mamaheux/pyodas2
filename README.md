@@ -2,7 +2,7 @@
 
 # PyODAS2: Python Open embeddeD Audition System 2
 
-![example workflow](https://github.com/mamaheux/pyodas2/actions/workflows/release.yml/badge.svg)
+![release_workflow](https://github.com/mamaheux/pyodas2/actions/workflows/release.yml/badge.svg)
 
 **PyODAS2** is an advanced Python library designed for embedded audio processing applications. This package contains
 Python bindings for [ODAS2](https://github.com/FrancoisGrondin/odas2). Its primary focus is to enable developers and 
@@ -35,9 +35,13 @@ constrained environments.
 PyODAS2 uses advanced algorithms to detect and determine the spatial position of sound sources. Whether you’re working
 on a robot navigating through noisy environments or designing a surveillance system, this feature is critical.
 
+![SSL](docs/_static/tutorials/live/ssl.png)
+
 ### 2. **Sound Source Tracking**
 The library supports real-time tracking of moving sound sources. It ensures robust and continuous monitoring, even in 
 dynamic environments.
+
+![SST](docs/_static/tutorials/live/sst.png)
 
 ### 3. **Sound Source Separation**
 PyODAS2 includes tools to isolate individual sound sources from complex audio mixtures, enabling clean signal extraction
@@ -46,6 +50,8 @@ and detailed analysis.
 ### 4. **Acoustic Imaging**
 Generate visual representations of sound fields, providing insights into sound distribution and directionality within an
 environment.
+
+![Acoustic Imaging](docs/_static/tutorials/live/acoustic_image.png)
 
 ### 5. **Embeddability**
 Built with embedded systems in mind, PyODAS2 is lightweight and efficient, making it suitable for resource-constrained 
@@ -69,7 +75,7 @@ To start using PyODAS2, you can execute the following command to install PyODAS2
 pip install pyodas2
 ```
 
-If you want to use the class in the visualization package, PyODAS2 must be installed with the visualization optional
+If you want to use the classes of the visualization package, PyODAS2 must be installed with the visualization optional
 dependencies. They contain PySide6 which has a LGPL licence.
 ```bash
 pip install pyodas2[visualization]
