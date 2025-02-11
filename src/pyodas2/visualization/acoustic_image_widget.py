@@ -84,6 +84,7 @@ class AcousticImageWidget(QtWidgets.QWidget):
 
             color_map = COLOR_MAPS[self._color_map_combo_box.currentText()]
             mapped_acoustic_image = cv2.applyColorMap(acoustic_image, color_map)
+            mapped_acoustic_image = cv2.cvtColor(mapped_acoustic_image, cv2.COLOR_BGR2RGB)
             mixed_image = cv2.addWeighted(rgb_image, beta, mapped_acoustic_image, alpha, 0.0)
 
             if self._hflip:

@@ -110,7 +110,7 @@ class AcousticImagePipeline:
         if relative:
             min_value = np.min(acoustic_image)
             max_value = np.max(acoustic_image)
-            acoustic_image = (acoustic_image - min_value) / (max_value - min_value)
+            acoustic_image = (acoustic_image - min_value) / (max_value - min_value + 1e-9)
         else:
             acoustic_image = np.clip(acoustic_image, a_min=0.0, a_max=1.0)
 
