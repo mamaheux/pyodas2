@@ -18,10 +18,11 @@ HOP_LENGTH = 256
 RATE = 16000
 
 
-stop_requested = False
-
-
-def audio_thread_run(elevation_azimuth_widget: ElevationAzimuthWidget, source_location_widget: SourceLocationWidget):
+def audio_thread_run(
+    stop_event: threading.Event,
+    elevation_azimuth_widget: ElevationAzimuthWidget,
+    source_location_widget: SourceLocationWidget,
+):
     mics = Mics(Mics.Hardware.SC16_DEMO_ARRAY)
     pipeline = SslPipeline(mics, sample_rate=RATE, hop_length=HOP_LENGTH)
 
@@ -35,7 +36,7 @@ def audio_thread_run(elevation_azimuth_widget: ElevationAzimuthWidget, source_lo
         device='hw:CARD=SC16,DEV=0',
     )
 
-    while not stop_requested:
+    while not stop_event.is_set():
         length, data = pcm.read()
         if length < 0:
             continue
@@ -57,14 +58,16 @@ def main():
     source_location_widget = SourceLocationWidget()
     source_location_widget.show()
 
-    audio_thread = threading.Thread(target=audio_thread_run, args=[elevation_azimuth_widget, source_location_widget])
+    stop_event = threading.Event()
+    audio_thread = threading.Thread(
+        target=audio_thread_run, args=[stop_event, elevation_azimuth_widget, source_location_widget]
+    )
     audio_thread.start()
 
     try:
         pg.exec()
     finally:
-        global stop_requested
-        stop_requested = True
+        stop_event.set()
         audio_thread.join()
 
 

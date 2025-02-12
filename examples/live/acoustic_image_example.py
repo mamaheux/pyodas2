@@ -28,19 +28,18 @@ HOP_LENGTH = 256
 RATE = 16000
 
 
-stop_requested = False
-
-
-def video_thread_run(pipeline: AcousticImagePipeline, acoustic_image_widget: AcousticImageWidget):
+def video_thread_run(
+    stop_event: threading.Event, pipeline: AcousticImagePipeline, acoustic_image_widget: AcousticImageWidget
+):
     with CvCamera(width=IMAGE_WIDTH, height=IMAGE_HEIGHT) as camera:
-        while not stop_requested:
+        while not stop_event.is_set():
             ok, rgb_image = camera.read()
             if ok:
                 acoustic_image = pipeline.generate_acoustic_image()
                 acoustic_image_widget.set_images(rgb_image, acoustic_image)
 
 
-def audio_thread_run(mics: Mics, pipeline: AcousticImagePipeline):
+def audio_thread_run(stop_event: threading.Event, mics: Mics, pipeline: AcousticImagePipeline):
     pcm = alsaaudio.PCM(
         alsaaudio.PCM_CAPTURE,
         alsaaudio.PCM_NORMAL,
@@ -51,7 +50,7 @@ def audio_thread_run(mics: Mics, pipeline: AcousticImagePipeline):
         device='hw:CARD=SC16,DEV=0',
     )
 
-    while not stop_requested:
+    while not stop_event.is_set():
         length, data = pcm.read()
         if length < 0:
             continue
@@ -70,17 +69,18 @@ def main():
     acoustic_image_widget = AcousticImageWidget()
     acoustic_image_widget.show()
 
-    video_thread = threading.Thread(target=video_thread_run, args=[pipeline, acoustic_image_widget])
+    stop_event = threading.Event()
+
+    video_thread = threading.Thread(target=video_thread_run, args=[stop_event, pipeline, acoustic_image_widget])
     video_thread.start()
 
-    audio_thread = threading.Thread(target=audio_thread_run, args=[mics, pipeline])
+    audio_thread = threading.Thread(target=audio_thread_run, args=[stop_event, mics, pipeline])
     audio_thread.start()
 
     try:
         pg.exec()
     finally:
-        global stop_requested
-        stop_requested = True
+        stop_event.set()
         video_thread.join()
         audio_thread.join()
 

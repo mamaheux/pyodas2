@@ -1,5 +1,5 @@
 """
-This is an example to illustrate how to perform delay and sum beamforming at given directions using a live audio stream.
+This is an example to illustrate how to perform delay-and-sum beamforming at given directions using a live audio stream.
 """
 
 import alsaaudio

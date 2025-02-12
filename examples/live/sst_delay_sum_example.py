@@ -1,5 +1,5 @@
 """
-This is an example to illustrate how to perform sound source tracking and delay and sum beamforming using a live audio stream.
+This is an example to illustrate how to perform sound source tracking and delay-and-sum beamforming using a live audio stream.
 """
 
 import alsaaudio

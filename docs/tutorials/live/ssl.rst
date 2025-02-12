@@ -57,10 +57,11 @@ handle the graphical interface.
 
 .. code-block:: python
 
-    stop_requested = False
-
-
-    def audio_thread_run(elevation_azimuth_widget: ElevationAzimuthWidget, source_location_widget: SourceLocationWidget):
+    def audio_thread_run(
+        stop_event: threading.Event,
+        elevation_azimuth_widget: ElevationAzimuthWidget,
+        source_location_widget: SourceLocationWidget,
+    ):
         mics = Mics(Mics.Hardware.SC16_DEMO_ARRAY)
         pipeline = SslPipeline(mics, sample_rate=RATE, hop_length=HOP_LENGTH)
 
@@ -74,7 +75,7 @@ handle the graphical interface.
             device='hw:CARD=SC16,DEV=0',
         )
 
-        while not stop_requested:
+        while not stop_event.is_set():
             length, data = pcm.read()
             if length < 0:
                 continue
@@ -84,8 +85,6 @@ handle the graphical interface.
 
             elevation_azimuth_widget.add_potential_sources(result.directions)
             source_location_widget.set_potential_sources(result.directions)
-
-* :code:`stop_requested`: This is a variable to stop the audio processing when the graphical interface closes.
 
 * :code:`alsaaudio.PCM(...)`: Creates the instance that read the sound card data. If you use a SC-16F sound card, you
   can replace the :code:`device='hw:CARD=SC16,DEV=0'` with :code:`device='hw:CARD=SC16F,DEV=0'`. For other sound cards,
@@ -120,14 +119,16 @@ application.
         source_location_widget = SourceLocationWidget()
         source_location_widget.show()
 
-        audio_thread = threading.Thread(target=audio_thread_run, args=[elevation_azimuth_widget, source_location_widget])
+        stop_event = threading.Event()
+        audio_thread = threading.Thread(
+            target=audio_thread_run, args=[stop_event, elevation_azimuth_widget, source_location_widget]
+        )
         audio_thread.start()
 
         try:
             pg.exec()
         finally:
-            global stop_requested
-            stop_requested = True
+            stop_event.set()
             audio_thread.join()
 
 * `signal.signal(signal.SIGINT, signal.SIG_DFL)`: Enables the functionality of :code:`CTRL-C`.

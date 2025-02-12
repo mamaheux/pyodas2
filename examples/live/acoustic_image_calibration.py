@@ -21,20 +21,20 @@ HOP_LENGTH = 256
 RATE = 16000
 
 
-stop_requested = False
-
-
 def video_thread_run(
-    pipeline: AcousticImageCalibrationPipeline, acoustic_image_calibration_widget: AcousticImageCalibrationWidget
+    stop_event: threading.Event,
+    pipeline: AcousticImageCalibrationPipeline,
+    acoustic_image_calibration_widget: AcousticImageCalibrationWidget,
 ):
     with CvCamera(width=IMAGE_WIDTH, height=IMAGE_HEIGHT) as camera:
-        while not stop_requested and not pipeline.is_finished:
+        while not stop_event.is_set() and not pipeline.is_finished:
             ok, rgb_image = camera.read()
             if ok:
                 acoustic_image_calibration_widget.set_camera_image(rgb_image)
 
 
 def audio_thread_run(
+    stop_event: threading.Event,
     mics: Mics,
     pipeline: AcousticImageCalibrationPipeline,
     acoustic_image_calibration_widget: AcousticImageCalibrationWidget,
@@ -50,7 +50,7 @@ def audio_thread_run(
         device='hw:CARD=SC16,DEV=0',
     )
 
-    while not stop_requested and not pipeline.is_finished:
+    while not stop_event.is_set() and not pipeline.is_finished:
         length, data = pcm.read()
         if length < 0:
             continue
@@ -81,19 +81,22 @@ def main():
     acoustic_image_calibration_widget.set_targets(pipeline.targets, pipeline.current_target_index)
     acoustic_image_calibration_widget.show()
 
-    video_thread = threading.Thread(target=video_thread_run, args=[pipeline, acoustic_image_calibration_widget])
+    stop_event = threading.Event()
+
+    video_thread = threading.Thread(
+        target=video_thread_run, args=[stop_event, pipeline, acoustic_image_calibration_widget]
+    )
     video_thread.start()
 
     audio_thread = threading.Thread(
-        target=audio_thread_run, args=[mics, pipeline, acoustic_image_calibration_widget, app]
+        target=audio_thread_run, args=[stop_event, mics, pipeline, acoustic_image_calibration_widget, app]
     )
     audio_thread.start()
 
     try:
         pg.exec()
     finally:
-        global stop_requested
-        stop_requested = True
+        stop_event.set()
         video_thread.join()
         audio_thread.join()
 

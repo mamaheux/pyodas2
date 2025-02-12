@@ -76,7 +76,8 @@ adjusted using the arguments of :code:`AcousticImageCalibrationPipeline`. For mo
 B. Acoustic Image Generation
 *****************************
 
-Once the calibration is done, the following script allows you to perform acoustic image generation.
+Once the calibration is done, the following script allows you to perform acoustic image generation. If you want to use
+a Pi Camera instead of a OpenCV Camera, you can replace :code:`CvCamera` by :code:`PiCamera`.
 
 .. include:: ../../../examples/live/acoustic_image_example.py
    :literal:
