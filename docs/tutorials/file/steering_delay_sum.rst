@@ -60,7 +60,7 @@ Then, it is required to define some constants.
 
 .. code-block:: python
 
-    INPUT_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio', 'mix_sc16f.wav')
+    INPUT_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio', 'mix_sc16f_steering_delay_sum.wav')
     OUTPUT_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio', 'output.wav')
 
     HOP_LENGTH = 128
@@ -180,6 +180,23 @@ This is an example of the output comparing the audio before and after applying t
 
 TODO add audio files
 
+Before:
+
+.. raw:: html
+
+    <audio controls>
+      <source src="_static/tutorials/steering_delay_sum_before.wav" type="audio/wav">
+      Your browser does not support the <code>audio</code> element.
+    </audio>
+
+After:
+
+.. raw:: html
+
+    <audio controls>
+      <source src="_static/tutorials/steering_delay_sum_after.wav" type="audio/wav">
+      Your browser does not support the <code>audio</code> element.
+    </audio>
 
 Summary
 ********

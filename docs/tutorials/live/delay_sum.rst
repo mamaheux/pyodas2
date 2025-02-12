@@ -41,7 +41,8 @@ Then, it is required to define some constants.
     NUM_SOURCES = 1
     PERIODS = 10
 
-* :code:`PERIODS`: Indicates the buffer size of the PCM instances to prevent sound glitches.
+* :code:`PERIODS`: Indicates the buffer size of the PCM instances to prevent sound glitches. You can lower the value to
+  reduce latency.
 
 
 C. Main Function

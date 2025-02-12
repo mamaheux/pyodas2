@@ -9,13 +9,13 @@ from pyodas2.pcm import interleaved_pcm_to_numpy
 from pyodas2.pipelines import SslPipeline, SslPipelineResult
 from pyodas2.utils import Mics
 
-AUDIO_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio', 'mix.wav')
+AUDIO_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio', 'mix_sc16f.wav')
 HOP_LENGTH = 128
 
 
 def main():
     with wave.open(AUDIO_PATH, 'rb') as wave_reader:
-        mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
+        mics = Mics(Mics.Hardware.SC16F)
         assert wave_reader.getnchannels() == len(mics)
 
         pipeline = SslPipeline(mics, sample_rate=wave_reader.getframerate(), hop_length=HOP_LENGTH)

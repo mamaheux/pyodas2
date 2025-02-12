@@ -10,7 +10,7 @@ from pyodas2.pipelines import SteeringDelaySumPipeline
 from pyodas2.types import Xyz
 from pyodas2.utils import Mics
 
-INPUT_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio', 'mix.wav')
+INPUT_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio', 'mix_sc16f_steering_delay_sum.wav')
 OUTPUT_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'audio', 'output.wav')
 
 HOP_LENGTH = 128
@@ -25,7 +25,7 @@ def main():
         wave_writer.setsampwidth(OUTPUT_SAMPLE_WIDTH)
         wave_writer.setframerate(wave_reader.getframerate())
 
-        mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
+        mics = Mics(Mics.Hardware.SC16F)
         assert wave_reader.getnchannels() == len(mics)
 
         pipeline = SteeringDelaySumPipeline(mics, hop_length=HOP_LENGTH, num_sources=NUM_SOURCES)
