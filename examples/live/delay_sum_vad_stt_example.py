@@ -88,7 +88,7 @@ def main():
         while True:
             voice_sequence = stt_queue.get()
             result = whisper_model.transcribe(voice_sequence, language=LANGUAGE)
-            print(result["text"])
+            print('Transcribed text:', result['text'])
     finally:
         stop_event.set()
         audio_thread.join()
