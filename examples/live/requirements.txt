@@ -1,2 +1,4 @@
 pyalsaaudio==0.11.0
+torch==2.6.0
+openai-whisper==20240930
 ../../
