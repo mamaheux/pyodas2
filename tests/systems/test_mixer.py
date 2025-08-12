@@ -5,6 +5,11 @@ from pyodas2.signals import Hops
 from pyodas2.systems import Mixer
 
 
+def test_init_invalid_mapping():
+    with pytest.raises(ValueError, match='Number of channels must be at least 1.'):
+        Mixer([])
+
+
 def test_init():
     testee = Mixer([0, 3])
 
@@ -17,10 +22,12 @@ def test_process_invalid_inputs():
 
     testee = Mixer(MAPPING)
 
-    with pytest.raises(ValueError, match='hops_in does not have enough channels.'):
+    with pytest.raises(ValueError, match='Input hops does not have enough channels.'):
         testee.process(Hops('in', max(MAPPING), NUM_SHIFT), Hops('ou', len(MAPPING), NUM_SHIFT))
 
-    with pytest.raises(ValueError, match='hops_out does not have the same number of channels as the mixer.'):
+    with pytest.raises(
+        ValueError, match='Number of channels in output hops must match the number of channels in the mixer.'
+    ):
         testee.process(Hops('in', max(MAPPING) + 1, NUM_SHIFT), Hops('ou', len(MAPPING) + 1, NUM_SHIFT))
 
 

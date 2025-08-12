@@ -3,6 +3,7 @@
 #include <odas2/systems/delaysum.h>
 
 #include "delaysum.h"
+#include "../utils/error.h"
 
 namespace py = pybind11;
 
@@ -13,28 +14,17 @@ struct delaysum_deleter {
 };
 
 std::shared_ptr<delaysum_t> delaysum_init(size_t num_sources, size_t num_channels, size_t num_bins) {
-    return {delaysum_construct(num_sources, num_channels, num_bins), delaysum_deleter()};
+    delaysum_t* delaysum = delaysum_construct(num_sources, num_channels, num_bins);
+    if (delaysum == nullptr) {
+        throw py::value_error(pyodas2_error_message());
+    }
+
+    return {delaysum, delaysum_deleter()};
 }
 
 void delaysum_process_python(delaysum_t& self, const tdoas_t& tdoas, weights_t& coeffs) {
-    if (self.num_sources != tdoas.num_sources) {
-        throw py::value_error("The number of sources of the tdoas must be " + std::to_string(self.num_sources) + ".");
-    }
-    if (self.num_sources != coeffs.num_sources) {
-        throw py::value_error("The number of sources of the weights must be " + std::to_string(self.num_sources) + ".");
-    }
-    if (self.num_channels != tdoas.num_channels) {
-        throw py::value_error("The number of channels of the tdoas must be " + std::to_string(self.num_channels) + ".");
-    }
-    if (self.num_channels != coeffs.num_channels) {
-        throw py::value_error("The number of channels of the weights must be " + std::to_string(self.num_channels) + ".");
-    }
-    if (self.num_bins != coeffs.num_bins) {
-        throw py::value_error("The number of bins of the weights must be " + std::to_string(self.num_bins) + ".");
-    }
-
     if (delaysum_process(&self, &tdoas, &coeffs) != 0) {
-        throw std::runtime_error("Failed to process delaysum");
+        throw py::value_error(pyodas2_error_message());
     }
 }
 

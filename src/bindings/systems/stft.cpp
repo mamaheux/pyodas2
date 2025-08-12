@@ -3,13 +3,9 @@
 #include <odas2/systems/stft.h>
 
 #include "stft.h"
+#include "../utils/error.h"
 
 namespace py = pybind11;
-
-enum class Window {
-    HANN,
-    SINE
-};
 
 struct stft_deleter {
     void operator()(stft_t* p) const {
@@ -17,41 +13,18 @@ struct stft_deleter {
     }
 };
 
-std::shared_ptr<stft_t> stft_init(size_t num_channels, size_t num_samples, size_t num_shifts, Window window) {
-    if (ceilf(log2f(static_cast<float>(num_samples))) != floorf(log2f(static_cast<float>(num_samples)))) {
-        throw py::value_error("The number of samples must be a power of 2 and the number of bins must be (num_samples / 2) + 1.");
+std::shared_ptr<stft_t> stft_init(size_t num_channels, size_t num_samples, size_t num_shifts, stft_window_t window) {
+    stft_t* stft = stft_construct(num_channels, num_samples, num_shifts, window);
+    if (stft == nullptr) {
+        throw py::value_error(pyodas2_error_message());
     }
-    if (num_shifts > num_samples / 2) {
-        throw py::value_error("The number of samples must be at most equal to num_samples / 2.");
-    }
-    size_t num_bins = (num_samples / 2) + 1;
 
-    switch (window) {
-        case Window::HANN:
-            return {stft_construct(num_channels, num_samples, num_shifts, num_bins, "hann"), stft_deleter()};
-        case Window::SINE:
-            return {stft_construct(num_channels, num_samples, num_shifts, num_bins, "sine"), stft_deleter()};
-        default:
-            throw py::value_error("Not supported window");
-    }
+    return {stft, stft_deleter()};
 }
 
 void stft_process_python(stft_t& self, const hops_t& hops, freqs_t& freqs) {
-    if (self.num_channels != hops.num_channels) {
-        throw py::value_error("The number of sources of the hops must be " + std::to_string(self.num_channels) + ".");
-    }
-    if (self.num_channels != freqs.num_channels) {
-        throw py::value_error("The number of channels of the freqs must be " + std::to_string(self.num_channels) + ".");
-    }
-    if (self.num_shifts != hops.num_shifts) {
-        throw py::value_error("The number of shifts of the hops must be " + std::to_string(self.num_shifts) + ".");
-    }
-    if (self.num_bins != freqs.num_bins) {
-        throw py::value_error("The number of bins of the freqs must be " + std::to_string(self.num_bins) + ".");
-    }
-
     if (stft_process(&self, &hops, &freqs) != 0) {
-        throw std::runtime_error("Failed to process gcc");
+        throw py::value_error(pyodas2_error_message());
     }
 }
 
@@ -70,41 +43,18 @@ struct istft_deleter {
     }
 };
 
-std::shared_ptr<istft_t> istft_init(size_t num_channels, size_t num_samples, size_t num_shifts, Window window) {
-    if (ceilf(log2f(static_cast<float>(num_samples))) != floorf(log2f(static_cast<float>(num_samples)))) {
-        throw py::value_error("The number of samples must be a power of 2 and the number of bins must be (num_samples / 2) + 1.");
+std::shared_ptr<istft_t> istft_init(size_t num_channels, size_t num_samples, size_t num_shifts, stft_window_t window) {
+    istft_t* istft = istft_construct(num_channels, num_samples, num_shifts, window);
+    if (istft == nullptr) {
+        throw py::value_error(pyodas2_error_message());
     }
-    if (num_shifts > num_samples / 2) {
-        throw py::value_error("The number of samples must be at most equal to num_samples / 2.");
-    }
-    size_t num_bins = (num_samples / 2) + 1;
 
-    switch (window) {
-        case Window::HANN:
-            return {istft_construct(num_channels, num_samples, num_shifts, num_bins, "hann"), istft_deleter()};
-        case Window::SINE:
-            return {istft_construct(num_channels, num_samples, num_shifts, num_bins, "sine"), istft_deleter()};
-        default:
-            throw py::value_error("Not supported window");
-    }
+    return {istft, istft_deleter()};
 }
 
 void istft_process_python(istft_t& self, const freqs_t& freqs, hops_t& hops) {
-    if (self.num_channels != hops.num_channels) {
-        throw py::value_error("The number of sources of the hops must be " + std::to_string(self.num_channels) + ".");
-    }
-    if (self.num_channels != freqs.num_channels) {
-        throw py::value_error("The number of channels of the freqs must be " + std::to_string(self.num_channels) + ".");
-    }
-    if (self.num_shifts != hops.num_shifts) {
-        throw py::value_error("The number of shifts of the hops must be " + std::to_string(self.num_shifts) + ".");
-    }
-    if (self.num_bins != freqs.num_bins) {
-        throw py::value_error("The number of bins of the freqs must be " + std::to_string(self.num_bins) + ".");
-    }
-
     if (istft_process(&self, &freqs, &hops) != 0) {
-        throw std::runtime_error("Failed to process gcc");
+        throw py::value_error(pyodas2_error_message());
     }
 }
 
@@ -118,11 +68,11 @@ std::string istft_to_repr(const istft_t& self) {
 }
 
 void init_stft_istft(pybind11::module& m) {
-    py::enum_<Window>(m,
+    py::enum_<stft_window_t>(m,
             "Window",
             R"pbdoc(An enum representing windows to compute the Short-time Fourier transform.)pbdoc")
-        .value("HANN", Window::HANN)
-        .value("SINE", Window::SINE);
+        .value("HANN", STFT_WINDOW_HANN)
+        .value("SINE", STFT_WINDOW_SINE);
 
     py::class_<stft_t, std::shared_ptr<stft_t>>(m,
             "Stft",

@@ -3,6 +3,7 @@
 #include <odas2/systems/mvdr.h>
 
 #include "mvdr.h"
+#include "../utils/error.h"
 
 namespace py = pybind11;
 
@@ -13,28 +14,17 @@ struct mvdr_deleter {
 };
 
 std::shared_ptr<mvdr_t> mvdr_init(size_t num_channels, size_t num_bins) {
-    return {mvdr_construct(num_channels, num_bins), mvdr_deleter()};
+    mvdr_t* mvdr = mvdr_construct(num_channels, num_bins);
+    if (mvdr == nullptr) {
+        throw py::value_error(pyodas2_error_message());
+    }
+
+    return {mvdr, mvdr_deleter()};
 }
 
 void mvdr_process_python(mvdr_t& self, const covs_t& covs, weights_t& coeffs) {
-    if (coeffs.num_sources != 1) {
-        throw py::value_error("The number of sources of the weights must be 1.");
-    }
-    if (self.num_channels != covs.num_channels) {
-        throw py::value_error("The number of channels of the covs must be " + std::to_string(self.num_channels) + ".");
-    }
-    if (self.num_channels != coeffs.num_channels) {
-        throw py::value_error("The number of channels of the weights must be " + std::to_string(self.num_channels) + ".");
-    }
-    if (self.num_bins != covs.num_bins) {
-        throw py::value_error("The number of bins of the covs must be " + std::to_string(self.num_bins) + ".");
-    }
-    if (self.num_bins != coeffs.num_bins) {
-        throw py::value_error("The number of bins of the weights must be " + std::to_string(self.num_bins) + ".");
-    }
-
     if (mvdr_process(&self, &covs, &coeffs) != 0) {
-        throw std::runtime_error("Failed to process mvdr");
+        throw py::value_error(pyodas2_error_message());
     }
 }
 

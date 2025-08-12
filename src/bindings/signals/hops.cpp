@@ -5,6 +5,7 @@
 #include <odas2/signals/hops.h>
 
 #include "hops.h"
+#include "../utils/error.h"
 
 namespace py = pybind11;
 
@@ -15,12 +16,12 @@ struct hops_deleter {
 };
 
 std::shared_ptr<hops_t> hops_init(const std::string& label, size_t num_channels, size_t num_shifts) {
-    constexpr size_t MAX_LABEL_SIZE = sizeof(hops_t::label) - 1;
-    if (label.size() > MAX_LABEL_SIZE) {
-        throw py::value_error("The label is too long. The maximum length is " + std::to_string(MAX_LABEL_SIZE) + ".");
+    hops_t* hops = hops_construct(label.c_str(), num_channels, num_shifts);
+    if (hops == nullptr) {
+        throw py::value_error(pyodas2_error_message());
     }
 
-    return {hops_construct(label.c_str(), num_channels, num_shifts), hops_deleter()};
+    return {hops, hops_deleter()};
 }
 
 template <class Int>

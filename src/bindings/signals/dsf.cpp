@@ -3,6 +3,7 @@
 #include <odas2/signals/dsf.h>
 
 #include "dsf.h"
+#include "../utils/error.h"
 
 namespace py = pybind11;
 
@@ -13,12 +14,12 @@ struct dsf_deleter {
 };
 
 std::shared_ptr<dsf_t> dsf_init(const std::string& label) {
-    constexpr size_t MAX_LABEL_SIZE = sizeof(dsf_t::label) - 1;
-    if (label.size() > MAX_LABEL_SIZE) {
-        throw py::value_error("The label is too long. The maximum length is " + std::to_string(MAX_LABEL_SIZE) + ".");
+    dsf_t* dsf = dsf_construct(label.c_str());
+    if (dsf == nullptr) {
+        throw py::value_error(pyodas2_error_message());
     }
 
-    return {dsf_construct(label.c_str()), dsf_deleter()};
+    return {dsf, dsf_deleter()};
 }
 
 std::string dsf_to_repr(const dsf_t& self) {

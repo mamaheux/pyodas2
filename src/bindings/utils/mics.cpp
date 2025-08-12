@@ -3,18 +3,9 @@
 #include <pybind11/stl.h>
 
 #include "mics.h"
+#include "error.h"
 
 namespace py = pybind11;
-
-enum class Hardware {
-    RESPEAKER_USB_4,
-    RESPEAKER_USB_6,
-    MINIDSP_UMA,
-    SC16_DEMO_ARRAY,
-    SC16F,
-    VIBEUS_CIRCULAR,
-    SOUNDSKRIT_MUG
-};
 
 struct mics_deleter {
     void operator()(mics_t* p) const {
@@ -22,25 +13,13 @@ struct mics_deleter {
     }
 };
 
-std::shared_ptr<mics_t> mics_init(Hardware hardware) {
-    switch (hardware) {
-        case Hardware::RESPEAKER_USB_4:
-            return {mics_construct("respeaker_usb_4"), mics_deleter()};
-        case Hardware::RESPEAKER_USB_6:
-            return {mics_construct("respeaker_usb_6"), mics_deleter()};
-        case Hardware::MINIDSP_UMA:
-            return {mics_construct("minidsp_uma"), mics_deleter()};
-        case Hardware::SC16_DEMO_ARRAY:
-            return {mics_construct("sc16_demo_array"), mics_deleter()};
-        case Hardware::SC16F:
-            return {mics_construct("sc16f"), mics_deleter()};
-        case Hardware::VIBEUS_CIRCULAR:
-            return {mics_construct("vibeus_circular"), mics_deleter()};
-        case Hardware::SOUNDSKRIT_MUG:
-            return {mics_construct("soundskrit_mug"), mics_deleter()};
-        default:
-            throw py::value_error("Not supported geometry");
+std::shared_ptr<mics_t> mics_init(mics_hardware_t hardware) {
+    mics_t* mics = mics_construct(hardware);
+    if (mics == nullptr) {
+        throw py::value_error(pyodas2_error_message());
     }
+
+    return {mics, mics_deleter()};
 }
 
 std::shared_ptr<mics_t> mics_init_uninitialized(size_t num_mics) {
@@ -86,14 +65,14 @@ void init_mics(pybind11::module& m) {
         "Mics",
         R"pbdoc(A class representing a microphone array configuration.)pbdoc");
 
-    py::enum_<Hardware>(mics, "Hardware", R"pbdoc(An enum for common microphone arrays.)pbdoc")
-        .value("RESPEAKER_USB_4", Hardware::RESPEAKER_USB_4)
-        .value("RESPEAKER_USB_6", Hardware::RESPEAKER_USB_6)
-        .value("MINIDSP_UMA", Hardware::MINIDSP_UMA)
-        .value("SC16_DEMO_ARRAY", Hardware::SC16_DEMO_ARRAY)
-        .value("SC16F", Hardware::SC16F)
-        .value("VIBEUS_CIRCULAR", Hardware::VIBEUS_CIRCULAR)
-        .value("SOUNDSKRIT_MUG", Hardware::SOUNDSKRIT_MUG);
+    py::enum_<mics_hardware_t>(mics, "Hardware", R"pbdoc(An enum for common microphone arrays.)pbdoc")
+        .value("RESPEAKER_USB_4", MICS_HARDWARE_RESPEAKER_USB_4)
+        .value("RESPEAKER_USB_6", MICS_HARDWARE_RESPEAKER_USB_6)
+        .value("MINIDSP_UMA", MICS_HARDWARE_MINIDSP_UMA)
+        .value("SC16_DEMO_ARRAY", MICS_HARDWARE_SC16_DEMO_ARRAY)
+        .value("SC16F", MICS_HARDWARE_SC16F)
+        .value("VIBEUS_CIRCULAR", MICS_HARDWARE_VIBEUS_CIRCULAR)
+        .value("SOUNDSKRIT_MUG", MICS_HARDWARE_SOUNDSKRIT_MUG);
 
     mics.def(py::init(&mics_init),
             R"pbdoc(

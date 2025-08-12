@@ -7,8 +7,14 @@ from pyodas2.types import Xyz
 def test_init_too_long_label():
     Doas('1' * 63, 4)
 
-    with pytest.raises(ValueError, match='The label is too long. The maximum length is 63.'):
+    with pytest.raises(ValueError, match='Label must be a string with less than 64 characters.'):
         Doas('1' * 64, 4)
+
+
+def test_init_not_enough_directions():
+    Doas('XXs', 1)
+    with pytest.raises(ValueError, match='Number of directions must be at least 1.'):
+        Doas('XXs', 0)
 
 
 def test_init():

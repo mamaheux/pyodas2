@@ -1,6 +1,7 @@
 #include <sstream>
 
 #include "doas.h"
+#include "../utils/error.h"
 
 namespace py = pybind11;
 
@@ -11,12 +12,12 @@ struct doas_deleter {
 };
 
 std::shared_ptr<doas_t> doas_init(const std::string& label, size_t num_directions) {
-    constexpr size_t MAX_LABEL_SIZE = sizeof(doas_t::label) - 1;
-    if (label.size() > MAX_LABEL_SIZE) {
-        throw py::value_error("The label is too long. The maximum length is " + std::to_string(MAX_LABEL_SIZE) + ".");
+    doas_t* doas = doas_construct(label.c_str(), num_directions);
+    if (doas == nullptr) {
+        throw py::value_error(pyodas2_error_message());
     }
 
-    return {doas_construct(label.c_str(), num_directions), doas_deleter()};
+    return {doas, doas_deleter()};
 }
 
 size_t doas_len(const doas_t& self) {

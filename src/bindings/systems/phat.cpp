@@ -3,6 +3,7 @@
 #include <odas2/systems/phat.h>
 
 #include "phat.h"
+#include "../utils/error.h"
 
 namespace py = pybind11;
 
@@ -13,25 +14,17 @@ struct phat_deleter {
 };
 
 std::shared_ptr<phat_t> phat_init(size_t num_channels, size_t num_bins) {
-    return {phat_construct(num_channels, num_bins), phat_deleter()};
+    phat_t* phat = phat_construct(num_channels, num_bins);
+    if (phat == nullptr) {
+        throw py::value_error(pyodas2_error_message());
+    }
+
+    return {phat, phat_deleter()};
 }
 
 void phat_process_python(phat_t& self, const covs_t& covs_in, covs_t& covs_out) {
-    if (self.num_channels != covs_in.num_channels) {
-        throw py::value_error("The number of channels of the input must be " + std::to_string(self.num_channels) + ".");
-    }
-    if (self.num_channels != covs_out.num_channels) {
-        throw py::value_error("The number of channels of the output must be " + std::to_string(self.num_channels) + ".");
-    }
-    if (self.num_bins != covs_in.num_bins) {
-        throw py::value_error("The number of bins of the input must be " + std::to_string(self.num_bins) + ".");
-    }
-    if (self.num_bins != covs_out.num_bins) {
-        throw py::value_error("The number of bins of the output must be " + std::to_string(self.num_bins) + ".");
-    }
-
     if (phat_process(&self, &covs_in, &covs_out) != 0) {
-        throw std::runtime_error("Failed to process phat");
+        throw py::value_error(pyodas2_error_message());
     }
 }
 

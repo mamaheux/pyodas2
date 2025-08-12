@@ -5,6 +5,27 @@ from pyodas2.signals import Covs, Freqs, Masks
 from pyodas2.systems import Scm
 
 
+def test_init_not_enough_channels():
+    Scm(2, 8, 0.5)
+    with pytest.raises(ValueError, match='Number of channels must be at least 2.'):
+        Scm(1, 8, 0.5)
+
+
+def test_init_not_enough_bins():
+    Scm(4, 1, 0.5)
+    with pytest.raises(ValueError, match='Number of bins must be at least 1.'):
+        Scm(4, 0, 0.5)
+
+
+def test_init_invalid_alpha():
+    Scm(4, 8, 0.01)
+    Scm(4, 8, 0.99)
+    with pytest.raises(ValueError, match='Alpha must be between 0 and 1.'):
+        Scm(4, 8, -0.01)
+    with pytest.raises(ValueError, match='Alpha must be between 0 and 1.'):
+        Scm(4, 8, 1.01)
+
+
 def test_init():
     NUM_CHANNELS = 4
     NUM_BINS = 8
@@ -25,32 +46,34 @@ def test_process_invalid_inputs():
 
     testee = Scm(NUM_CHANNELS, NUM_BINS, ALPHA)
 
-    with pytest.raises(ValueError, match='The number of channels of freqs must be 4.'):
+    with pytest.raises(
+        ValueError, match='Number of channels in input freqs must match the number of channels in the scm.'
+    ):
         testee.process(
             Freqs('', NUM_CHANNELS + 1, NUM_BINS), Masks('', NUM_CHANNELS, NUM_BINS), Covs('', NUM_CHANNELS, NUM_BINS)
         )
 
-    with pytest.raises(ValueError, match='The number of bins of freqs must be 8.'):
+    with pytest.raises(ValueError, match='Number of bins in input freqs must match the number of bins in the scm.'):
         testee.process(
             Freqs('', NUM_CHANNELS, NUM_BINS + 1), Masks('', NUM_CHANNELS, NUM_BINS), Covs('', NUM_CHANNELS, NUM_BINS)
         )
 
-    with pytest.raises(ValueError, match='The number of channels of masks must be 4.'):
+    with pytest.raises(ValueError, match='Number of channels in masks must match the number of channels in the scm.'):
         testee.process(
             Freqs('', NUM_CHANNELS, NUM_BINS), Masks('', NUM_CHANNELS + 1, NUM_BINS), Covs('', NUM_CHANNELS, NUM_BINS)
         )
 
-    with pytest.raises(ValueError, match='The number of bins of masks must be 8.'):
+    with pytest.raises(ValueError, match='Number of bins in masks must match the number of bins in the scm.'):
         testee.process(
             Freqs('', NUM_CHANNELS, NUM_BINS), Masks('', NUM_CHANNELS, NUM_BINS + 1), Covs('', NUM_CHANNELS, NUM_BINS)
         )
 
-    with pytest.raises(ValueError, match='The number of channels of covs must be 4.'):
+    with pytest.raises(ValueError, match='Number of channels in covs must match the number of channels in the scm.'):
         testee.process(
             Freqs('', NUM_CHANNELS, NUM_BINS), Masks('', NUM_CHANNELS, NUM_BINS), Covs('', NUM_CHANNELS + 1, NUM_BINS)
         )
 
-    with pytest.raises(ValueError, match='The number of bins of covs must be 8.'):
+    with pytest.raises(ValueError, match='Number of bins in covs must match the number of bins in the scm.'):
         testee.process(
             Freqs('', NUM_CHANNELS, NUM_BINS), Masks('', NUM_CHANNELS, NUM_BINS), Covs('', NUM_CHANNELS, NUM_BINS + 1)
         )

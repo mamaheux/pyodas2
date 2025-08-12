@@ -3,6 +3,7 @@
 #include <odas2/systems/gcc.h>
 
 #include "gcc.h"
+#include "../utils/error.h"
 
 namespace py = pybind11;
 
@@ -13,30 +14,17 @@ struct gcc_deleter {
 };
 
 std::shared_ptr<gcc_t> gcc_init(size_t num_sources, size_t num_channels, size_t num_bins) {
-    float num_samples = static_cast<float>(num_bins - 1) * 2;
-    if (ceilf(log2f(num_samples)) != floorf(log2f(num_samples))) {
-        throw py::value_error("The number of samples must be a power of 2 and the number of bins must be (num_samples / 2) + 1.");
+    gcc_t* gcc = gcc_construct(num_sources, num_channels, num_bins);
+    if (gcc == nullptr) {
+        throw py::value_error(pyodas2_error_message());
     }
 
-    return {gcc_construct(num_sources, num_channels, num_bins), gcc_deleter()};
+    return {gcc, gcc_deleter()};
 }
 
 void gcc_process_python(gcc_t& self, const covs_t& covs, tdoas_t& tdoas) {
-    if (self.num_sources != tdoas.num_sources) {
-        throw py::value_error("The number of sources of the tdoas must be " + std::to_string(self.num_sources) + ".");
-    }
-    if (self.num_channels != covs.num_channels) {
-        throw py::value_error("The number of channels of the covs must be " + std::to_string(self.num_channels) + ".");
-    }
-    if (self.num_channels != tdoas.num_channels) {
-        throw py::value_error("The number of channels of the tdoas must be " + std::to_string(self.num_channels) + ".");
-    }
-    if (self.num_bins != covs.num_bins) {
-        throw py::value_error("The number of bins of the covs must be " + std::to_string(self.num_bins) + ".");
-    }
-
     if (gcc_process(&self, &covs, &tdoas) != 0) {
-        throw std::runtime_error("Failed to process gcc");
+        throw py::value_error(pyodas2_error_message());
     }
 }
 

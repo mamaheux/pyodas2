@@ -6,6 +6,7 @@
 #include <odas2/systems/mixer.h>
 
 #include "mixer.h"
+#include "../utils/error.h"
 
 namespace py = pybind11;
 
@@ -24,19 +25,18 @@ std::shared_ptr<mixer_t> mixer_init(const std::vector<size_t>& mapping) {
             ss << ',';
         }
     }
+    mixer_t* mixer = mixer_construct(ss.str().c_str());
+    if (mixer == nullptr) {
+        throw py::value_error(pyodas2_error_message());
+    }
 
-    return {mixer_construct(ss.str().c_str()), mixer_deleter()};
+    return {mixer, mixer_deleter()};
 }
 
 void mixer_process_python(mixer_t& self, const hops_t& hops_in, hops_t& hops_out) {
-    if (self.max_map_index >= hops_in.num_channels) {
-        throw py::value_error("hops_in does not have enough channels.");
+    if (mixer_process(&self, &hops_in, &hops_out) != 0) {
+        throw py::value_error(pyodas2_error_message());
     }
-    if (self.num_channels != hops_out.num_channels) {
-        throw py::value_error("hops_out does not have the same number of channels as the mixer.");
-    }
-
-    mixer_process(&self, &hops_in, &hops_out);
 }
 
 std::string mixer_to_repr(const mixer_t& self) {

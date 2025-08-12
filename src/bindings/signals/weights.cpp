@@ -6,6 +6,7 @@
 #include <odas2/signals/weights.h>
 
 #include "weights.h"
+#include "../utils/error.h"
 
 namespace py = pybind11;
 
@@ -16,12 +17,12 @@ struct weights_deleter {
 };
 
 std::shared_ptr<weights_t> weights_init(const std::string& label, size_t num_sources, size_t num_channels, size_t num_bins) {
-    constexpr size_t MAX_LABEL_SIZE = sizeof(weights_t::label) - 1;
-    if (label.size() > MAX_LABEL_SIZE) {
-        throw py::value_error("The label is too long. The maximum length is " + std::to_string(MAX_LABEL_SIZE) + ".");
+    weights_t* weights = weights_construct(label.c_str(), num_sources, num_channels, num_bins);
+    if (weights == nullptr) {
+        throw py::value_error(pyodas2_error_message());
     }
 
-    return {weights_construct(label.c_str(), num_sources, num_channels, num_bins), weights_deleter()};
+    return {weights, weights_deleter()};
 }
 
 void weights_load_numpy(weights_t& self, const py::array_t<std::complex<float>, py::array::c_style | py::array::forcecast>& array) {

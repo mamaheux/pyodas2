@@ -6,6 +6,7 @@
 #include <odas2/signals/covs.h>
 
 #include "covs.h"
+#include "../utils/error.h"
 
 namespace py = pybind11;
 
@@ -16,12 +17,12 @@ struct covs_deleter {
 };
 
 std::shared_ptr<covs_t> covs_init(const std::string& label, size_t num_channels, size_t num_bins) {
-    constexpr size_t MAX_LABEL_SIZE = sizeof(covs_t::label) - 1;
-    if (label.size() > MAX_LABEL_SIZE) {
-        throw py::value_error("The label is too long. The maximum length is " + std::to_string(MAX_LABEL_SIZE) + ".");
+    covs_t* covs = covs_construct(label.c_str(), num_channels, num_bins);
+    if (covs == nullptr) {
+        throw py::value_error(pyodas2_error_message());
     }
 
-    return {covs_construct(label.c_str(), num_channels, num_bins), covs_deleter()};
+    return {covs, covs_deleter()};
 }
 
 void covs_xcorrs_load_numpy(covs_t& self, const py::array_t<std::complex<float>, py::array::c_style | py::array::forcecast>& array) {

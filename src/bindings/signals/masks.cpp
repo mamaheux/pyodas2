@@ -5,6 +5,7 @@
 #include <odas2/signals/masks.h>
 
 #include "masks.h"
+#include "../utils/error.h"
 
 namespace py = pybind11;
 
@@ -15,12 +16,12 @@ struct masks_deleter {
 };
 
 std::shared_ptr<masks_t> masks_init(const std::string& label, size_t num_channels, size_t num_bins) {
-    constexpr size_t MAX_LABEL_SIZE = sizeof(masks_t::label) - 1;
-    if (label.size() > MAX_LABEL_SIZE) {
-        throw py::value_error("The label is too long. The maximum length is " + std::to_string(MAX_LABEL_SIZE) + ".");
+    masks_t* masks = masks_construct(label.c_str(), num_channels, num_bins);
+    if (masks == nullptr) {
+        throw py::value_error(pyodas2_error_message());
     }
 
-    return {masks_construct(label.c_str(), num_channels, num_bins), masks_deleter()};
+    return {masks, masks_deleter()};
 }
 
 void masks_load_numpy(masks_t& self, const py::array_t<float, py::array::c_style | py::array::forcecast>& array) {

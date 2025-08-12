@@ -3,6 +3,7 @@
 #include <odas2/systems/ssl.h>
 
 #include "ssl.h"
+#include "../utils/error.h"
 #include "../utils/mics.h"
 
 namespace py = pybind11;
@@ -24,6 +25,9 @@ public:
         m_mics = std::move(mics);
         m_points = std::move(points);
         m_ssl.reset(ssl_construct(m_mics.get(), m_points.get(), sample_rate, sound_speed, num_sources, num_directions));
+        if (m_ssl == nullptr) {
+            throw py::value_error(pyodas2_error_message());
+        }
     }
 
     [[nodiscard]] size_t num_channels() const {
@@ -63,18 +67,8 @@ public:
     }
 
     void process(const tdoas_t& tdoas, doas_t& doas) {
-        if (m_ssl->num_sources != tdoas.num_sources) {
-            throw py::value_error("The number of sources of the tdoas must be " + std::to_string(m_ssl->num_sources) + ".");
-        }
-        if (m_ssl->num_channels != tdoas.num_channels) {
-            throw py::value_error("The number of channels of the tdoas must be " + std::to_string(m_ssl->num_channels) + ".");
-        }
-        if (m_ssl->num_directions != doas.num_directions) {
-            throw py::value_error("The number of directions of the doas must be " + std::to_string(m_ssl->num_directions) + ".");
-        }
-
         if (ssl_process(m_ssl.get(), &tdoas, &doas) != 0) {
-            throw std::runtime_error("Failed to process ssl");
+            throw py::value_error(pyodas2_error_message());
         }
     }
 

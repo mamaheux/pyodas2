@@ -5,6 +5,24 @@ from pyodas2.signals import Freqs, Weights
 from pyodas2.systems import Beamformer
 
 
+def test_init_not_enough_sources():
+    Beamformer(1, 4, 8)
+    with pytest.raises(ValueError, match='Number of sources must be at least 1.'):
+        Beamformer(0, 4, 8)
+
+
+def test_init_not_enough_channels():
+    Beamformer(2, 1, 8)
+    with pytest.raises(ValueError, match='Number of channels must be at least 1.'):
+        Beamformer(2, 0, 8)
+
+
+def test_init_not_enough_bins():
+    Beamformer(2, 4, 1)
+    with pytest.raises(ValueError, match='Number of bins must be at least 1.'):
+        Beamformer(2, 4, 0)
+
+
 def test_init():
     NUM_SOURCES = 2
     NUM_CHANNELS = 4
@@ -24,49 +42,57 @@ def test_process_invalid_inputs():
 
     testee = Beamformer(NUM_SOURCES, NUM_CHANNELS, NUM_BINS)
 
-    with pytest.raises(ValueError, match='The number of channels of the input must be 4.'):
+    with pytest.raises(
+        ValueError, match='Number of channels in input must match the number of channels in the beamformer.'
+    ):
         testee.process(
             Freqs('', NUM_CHANNELS + 1, NUM_BINS),
             Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS),
             Freqs('', NUM_SOURCES, NUM_BINS),
         )
 
-    with pytest.raises(ValueError, match='The number of bins of the input must be 8.'):
+    with pytest.raises(ValueError, match='Number of bins in input must match the number of bins in the beamformer.'):
         testee.process(
             Freqs('', NUM_CHANNELS, NUM_BINS + 1),
             Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS),
             Freqs('', NUM_SOURCES, NUM_BINS),
         )
 
-    with pytest.raises(ValueError, match='The number of sources of the weights must be 2.'):
+    with pytest.raises(
+        ValueError, match='Number of sources in weights must match the number of sources in the beamformer.'
+    ):
         testee.process(
             Freqs('', NUM_CHANNELS, NUM_BINS),
             Weights('', NUM_SOURCES + 1, NUM_CHANNELS, NUM_BINS),
             Freqs('', NUM_SOURCES, NUM_BINS),
         )
 
-    with pytest.raises(ValueError, match='The number of channels of the weights must be 4.'):
+    with pytest.raises(
+        ValueError, match='Number of channels in weights must match the number of channels in the beamformer.'
+    ):
         testee.process(
             Freqs('', NUM_CHANNELS, NUM_BINS),
             Weights('', NUM_SOURCES, NUM_CHANNELS + 1, NUM_BINS),
             Freqs('', NUM_SOURCES, NUM_BINS),
         )
 
-    with pytest.raises(ValueError, match='The number of bins of the weights must be 8.'):
+    with pytest.raises(ValueError, match='Number of bins in weights must match the number of bins in the beamformer.'):
         testee.process(
             Freqs('', NUM_CHANNELS, NUM_BINS),
             Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS + 1),
             Freqs('', NUM_SOURCES, NUM_BINS),
         )
 
-    with pytest.raises(ValueError, match='The number of channels of the output must be 2.'):
+    with pytest.raises(
+        ValueError, match='Number of channels in output must match the number of sources in the beamformer.'
+    ):
         testee.process(
             Freqs('', NUM_CHANNELS, NUM_BINS),
             Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS),
             Freqs('', NUM_SOURCES + 1, NUM_BINS),
         )
 
-    with pytest.raises(ValueError, match='The number of bins of the output must be 8.'):
+    with pytest.raises(ValueError, match='Number of bins in output must match the number of bins in the beamformer.'):
         testee.process(
             Freqs('', NUM_CHANNELS, NUM_BINS),
             Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS),

@@ -5,6 +5,18 @@ from pyodas2.signals import Covs
 from pyodas2.systems import Phat
 
 
+def test_init_not_enough_channels():
+    Phat(2, 8)
+    with pytest.raises(ValueError, match='Number of channels must be at least 2.'):
+        Phat(1, 8)
+
+
+def test_init_not_enough_bins():
+    Phat(4, 1)
+    with pytest.raises(ValueError, match='Number of bins must be at least 1.'):
+        Phat(4, 0)
+
+
 def test_init():
     NUM_CHANNELS = 4
     NUM_BINS = 8
@@ -22,16 +34,20 @@ def test_process_invalid_inputs():
 
     testee = Phat(NUM_CHANNELS, NUM_BINS)
 
-    with pytest.raises(ValueError, match='The number of channels of the input must be 4.'):
+    with pytest.raises(
+        ValueError, match='Number of channels in input covs must match the number of channels in the phat.'
+    ):
         testee.process(Covs('', NUM_CHANNELS + 1, NUM_BINS), Covs('', NUM_CHANNELS, NUM_BINS))
 
-    with pytest.raises(ValueError, match='The number of bins of the input must be 8.'):
+    with pytest.raises(ValueError, match='Number of bins in input covs must match the number of bins in the phat.'):
         testee.process(Covs('', NUM_CHANNELS, NUM_BINS + 1), Covs('', NUM_CHANNELS, NUM_BINS))
 
-    with pytest.raises(ValueError, match='The number of channels of the output must be 4.'):
+    with pytest.raises(
+        ValueError, match='Number of channels in output covs must match the number of channels in the phat.'
+    ):
         testee.process(Covs('', NUM_CHANNELS, NUM_BINS), Covs('', NUM_CHANNELS + 1, NUM_BINS))
 
-    with pytest.raises(ValueError, match='The number of bins of the output must be 8.'):
+    with pytest.raises(ValueError, match='Number of bins in output covs must match the number of bins in the phat.'):
         testee.process(Covs('', NUM_CHANNELS, NUM_BINS), Covs('', NUM_CHANNELS, NUM_BINS + 1))
 
 

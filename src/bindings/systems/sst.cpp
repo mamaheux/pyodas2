@@ -3,6 +3,7 @@
 #include <odas2/systems/sst.h>
 
 #include "sst.h"
+#include "../utils/error.h"
 #include "../utils/mics.h"
 
 namespace py = pybind11;
@@ -14,19 +15,17 @@ struct sst_deleter {
 };
 
 std::shared_ptr<sst_t> sst_init(size_t num_tracks, size_t num_directions, size_t num_pasts) {
-    return {sst_construct(num_tracks, num_directions, num_pasts), sst_deleter()};
+    sst_t* sst = sst_construct(num_tracks, num_directions, num_pasts);
+    if (sst == nullptr) {
+        throw py::value_error(pyodas2_error_message());
+    }
+
+    return {sst, sst_deleter()};
 }
 
 void sst_process_python(sst_t& self, const dsf_t& dsf, const doas_t& in, doas_t& out) {
-    if (self.num_directions != in.num_directions) {
-        throw py::value_error("The number of directions of the input must be " + std::to_string(self.num_directions) + ".");
-    }
-    if (self.num_tracks != out.num_directions) {
-        throw py::value_error("The number of directions of the output must be " + std::to_string(self.num_tracks) + ".");
-    }
-
     if (sst_process(&self, &dsf, &in, &out) != 0) {
-        throw std::runtime_error("Failed to process ssl");
+        throw py::value_error(pyodas2_error_message());
     }
 }
 

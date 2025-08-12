@@ -5,18 +5,28 @@ from pyodas2.signals import Freqs, Hops
 from pyodas2.systems import Stft, Window
 
 
-def test_init_invalid_values():
-    NUM_CHANNELS = 4
+def test_init_not_enough_channels():
+    Stft(1, 16, 4, Window.HANN)
+    with pytest.raises(ValueError, match='Number of channels must be at least 1.'):
+        Stft(0, 16, 4, Window.HANN)
 
-    NUM_SAMPLES = 15
-    NUM_SHIFTS = 4
-    with pytest.raises(ValueError, match='The number of samples must be a power of 2*'):
-        Stft(NUM_CHANNELS, NUM_SAMPLES, NUM_SHIFTS, Window.HANN)
 
-    NUM_SAMPLES = 16
-    NUM_SHIFTS = 9
-    with pytest.raises(ValueError, match='The number of samples must be at most equal to num_samples / 2.'):
-        Stft(NUM_CHANNELS, NUM_SAMPLES, NUM_SHIFTS, Window.HANN)
+def test_init_invalid_samples():
+    Stft(2, 16, 4, Window.HANN)
+    with pytest.raises(ValueError, match='Number of samples must be at least 2 and a power of 2.'):
+        Stft(2, 15, 4, Window.HANN)
+
+    with pytest.raises(ValueError, match='Number of samples must be at least 2 and a power of 2.'):
+        Stft(2, 1, 4, Window.HANN)
+
+
+def test_init_invalid_shifts():
+    Stft(2, 16, 8, Window.HANN)
+    with pytest.raises(ValueError, match='Number of shifts must be at least 1 and at most half the number of samples.'):
+        Stft(2, 16, 0, Window.HANN)
+
+    with pytest.raises(ValueError, match='Number of shifts must be at least 1 and at most half the number of samples.'):
+        Stft(2, 16, 9, Window.HANN)
 
 
 def test_init():
@@ -41,16 +51,20 @@ def test_process_invalid_inputs():
 
     testee = Stft(NUM_CHANNELS, NUM_SAMPLES, NUM_SHIFTS, Window.HANN)
 
-    with pytest.raises(ValueError, match='The number of sources of the hops must be 2.'):
+    with pytest.raises(
+        ValueError, match='Number of channels in input hops must match the number of channels in the stft.'
+    ):
         testee.process(Hops('xs', NUM_CHANNELS + 1, NUM_SHIFTS), Freqs('Xs', NUM_CHANNELS, NUM_BINS))
 
-    with pytest.raises(ValueError, match='The number of shifts of the hops must be 4.'):
+    with pytest.raises(ValueError, match='Number of shifts in input hops must match the number of shifts in the stft.'):
         testee.process(Hops('xs', NUM_CHANNELS, NUM_SHIFTS + 1), Freqs('Xs', NUM_CHANNELS, NUM_BINS))
 
-    with pytest.raises(ValueError, match='The number of channels of the freqs must be 2.'):
+    with pytest.raises(
+        ValueError, match='Number of channels in output freqs must match the number of channels in the stft.'
+    ):
         testee.process(Hops('xs', NUM_CHANNELS, NUM_SHIFTS), Freqs('Xs', NUM_CHANNELS + 1, NUM_BINS))
 
-    with pytest.raises(ValueError, match='The number of bins of the freqs must be 9.'):
+    with pytest.raises(ValueError, match='Number of bins in output freqs must match the number of bins in the stft.'):
         testee.process(Hops('xs', NUM_CHANNELS, NUM_SHIFTS), Freqs('Xs', NUM_CHANNELS, NUM_BINS + 1))
 
 

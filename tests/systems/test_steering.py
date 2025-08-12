@@ -5,7 +5,30 @@ import pytest
 from pyodas2.signals import Doas, Tdoas
 from pyodas2.systems import Steering
 from pyodas2.types import Xyz
-from pyodas2.utils import Mics
+from pyodas2.utils import Mic, Mics
+
+
+def test_init_not_enough_mics():
+    with pytest.raises(ValueError, match='Number of microphones must be at least 2.'):
+        Steering(Mics([Mic(Xyz(0, 0, 0), Xyz(1, 0, 0), Mic.Pattern.OMNIDIRECTIONAL)]), 16000.0, 343.0, 3)
+
+
+def test_init_invalid_sample_rate():
+    Steering(Mics(Mics.Hardware.RESPEAKER_USB_4), 0.1, 343.0, 3)
+    with pytest.raises(ValueError, match='Sample rate must be greater than 0.'):
+        Steering(Mics(Mics.Hardware.RESPEAKER_USB_4), 0.0, 343.0, 3)
+
+
+def test_init_invalid_sound_speed():
+    Steering(Mics(Mics.Hardware.RESPEAKER_USB_4), 16000.0, 0.1, 3)
+    with pytest.raises(ValueError, match='Sound speed must be greater than 0.'):
+        Steering(Mics(Mics.Hardware.RESPEAKER_USB_4), 16000.0, 0.0, 3)
+
+
+def test_init_not_enough_sources():
+    Steering(Mics(Mics.Hardware.RESPEAKER_USB_4), 16000.0, 343.0, 1)
+    with pytest.raises(ValueError, match='Number of sources must be at least 1.'):
+        Steering(Mics(Mics.Hardware.RESPEAKER_USB_4), 16000.0, 343.0, 0)
 
 
 def test_init():
@@ -33,13 +56,19 @@ def test_process_invalid_inputs():
     mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
     testee = Steering(mics, SAMPLE_RATE, SOUND_SPEED, NUM_SOURCES)
 
-    with pytest.raises(ValueError, match='The number of directions of the doas must be 3.'):
+    with pytest.raises(
+        ValueError, match='Number of directions in input DOAs must match the number of sources in the steering.'
+    ):
         testee.process(Doas('doas', NUM_SOURCES + 1), Tdoas('tdoas', len(mics), NUM_SOURCES))
 
-    with pytest.raises(ValueError, match='The number of channels of the tdoas must be 4.'):
+    with pytest.raises(
+        ValueError, match='Number of channels in TDOAs must match the number of channels in the steering.'
+    ):
         testee.process(Doas('doas', NUM_SOURCES), Tdoas('tdoas', len(mics) + 1, NUM_SOURCES))
 
-    with pytest.raises(ValueError, match='The number of sources of the tdoas must be 3.'):
+    with pytest.raises(
+        ValueError, match='Number of sources in TDOAs must match the number of sources in the steering.'
+    ):
         testee.process(Doas('doas', NUM_SOURCES), Tdoas('tdoas', len(mics), NUM_SOURCES + 1))
 
     doas = Doas('doas', NUM_SOURCES)

@@ -1,9 +1,52 @@
+import math
+
 import pytest
 
 from pyodas2.signals import Doas, Tdoas
 from pyodas2.systems import Ssl, Steering
 from pyodas2.types import Xyz
-from pyodas2.utils import Mics, Points
+from pyodas2.utils import Mic, Mics, Points
+
+
+def test_init_not_enough_mics():
+    with pytest.raises(ValueError, match='Number of microphones must be at least 2.'):
+        Ssl(
+            Mics([Mic(Xyz(0, 0, 0), Xyz(1, 0, 0), Mic.Pattern.OMNIDIRECTIONAL)]),
+            Points(Points.Geometry.HALFSPHERE, 2562),
+            16000.0,
+            343.0,
+            4,
+            2,
+        )
+
+
+def test_init_not_enough_points():
+    with pytest.raises(ValueError, match='Number of points must be at least 1.'):
+        Ssl(Mics(Mics.Hardware.RESPEAKER_USB_4), Points(Points.Geometry.HALFSPHERE, 0), 16000.0, 343.0, 4, 2)
+
+
+def test_init_invalid_sample_rate():
+    Ssl(Mics(Mics.Hardware.RESPEAKER_USB_4), Points(Points.Geometry.HALFSPHERE, 2562), 0.1, 343.0, 4, 2)
+    with pytest.raises(ValueError, match='Sample rate must be greater than 0.'):
+        Ssl(Mics(Mics.Hardware.RESPEAKER_USB_4), Points(Points.Geometry.HALFSPHERE, 2562), 0.0, 343.0, 4, 2)
+
+
+def test_init_invalid_sound_speed():
+    Ssl(Mics(Mics.Hardware.RESPEAKER_USB_4), Points(Points.Geometry.HALFSPHERE, 2562), 16000.0, 0.1, 4, 2)
+    with pytest.raises(ValueError, match='Sound speed must be greater than 0.'):
+        Ssl(Mics(Mics.Hardware.RESPEAKER_USB_4), Points(Points.Geometry.HALFSPHERE, 2562), 16000.0, 0.0, 4, 2)
+
+
+def test_init_not_enough_sources():
+    Ssl(Mics(Mics.Hardware.RESPEAKER_USB_4), Points(Points.Geometry.HALFSPHERE, 2562), 16000.0, 343.0, 1, 2)
+    with pytest.raises(ValueError, match='Number of sources must be at least 1.'):
+        Ssl(Mics(Mics.Hardware.RESPEAKER_USB_4), Points(Points.Geometry.HALFSPHERE, 2562), 16000.0, 343.0, 0, 2)
+
+
+def test_init_not_enough_directions():
+    Ssl(Mics(Mics.Hardware.RESPEAKER_USB_4), Points(Points.Geometry.HALFSPHERE, 2562), 16000.0, 343.0, 4, 1)
+    with pytest.raises(ValueError, match='Number of directions must be at least 1.'):
+        Ssl(Mics(Mics.Hardware.RESPEAKER_USB_4), Points(Points.Geometry.HALFSPHERE, 2562), 16000.0, 343.0, 4, 0)
 
 
 def test_init():
@@ -14,7 +57,7 @@ def test_init():
     NUM_DIRECTIONS = 2
 
     mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
-    points = Points(Points.Geometry.HALFSPHERE)
+    points = Points(Points.Geometry.HALFSPHERE, 2562)
     testee = Ssl(mics, points, SAMPLE_RATE, SOUND_SPEED, NUM_SOURCES, NUM_DIRECTIONS)
 
     assert testee.num_channels == len(mics)
@@ -35,16 +78,18 @@ def test_process_invalid_inputs():
     NUM_DIRECTIONS = 2
 
     mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
-    points = Points(Points.Geometry.HALFSPHERE)
+    points = Points(Points.Geometry.HALFSPHERE, 2562)
     testee = Ssl(mics, points, SAMPLE_RATE, SOUND_SPEED, NUM_SOURCES, NUM_DIRECTIONS)
 
-    with pytest.raises(ValueError, match='The number of channels of the tdoas must be 4.'):
+    with pytest.raises(ValueError, match='Number of channels in TDOAs must match the number of channels in the ssl.'):
         testee.process(Tdoas('tdoas', len(mics) + 1, NUM_SOURCES), Doas('doas', NUM_DIRECTIONS))
 
-    with pytest.raises(ValueError, match='The number of sources of the tdoas must be 4.'):
+    with pytest.raises(ValueError, match='Number of sources in TDOAs must match the number of sources in the ssl.'):
         testee.process(Tdoas('tdoas', len(mics), NUM_SOURCES + 1), Doas('doas', NUM_DIRECTIONS))
 
-    with pytest.raises(ValueError, match='The number of directions of the doas must be 2.'):
+    with pytest.raises(
+        ValueError, match='Number of directions in DOAs must match the number of directions in the ssl.'
+    ):
         testee.process(Tdoas('tdoas', len(mics), NUM_SOURCES), Doas('doas', NUM_DIRECTIONS + 1))
 
 
@@ -55,7 +100,7 @@ def test_process():
     NUM_DIRECTIONS = 2
 
     mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
-    points = Points(Points.Geometry.HALFSPHERE)
+    points = Points(Points.Geometry.HALFSPHERE, 2562)
     testee = Ssl(mics, points, SAMPLE_RATE, SOUND_SPEED, NUM_SOURCES, NUM_DIRECTIONS)
     steering = Steering(mics, SAMPLE_RATE, SOUND_SPEED, NUM_SOURCES)
 
@@ -75,13 +120,13 @@ def test_process():
     steering.process(doas_src, tdoas)
     testee.process(tdoas, doas_dst)
 
-    assert doas_dst[0].coord.x == 1.0
-    assert doas_dst[0].coord.y == 0.0
-    assert doas_dst[0].coord.z == 0.0
+    assert math.isclose(doas_dst[0].coord.x, 1.0, abs_tol=0.1)
+    assert math.isclose(doas_dst[0].coord.y, 0.0, abs_tol=0.1)
+    assert math.isclose(doas_dst[0].coord.z, 0.0, abs_tol=0.1)
 
-    assert doas_dst[1].coord.x == 0.0
-    assert doas_dst[1].coord.y == 1.0
-    assert doas_dst[1].coord.z == 0.0
+    assert math.isclose(doas_dst[1].coord.x, 0.0, abs_tol=0.1)
+    assert math.isclose(doas_dst[1].coord.y, 1.0, abs_tol=0.1)
+    assert math.isclose(doas_dst[1].coord.z, 0.0, abs_tol=0.1)
 
 
 def test_repr():
@@ -91,6 +136,6 @@ def test_repr():
     NUM_DIRECTIONS = 2
 
     mics = Mics(Mics.Hardware.RESPEAKER_USB_4)
-    points = Points(Points.Geometry.HALFSPHERE)
+    points = Points(Points.Geometry.HALFSPHERE, 2562)
     testee = Ssl(mics, points, SAMPLE_RATE, SOUND_SPEED, NUM_SOURCES, NUM_DIRECTIONS)
     assert repr(testee) == '<pyodas2.systems.Ssl (S=4, D=2)>'

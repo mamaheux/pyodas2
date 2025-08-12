@@ -1,8 +1,10 @@
 #include <sstream>
 
 #include <odas2/systems/steering.h>
+#include <odas2/utils/error.h>
 
 #include "steering.h"
+#include "../utils/error.h"
 #include "../utils/mics.h"
 #include "../signals/doas.h"
 
@@ -23,6 +25,9 @@ public:
         verify_mics_directions(*mics);
         m_mics = std::move(mics);
         m_steering.reset(steering_construct(m_mics.get(), sample_rate, sound_speed, num_sources));
+        if (m_steering == nullptr) {
+            throw py::value_error(pyodas2_error_message());
+        }
     }
 
     [[nodiscard]] size_t num_channels() const {
@@ -50,19 +55,10 @@ public:
     }
 
     void process(const doas_t& doas, tdoas_t& tdoas) {
-        if (m_steering->num_sources != doas.num_directions) {
-            throw py::value_error("The number of directions of the doas must be " + std::to_string(m_steering->num_sources) + ".");
-        }
-        if (m_steering->num_sources != tdoas.num_sources) {
-            throw py::value_error("The number of sources of the tdoas must be " + std::to_string(m_steering->num_sources) + ".");
-        }
-        if (m_steering->num_channels != tdoas.num_channels) {
-            throw py::value_error("The number of channels of the tdoas must be " + std::to_string(m_steering->num_channels) + ".");
-        }
         verify_doas_direction(doas);
 
         if (steering_process(m_steering.get(), &doas, &tdoas) != 0) {
-            throw std::runtime_error("Failed to process steering");
+            throw py::value_error(pyodas2_error_message());
         }
     }
 

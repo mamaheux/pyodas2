@@ -7,8 +7,20 @@ from pyodas2.signals import Masks
 def test_init_too_long_label():
     Masks('1' * 63, 4, 512)
 
-    with pytest.raises(ValueError, match='The label is too long. The maximum length is 63.'):
+    with pytest.raises(ValueError, match='Label must be a string with less than 64 characters.'):
         Masks('1' * 64, 4, 512)
+
+
+def test_init_not_enough_channels():
+    Masks('XXs', 1, 512)
+    with pytest.raises(ValueError, match='Number of channels must be at least 1.'):
+        Masks('XXs', 0, 512)
+
+
+def test_init_not_enough_bins():
+    Masks('XXs', 4, 1)
+    with pytest.raises(ValueError, match='Number of bins must be at least 1.'):
+        Masks('XXs', 4, 0)
 
 
 def test_init():

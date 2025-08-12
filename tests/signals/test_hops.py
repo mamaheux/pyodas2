@@ -7,8 +7,20 @@ from pyodas2.signals import Hops
 def test_init_too_long_label():
     Hops('1' * 63, 4, 512)
 
-    with pytest.raises(ValueError, match='The label is too long. The maximum length is 63.'):
+    with pytest.raises(ValueError, match='Label must be a string with less than 64 characters.'):
         Hops('1' * 64, 4, 512)
+
+
+def test_init_not_enough_channels():
+    Hops('XXs', 1, 512)
+    with pytest.raises(ValueError, match='Number of channels must be at least 1.'):
+        Hops('XXs', 0, 512)
+
+
+def test_init_not_enough_shifts():
+    Hops('XXs', 4, 1)
+    with pytest.raises(ValueError, match='Number of shifts must be at least 1.'):
+        Hops('XXs', 4, 0)
 
 
 def test_init():

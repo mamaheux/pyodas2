@@ -6,6 +6,7 @@
 #include <odas2/signals/freqs.h>
 
 #include "freqs.h"
+#include "../utils/error.h"
 
 #include <iostream>
 
@@ -18,12 +19,12 @@ struct freqs_deleter {
 };
 
 std::shared_ptr<freqs_t> freqs_init(const std::string& label, size_t num_channels, size_t num_bins) {
-    constexpr size_t MAX_LABEL_SIZE = sizeof(freqs_t::label) - 1;
-    if (label.size() > MAX_LABEL_SIZE) {
-        throw py::value_error("The label is too long. The maximum length is " + std::to_string(MAX_LABEL_SIZE) + ".");
+    freqs_t* freqs = freqs_construct(label.c_str(), num_channels, num_bins);
+    if (freqs == nullptr) {
+        throw py::value_error(pyodas2_error_message());
     }
 
-    return {freqs_construct(label.c_str(), num_channels, num_bins), freqs_deleter()};
+    return {freqs, freqs_deleter()};
 }
 
 void freqs_load_numpy(freqs_t& self, const py::array_t<std::complex<float>, py::array::c_style | py::array::forcecast>& array) {

@@ -7,13 +7,24 @@ from pyodas2.signals import Covs, Tdoas
 from pyodas2.systems import Gcc
 
 
-@pytest.mark.parametrize('num_bins', [8, 10])
-def test_init_invalid_num_bins(num_bins):
-    NUM_SOURCES = 2
-    NUM_CHANNELS = 4
+def test_init_not_enough_sources():
+    Gcc(1, 4, 9)
+    with pytest.raises(ValueError, match='Number of sources must be at least 1.'):
+        Gcc(0, 4, 9)
 
-    with pytest.raises(ValueError, match='The number of samples must be a power of 2*'):
-        Gcc(NUM_SOURCES, NUM_CHANNELS, num_bins)
+
+def test_init_not_enough_channels():
+    Gcc(2, 2, 9)
+    with pytest.raises(ValueError, match='Number of channels must be at least 2.'):
+        Gcc(2, 1, 9)
+
+
+def test_init_invalid_bins():
+    Gcc(2, 4, 9)
+    with pytest.raises(
+        ValueError, match='Number of bins converted to number of samples must be at least 2 and a power of 2.'
+    ):
+        Gcc(2, 4, 8)
 
 
 def test_init():
@@ -38,16 +49,16 @@ def test_process_invalid_inputs():
 
     testee = Gcc(NUM_SOURCES, NUM_CHANNELS, NUM_BINS)
 
-    with pytest.raises(ValueError, match='The number of channels of the covs must be 4.'):
+    with pytest.raises(ValueError, match='Number of channels in covs must match the number of channels in the GCC.'):
         testee.process(Covs('', NUM_CHANNELS + 1, NUM_BINS), Tdoas('', NUM_CHANNELS, NUM_SOURCES))
 
-    with pytest.raises(ValueError, match='The number of bins of the covs must be 9.'):
+    with pytest.raises(ValueError, match='Number of bins in covs must match the number of bins in the GCC.'):
         testee.process(Covs('', NUM_CHANNELS, NUM_BINS + 1), Tdoas('', NUM_CHANNELS, NUM_SOURCES))
 
-    with pytest.raises(ValueError, match='The number of channels of the tdoas must be 4.'):
+    with pytest.raises(ValueError, match='Number of channels in TDOAs must match the number of channels in the GCC.'):
         testee.process(Covs('', NUM_CHANNELS, NUM_BINS), Tdoas('', NUM_CHANNELS + 1, NUM_SOURCES))
 
-    with pytest.raises(ValueError, match='The number of sources of the tdoas must be 2.'):
+    with pytest.raises(ValueError, match='Number of sources in TDOAs must match the number of sources in the GCC.'):
         testee.process(Covs('', NUM_CHANNELS, NUM_BINS), Tdoas('', NUM_CHANNELS, NUM_SOURCES + 1))
 
 

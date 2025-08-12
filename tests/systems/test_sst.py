@@ -7,6 +7,24 @@ from pyodas2.systems import Sst
 from pyodas2.types import Xyz
 
 
+def test_init_not_enough_tracks():
+    Sst(1, 4, 40)
+    with pytest.raises(ValueError, match='Number of tracks must be at least 1.'):
+        Sst(0, 4, 40)
+
+
+def test_init_not_enough_directions():
+    Sst(3, 1, 40)
+    with pytest.raises(ValueError, match='Number of directions must be at least 1.'):
+        Sst(3, 0, 40)
+
+
+def test_init_not_enough_pasts():
+    Sst(3, 4, 1)
+    with pytest.raises(ValueError, match='Number of pasts must be at least 1.'):
+        Sst(3, 4, 0)
+
+
 def test_init():
     NUM_TRACKS = 3
     NUM_DIRECTIONS = 4
@@ -26,10 +44,14 @@ def test_process_invalid_inputs():
 
     testee = Sst(NUM_TRACKS, NUM_DIRECTIONS, NUM_PASTS)
 
-    with pytest.raises(ValueError, match='The number of directions of the input must be 4.'):
+    with pytest.raises(
+        ValueError, match='Number of directions in input DOAs must match the number of directions in the sst.'
+    ):
         testee.process(Dsf(''), Doas('', NUM_DIRECTIONS + 1), Doas('', NUM_TRACKS))
 
-    with pytest.raises(ValueError, match='The number of directions of the output must be 3.'):
+    with pytest.raises(
+        ValueError, match='Number of directions in output DOAs must match the number of tracks in the sst.'
+    ):
         testee.process(Dsf(''), Doas('', NUM_DIRECTIONS), Doas('', NUM_TRACKS + 1))
 
 

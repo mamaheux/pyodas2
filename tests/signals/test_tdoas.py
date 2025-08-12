@@ -6,8 +6,20 @@ from pyodas2.signals import Tdoas
 def test_init_too_long_label():
     Tdoas('1' * 63, 4, 2)
 
-    with pytest.raises(ValueError, match='The label is too long. The maximum length is 63.'):
+    with pytest.raises(ValueError, match='Label must be a string with less than 64 characters.'):
         Tdoas('1' * 64, 4, 2)
+
+
+def test_init_not_enough_channels():
+    Tdoas('XXs', 2, 4)
+    with pytest.raises(ValueError, match='Number of channels must be at least 2.'):
+        Tdoas('XXs', 1, 4)
+
+
+def test_init_not_enough_sources():
+    Tdoas('XXs', 4, 1)
+    with pytest.raises(ValueError, match='Number of sources must be at least 1.'):
+        Tdoas('XXs', 4, 0)
 
 
 def test_init():

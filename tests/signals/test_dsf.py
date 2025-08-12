@@ -8,7 +8,7 @@ from pyodas2.signals import Dsf
 def test_init_too_long_label():
     Dsf('1' * 63)
 
-    with pytest.raises(ValueError, match='The label is too long. The maximum length is 63.'):
+    with pytest.raises(ValueError, match='Label must be a string with less than 64 characters.'):
         Dsf('1' * 64)
 
 

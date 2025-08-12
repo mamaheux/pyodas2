@@ -51,6 +51,7 @@ python_add_library(_core MODULE
 
         src/bindings/types/xyz.cpp
 
+        src/bindings/utils/error.cpp
         src/bindings/utils/mic.cpp
         src/bindings/utils/mics.cpp
         src/bindings/utils/points.cpp

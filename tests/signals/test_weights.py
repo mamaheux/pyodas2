@@ -7,8 +7,26 @@ from pyodas2.signals import Weights
 def test_init_too_long_label():
     Weights('1' * 63, 2, 4, 512)
 
-    with pytest.raises(ValueError, match='The label is too long. The maximum length is 63.'):
+    with pytest.raises(ValueError, match='Label must be a string with less than 64 characters.'):
         Weights('1' * 64, 2, 4, 512)
+
+
+def test_init_not_enough_sources():
+    Weights('XXs', 1, 4, 512)
+    with pytest.raises(ValueError, match='Number of sources must be at least 1.'):
+        Weights('XXs', 0, 4, 512)
+
+
+def test_init_not_enough_channels():
+    Weights('XXs', 2, 1, 512)
+    with pytest.raises(ValueError, match='Number of channels must be at least 1.'):
+        Weights('XXs', 2, 0, 512)
+
+
+def test_init_not_enough_bins():
+    Weights('XXs', 2, 4, 1)
+    with pytest.raises(ValueError, match='Number of bins must be at least 1.'):
+        Weights('XXs', 2, 4, 0)
 
 
 def test_init():

@@ -5,6 +5,18 @@ from pyodas2.signals import Covs, Weights
 from pyodas2.systems import Mvdr
 
 
+def test_init_not_enough_channels():
+    Mvdr(2, 8)
+    with pytest.raises(ValueError, match='Number of channels must be at least 2.'):
+        Mvdr(1, 8)
+
+
+def test_init_not_enough_bins():
+    Mvdr(4, 1)
+    with pytest.raises(ValueError, match='Number of bins must be at least 1.'):
+        Mvdr(4, 0)
+
+
 def test_init():
     NUM_CHANNELS = 4
     NUM_BINS = 8
@@ -22,19 +34,21 @@ def test_process_invalid_inputs():
 
     testee = Mvdr(NUM_CHANNELS, NUM_BINS)
 
-    with pytest.raises(ValueError, match='The number of channels of the covs must be 4.'):
+    with pytest.raises(ValueError, match='Number of channels in covs must match the number of channels in the MVDR.'):
         testee.process(Covs('', NUM_CHANNELS + 1, NUM_BINS), Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS))
 
-    with pytest.raises(ValueError, match='The number of bins of the covs must be 8.'):
+    with pytest.raises(ValueError, match='Number of bins in covs must match the number of bins in the MVDR.'):
         testee.process(Covs('', NUM_CHANNELS, NUM_BINS + 1), Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS))
 
-    with pytest.raises(ValueError, match='The number of sources of the weights must be 1.'):
+    with pytest.raises(ValueError, match='Number of sources in weights must match the number of sources in the MVDR'):
         testee.process(Covs('', NUM_CHANNELS, NUM_BINS), Weights('', NUM_SOURCES + 1, NUM_CHANNELS, NUM_BINS))
 
-    with pytest.raises(ValueError, match='The number of channels of the weights must be 4.'):
+    with pytest.raises(
+        ValueError, match='Number of channels in weights must match the number of channels in the MVDR.'
+    ):
         testee.process(Covs('', NUM_CHANNELS, NUM_BINS), Weights('', NUM_SOURCES, NUM_CHANNELS + 1, NUM_BINS))
 
-    with pytest.raises(ValueError, match='The number of bins of the weights must be 8.'):
+    with pytest.raises(ValueError, match='Number of bins in weights must match the number of bins in the MVDR.'):
         testee.process(Covs('', NUM_CHANNELS, NUM_BINS), Weights('', NUM_SOURCES, NUM_CHANNELS, NUM_BINS + 1))
 
 
