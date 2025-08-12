@@ -67,4 +67,11 @@ install(TARGETS _core DESTINATION pyodas2)
 
 # Generate the stubs
 install(FILES ${CMAKE_SOURCE_DIR}/src/pyodas2/__init__.py DESTINATION pyodas2)
-install(CODE "execute_process(COMMAND bash \"\${CMAKE_CURRENT_SOURCE_DIR}/generate_stubs.bash\" WORKING_DIRECTORY \"\${CMAKE_INSTALL_PREFIX}\")")
+
+if (UNIX)
+  install(CODE "execute_process(COMMAND bash \"\${CMAKE_CURRENT_SOURCE_DIR}/generate_stubs.bash\" WORKING_DIRECTORY \"\${CMAKE_INSTALL_PREFIX}\")")
+elseif(WIN32)
+  install(CODE "execute_process(COMMAND powershell /c \"\${CMAKE_CURRENT_SOURCE_DIR}/generate_stubs.ps1\" WORKING_DIRECTORY \"\${CMAKE_INSTALL_PREFIX}\")")
+else()
+  message(FATAL_ERROR "Unsupported platform for stub generation.")
+endif()
