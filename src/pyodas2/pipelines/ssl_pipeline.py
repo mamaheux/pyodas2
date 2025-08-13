@@ -33,6 +33,7 @@ class SslPipeline:
         fft_window: Window = Window.HANN,
         sound_speed: float = 343.0,
         ssl_geometry: Points.Geometry = Points.Geometry.HALFSPHERE,
+        ssl_geometry_num_points: int = 2000,
         scm_alpha: float = 0.5,
     ) -> None:
         """
@@ -47,6 +48,7 @@ class SslPipeline:
         :param fft_window: The window type to compute the FFT for the STFT.
         :param sound_speed: The speed of sound in m/s.
         :param ssl_geometry: The predefined geometry to transform time differences of arrival (TDOAs) into directions of arrival (DOAs).
+        :param ssl_geometry_num_points: The number of points in the predefined geometry.
         :param scm_alpha: The alpha value to compute the spatial covariance matrix.
         """
         if hop_length > n_fft // 2:
@@ -55,7 +57,7 @@ class SslPipeline:
 
         self._num_channels = len(mics)
         self._num_bins = n_fft // 2 + 1
-        self._points = Points(ssl_geometry)
+        self._points = Points(ssl_geometry, ssl_geometry_num_points)
 
         self._hops = Hops('xs', self._num_channels, hop_length)
         self._freqs = Freqs('Xs', self._num_channels, self._num_bins)
