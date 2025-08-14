@@ -84,6 +84,17 @@ Classes
 
 |
 
+.. autoclass:: pyodas2.signals.Img
+
+   .. automethod:: __init__
+
+   .. automethod:: load_numpy
+   .. automethod:: to_numpy
+
+   .. autoproperty:: label
+   .. autoproperty:: num_directions
+   .. autoproperty:: num_points
+
 .. autoclass:: pyodas2.signals.Masks
 
    .. automethod:: __init__

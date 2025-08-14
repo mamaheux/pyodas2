@@ -7,6 +7,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif(NOT CMAKE_BUILD_TYPE)
 
 set(BUILD_SHARED_LIBS OFF)
+set(OPENMP_ENABLED OFF CACHE BOOL "Enable OpenMP support")
 add_subdirectory(src/odas2/core)
 
 # Scikit-build-core sets these values for you, or you can just hard-code the
@@ -33,6 +34,7 @@ python_add_library(_core MODULE
         src/bindings/signals/dsf.cpp
         src/bindings/signals/freqs.cpp
         src/bindings/signals/hops.cpp
+        src/bindings/signals/imgs.cpp
         src/bindings/signals/masks.cpp
         src/bindings/signals/tdoas.cpp
         src/bindings/signals/weights.cpp

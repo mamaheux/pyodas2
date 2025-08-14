@@ -67,7 +67,13 @@ public:
     }
 
     void process(const tdoas_t& tdoas, doas_t& doas) {
-        if (ssl_process(m_ssl.get(), &tdoas, &doas) != 0) {
+        if (ssl_process(m_ssl.get(), &tdoas, &doas, nullptr) != 0) {
+            throw py::value_error(pyodas2_error_message());
+        }
+    }
+
+    void process(const tdoas_t& tdoas, doas_t& doas, imgs_t& imgs) {
+        if (ssl_process(m_ssl.get(), &tdoas, &doas, &imgs) != 0) {
             throw py::value_error(pyodas2_error_message());
         }
     }
@@ -110,7 +116,7 @@ void init_ssl(py::module& m) {
         .def_property_readonly("mics", &Ssl::mics, R"pbdoc(Get the mics.)pbdoc")
         .def_property_readonly("points", &Ssl::points, R"pbdoc(Get the points.)pbdoc")
         .def("process",
-            &Ssl::process,
+            py::overload_cast<const tdoas_t&, doas_t&>(&Ssl::process),
             R"pbdoc(
             Perform sound source localization. The argument parameters must match those of the instance.
 
@@ -118,5 +124,17 @@ void init_ssl(py::module& m) {
             :param tdoas: The computed directions of arrival.)pbdoc",
             py::arg("tdoas"),
             py::arg("doas"))
+        .def("process",
+            py::overload_cast<const tdoas_t&, doas_t&, imgs_t&>(&Ssl::process),
+            R"pbdoc(
+            Perform sound source localization. The argument parameters must match those of the instance.
+
+            :param tdoas: The time differences of arrival.
+            :param doas: The computed directions of arrival.
+            :param imgs: The computed acoustic images.)pbdoc",
+            py::arg("tdoas"),
+            py::arg("doas"),
+            py::arg("imgs"))
+
         .def("__repr__", &Ssl::to_repr);
 }

@@ -5,6 +5,7 @@
 #include "signals/dsf.h"
 #include "signals/freqs.h"
 #include "signals/hops.h"
+#include "signals/imgs.h"
 #include "signals/masks.h"
 #include "signals/tdoas.h"
 #include "signals/weights.h"
@@ -49,6 +50,7 @@ PYBIND11_MODULE(_core, m) {
     init_dsf(signals_module);
     init_freqs(signals_module);
     init_hops(signals_module);
+    init_imgs(signals_module);
     init_masks(signals_module);
     init_tdoas(signals_module);
     init_weights(signals_module);
